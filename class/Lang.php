@@ -4,7 +4,9 @@ class Lang {
     public $lang = "en";
 
     public function __construct($lang) {
-        $this->lang = $lang;
+        if (isset($lang)) {
+            $this->lang = $lang;
+        }
     }
     
     public function getLang(): string {

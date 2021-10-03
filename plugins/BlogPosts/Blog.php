@@ -1,5 +1,7 @@
 <?php
 
+require_once("class/Item.php");
+
 class BlogPost extends Item {
     private string $table = "post";
 

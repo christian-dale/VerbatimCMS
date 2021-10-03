@@ -29,7 +29,7 @@ class Router {
             } else {
                 if ($route["path"] == $parsed["path"]) {
                     if ($route["method"] == $_SERVER["REQUEST_METHOD"]) {
-                        call_user_func($route["fn"]);
+                        call_user_func_array($route["fn"], [$this->res]);
                         return true;
                     }
                 }
