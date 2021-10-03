@@ -25,8 +25,9 @@ class PageLoader {
     function loadRoutes(App $app, Router $router) {
         foreach ($this->nav_items as $item) {
             $router->add($item["url"], "get", function($res) use(&$app, $item) {
-                require_once("plugins/" . $item["plugin"] . "/index.php");
-                $instance = new $item["plugin"]($res, $app, $item);
+                $item_plugin = $item["plugin"];
+                require_once("plugins/${item_plugin}/index.php");
+                $instance = new $item_plugin($res, $app, $item);
             });
         }
     }

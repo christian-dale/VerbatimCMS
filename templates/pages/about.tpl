@@ -1,4 +1,4 @@
-<div class="content">
+<div class="container">
     {$nav}
 
     <h1>About</h1>
