@@ -8,7 +8,7 @@
 
 <div class="contentBlog">
     <div class="container">
-        {include file="templates/partials/nav.tpl"}
+        {$nav}
 
         <h1>Blog</h1>
         <p>A blog about technology and philosophy.</p>

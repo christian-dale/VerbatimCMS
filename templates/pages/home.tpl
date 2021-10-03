@@ -7,7 +7,7 @@
 </style>
 
 <div class="contentHome container">
-    {include file="templates/partials/nav.tpl"}
+    {$nav}
     <main>
         <div class="content" style="padding: 2px 0;">
             <h1>Title</h1>
