@@ -4,6 +4,7 @@ class App {
     public $smarty = null;
     public $lang = null;
     public $title = "";
+    public $appname = "";
     public $description = "";
     public $content = "";
 
