@@ -10,10 +10,8 @@ require_once("class/App.php");
 
 session_start();
 
-$app = new App(new Smarty(), new Lang($_SESSION["lang"] ??= "en"));
-$app->appname = "Portfolio";
-$app->title = "Title";
-$app->description = "Example";
+$app = new App(new Smarty(), new Lang($_SESSION["lang"]));
+$app->loadConfig();
 $app->smarty->assign("lang", $app->lang);
 $app->smarty->assign("app", $app);
 
