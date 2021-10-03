@@ -3,7 +3,6 @@
 require_once("vendor/autoload.php");
 
 require_once("class/Router.php");
-require_once("class/DB.php");
 require_once("class/Lang.php");
 require_once("class/Item.php");
 require_once("class/Author.php");

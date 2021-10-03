@@ -36,10 +36,6 @@ class Blog {
     }
 
     function loadPosts() {
-        // $posts = DB::query("SELECT * FROM {$this->table}")->fetchAll();
-        // Create an instance of type BlogPost of every item in $posts.
-        // $this->posts = array_map(fn($post) => Item::simpleLoad(BlogPost::class, $post), $posts);
-
         foreach (glob("posts/*.json") as $file_name) {
             $post_meta = $this->loadPostMeta($file_name);
             $post_meta["content"] = $this->loadPostContent($file_name);
