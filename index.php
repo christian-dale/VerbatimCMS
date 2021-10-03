@@ -4,8 +4,8 @@ require_once("vendor/autoload.php");
 
 require_once("class/Router.php");
 require_once("class/Lang.php");
+require_once("class/PageLoader.php");
 require_once("class/Item.php");
-require_once("class/Blog.php");
 require_once("class/App.php");
 
 session_start();
@@ -17,18 +17,19 @@ $app->description = "Example";
 $app->smarty->assign("lang", $app->lang);
 $app->smarty->assign("app", $app);
 
-$blog = new Blog();
-
-$blog->loadPosts();
-$blog->renderPosts();
-
 $router = new Router();
+
+$page_loader = new PageLoader();
+$page_loader->loadPages();
+$page_loader->loadRoutes($app, $router);
+$app->smarty->assign("nav", $page_loader->getNav($app->smarty));
 
 $router->add("/", "get", function() use(&$app) {
     $app->title = "Title";
     $app->content = $app->smarty->fetch("templates/pages/home.tpl", []);
 });
 
+/*
 $router->add("/blog/{id}", "get", function($res) use(&$app, &$blog) {
     $post = $blog->posts[$res->attr["id"]];
 
@@ -47,7 +48,7 @@ $router->add("/blog", "get", function() use(&$app, &$blog) {
 $router->add("/projects", "get", function() use(&$app) {
     $app->title = "Title - Projects";
     $app->content = $app->smarty->fetch("templates/pages/projects.tpl", []);
-});
+});*/
 
 $router->add("/set-lang", "get", function() use(&$app) {
     $app->lang->setLang($_GET["lang"]);

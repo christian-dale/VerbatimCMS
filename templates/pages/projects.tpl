@@ -29,7 +29,7 @@
 
 <div class="contentProjects">
     <div class="container">
-        {include file="templates/partials/nav.tpl"}
+        {$nav}
         <h1>Projects</h1>
 
         <a href="#" class="badge">Customer Projects</a>

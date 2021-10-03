@@ -15,9 +15,9 @@
 
     <nav class="nav-items" style="display: inline-block;">
         <ul>
-            <li><a href="/projects" class="navItem" style="background-color: #fff; color: #212121;">{$lang->get("nav:projects")}</a></li>
-            <!--<li><a href="/contact" class="navItem" style="background-color: #fff; color: #212121;">{$lang->get("nav:contact")}</a></li>-->
-            <li><a href="/blog" class="navItem">{$lang->get("nav:blog")}</a></li>
+            {foreach $nav_items as $item}
+                <li><a href="{$item["url"]}" class="navItem" style="background-color: {$item["bg-color"]}; color: {$item["color"]};">{$item["title"]}</a></li>
+            {/foreach}
             <li>
                 <a href="#" class="articleLink badge btnLang" data-lang="en">EN</a>
                 <a href="#" class="articleLink badge btnLang" data-lang="no">NO</a>

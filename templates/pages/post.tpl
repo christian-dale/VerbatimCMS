@@ -33,7 +33,7 @@
 </style>
 
 <div class="container">
-    {include file="templates/partials/nav.tpl"}
+    {$nav}
 </div>
 
 <div class="contentBlog">
