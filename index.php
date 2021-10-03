@@ -4,7 +4,6 @@ require_once("vendor/autoload.php");
 
 require_once("class/Router.php");
 require_once("class/DB.php");
-require_once("class/FSDB.php");
 require_once("class/Lang.php");
 require_once("class/Item.php");
 require_once("class/Author.php");
@@ -13,17 +12,10 @@ require_once("class/App.php");
 
 session_start();
 
-$app = new App(new Smarty(), new Lang($_SESSION["lang"] ??= "en"), new FSDB());
+$app = new App(new Smarty(), new Lang($_SESSION["lang"] ??= "en"));
 $app->title = "Title";
 $app->description = "Example";
 $app->smarty->assign("lang", $app->lang);
-
-// DB::setup();
-
-// $item = new Item("post");
-// $item->save(["title" => "Test"]);
-
-$app->fsdb->createTable("contact", ["name", "email", "content"]);
 
 $blog = new Blog();
 
@@ -66,9 +58,6 @@ $router->add("/contact", "post", function() use(&$app) {
     $name = $_POST["name"] ?? "";
     $email = $_POST["email"] ?? "";
     $content = $_POST["content"] ?? "";
-
-    $app->fsdb->addRow("contact", ["name" => $name, "email" => $email, "content" => $content]);
-    $app->fsdb->commit();
 
     header("Location: /contact?sent=1", true, 301);
 });
