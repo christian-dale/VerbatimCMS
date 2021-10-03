@@ -12,9 +12,11 @@ require_once("class/App.php");
 session_start();
 
 $app = new App(new Smarty(), new Lang($_SESSION["lang"] ??= "en"));
+$app->appname = "Portfolio";
 $app->title = "Title";
 $app->description = "Example";
 $app->smarty->assign("lang", $app->lang);
+$app->smarty->assign("app", $app);
 
 $blog = new Blog();
 
@@ -25,7 +27,7 @@ $router = new Router();
 
 $router->add("/", "get", function() use(&$app) {
     $app->title = "Title";
-    $app->content = $app->smarty->fetch("templates/pages/home.tpl", ["app" => $app]);
+    $app->content = $app->smarty->fetch("templates/pages/home.tpl", []);
 });
 
 $router->add("/blog/{id}", "get", function($res) use(&$app, &$blog) {

@@ -9,7 +9,7 @@
 <div class="header" style="display: flex; justify-content: space-between;">
     <nav class="logo" style="display: inline-block;">
         <ul>
-            <li><a href="/" style="color: #212121;">{$app->title}</a></li>
+            <li><a href="/" style="color: #212121;">{$app->appname}</a></li>
         </ul>
     </nav>
 
