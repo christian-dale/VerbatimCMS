@@ -12,6 +12,8 @@ class App {
     function __construct(Smarty $smarty, Lang $lang) {
         $this->smarty = $smarty;
         $this->lang = $lang;
+
+        session_start();
     }
 
     function loadConfig() {
