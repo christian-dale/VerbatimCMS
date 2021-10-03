@@ -3,15 +3,13 @@
 class App {
     public $smarty = null;
     public $lang = null;
-    public $fsdb = null;
     public $title = "";
     public $description = "";
     public $content = "";
 
-    function __construct(Smarty $smarty, Lang $lang, FSDB $fsdb = null) {
+    function __construct(Smarty $smarty, Lang $lang) {
         $this->smarty = $smarty;
         $this->lang = $lang;
-        $this->fsdb = $fsdb;
     }
 
     function render() {
