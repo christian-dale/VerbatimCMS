@@ -48,19 +48,6 @@ $router->add("/projects", "get", function() use(&$app) {
     $app->content = $app->smarty->fetch("templates/pages/projects.tpl", []);
 });
 
-$router->add("/contact", "get", function() use(&$app) {
-    $app->title = "Title - Contact";
-    $app->content = $app->smarty->fetch("templates/pages/contact.tpl", ["sent" => $_GET["sent"] ?? 0]);
-});
-
-$router->add("/contact", "post", function() use(&$app) {
-    $name = $_POST["name"] ?? "";
-    $email = $_POST["email"] ?? "";
-    $content = $_POST["content"] ?? "";
-
-    header("Location: /contact?sent=1", true, 301);
-});
-
 $router->add("/set-lang", "get", function() use(&$app) {
     $app->lang->setLang($_GET["lang"]);
     exit();
