@@ -21,37 +21,6 @@ $page_loader->loadPages();
 $page_loader->loadRoutes($app, $router);
 $app->smarty->assign("nav", $page_loader->getNav($app->smarty));
 
-$router->add("/", "get", function() use(&$app) {
-    $app->title = "Title";
-    $app->content = $app->smarty->fetch("templates/pages/home.tpl", []);
-});
-
-/*
-$router->add("/blog/{id}", "get", function($res) use(&$app, &$blog) {
-    $post = $blog->posts[$res->attr["id"]];
-
-    $app->title = $post->get("title");
-    $description = substr(strip_tags($post->get("content")), 0, 150);
-    $app->description = "${description} ...";
-
-    $app->content = $app->smarty->fetch("templates/pages/post.tpl", ["post" => $post]);
-});
-
-$router->add("/blog", "get", function() use(&$app, &$blog) {
-    $app->title = "Title - Blog";
-    $app->content = $app->smarty->fetch("templates/pages/blog.tpl", ["posts" => $blog->posts]);
-});
-
-$router->add("/projects", "get", function() use(&$app) {
-    $app->title = "Title - Projects";
-    $app->content = $app->smarty->fetch("templates/pages/projects.tpl", []);
-});*/
-
-$router->add("/set-lang", "get", function() use(&$app) {
-    $app->lang->setLang($_GET["lang"]);
-    exit();
-});
-
 if (!$router->begin()) {
     $app->content = $app->smarty->fetch("templates/pages/404.tpl", []);
     http_response_code(404);
