@@ -8,6 +8,7 @@ class App {
     public $config = [];
     public $description = "";
     public $content = "";
+    public $css_paths = [];
 
     function __construct(Smarty $smarty, Lang $lang) {
         $this->smarty = $smarty;
@@ -30,7 +31,9 @@ class App {
             "content" => $this->content
         ]);
 
-        return $this->smarty->fetch("templates/main.tpl");
+        return $this->smarty->fetch("templates/main.tpl", [
+            "css_paths" => $this->css_paths
+        ]);
     }
 
     function prettyPrint($i, $r = false) {
@@ -41,5 +44,9 @@ class App {
         }
 
         echo $str;
+    }
+
+    function addCSS(string $path) {
+        $this->css_paths[] = $path;
     }
 }
