@@ -7,6 +7,8 @@ require_once("class/Lang.php");
 require_once("class/PageLoader.php");
 require_once("class/App.php");
 
+session_start();
+
 $app = new App(new Smarty(), new Lang($_SESSION["lang"]));
 $app->loadConfig();
 

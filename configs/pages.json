@@ -19,7 +19,7 @@
         {
             "title": "Blog",
             "url": "/blog",
-            "path": "templates/pages/blog.tpl",
+            "path": "plugins/BlogPosts/blog.tpl",
             "plugin": "BlogPosts",
             "template": true,
             "bg-color": "",
@@ -28,7 +28,7 @@
         {
             "visible": false,
             "url": "/blog/{id}",
-            "path": "templates/pages/blog.tpl",
+            "path": "plugins/BlogPosts/blog.tpl",
             "plugin": "BlogPosts"
         },
         {
