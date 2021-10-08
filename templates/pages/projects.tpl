@@ -8,16 +8,11 @@
     .projectItem {
         min-width: 250px;
         max-width: 400px;
-        background-color: #3d5afe;
+        background-color: #eee;
         border-radius: 5px;
-        color: #fff;
+        color: #212121;
         margin: 25px 0;
         padding: 0 15px 15px 15px;
-    }
-
-    .projectItem a {
-        color: #fff;
-        text-decoration: none;
     }
 
     @media (max-width: 1200px) {
@@ -39,11 +34,29 @@
         <h2>Customer Projects</h2>
 
         <div class="projects" style="">
-            <div class="projectItem" style="background: linear-gradient(to right, #59297f, #4e127c);">
-                {* <img src="/assets/ptoffice_logo.svg" style="max-width: 200px;"> *}
-                <h2>Project</h2>
-                <p>Example text.</p>
-                <a href="https://google.com">google.com</a>
+            <div class="projectItem">
+                <div class="projectContent">
+                    <h2>Project</h2>
+                    <p>Example text.</p>
+                </div>
+            </div>
+            <div class="projectItem">
+                <div class="projectContent">
+                    <h2>Project</h2>
+                    <p>Example text.</p>
+                </div>
+            </div>
+            <div class="projectItem">
+                <div class="projectContent">
+                    <h2>Project</h2>
+                    <p>Example text.</p>
+                </div>
+            </div>
+            <div class="projectItem">
+                <div class="projectContent">
+                    <h2>Project</h2>
+                    <p>Example text.</p>
+                </div>
             </div>
         </div>
 
