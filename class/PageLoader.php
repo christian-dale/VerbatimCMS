@@ -27,7 +27,8 @@ class PageLoader {
             $router->add($item["url"], "get", function($res) use(&$app, $item) {
                 $item_plugin = $item["plugin"];
                 require_once("plugins/${item_plugin}/index.php");
-                $instance = new $item_plugin($res, $app, $item);
+                $instance = new $item_plugin();
+                $instance->init($res, $app, $item);
             });
         }
     }
