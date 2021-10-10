@@ -15,6 +15,11 @@ class App {
         $this->lang = $lang;
     }
 
+    public static function loadJSON(string $path): array {
+        $file = file_get_contents($path);
+        return json_decode($file, true);
+    }
+
     function loadConfig() {
         $config_file = file_get_contents("configs/config.json");
         $this->config = json_decode($config_file, true);
