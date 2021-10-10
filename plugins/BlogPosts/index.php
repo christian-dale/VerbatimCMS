@@ -29,7 +29,9 @@ class BlogPosts {
         $app->title = $post->get("title");
         $app->description = substr(strip_tags($post->get("content")), 0, 150) . " ...";
         
-        $app->content = $app->smarty->fetch(__DIR__ . "/post.tpl", ["post" => $post]);
+        $app->content = $app->smarty->fetch(__DIR__ . "/post.tpl", [
+            "post" => $post, "disqus_comments" => $app->loadPlugin($app, "DisqusComments")
+        ]);
     }
 
     /**

@@ -15,6 +15,12 @@ class App {
         $this->lang = $lang;
     }
 
+    function loadPlugin(&$app, string $plugin) {
+        require_once("plugins/${plugin}/index.php");
+        $instance = new $plugin($app);
+        return $instance->init($app);
+    }
+
     public static function loadJSON(string $path): array {
         $file = file_get_contents($path);
         return json_decode($file, true);
