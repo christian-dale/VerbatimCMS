@@ -17,11 +17,10 @@ $page_loader = new PageLoader();
 $page_loader->loadPages();
 $page_loader->loadRoutes($app, $router);
 
-$app->smarty->assign("app", $app);
-$app->smarty->assign("nav", $page_loader->getNav($app->smarty));
+$app->assign($page_loader);
 
 if (!$router->begin()) {
     $app->show404();
 }
 
-echo $app->render();
+echo $app->render($page_loader);

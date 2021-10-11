@@ -1,5 +1,7 @@
 <?php
 
+require_once("class/PageLoader.php");
+
 class App {
     public $title = "";
     public $appname = "";
@@ -40,13 +42,19 @@ class App {
         http_response_code(404);
     }
 
-    function render() {
+    function assign(PageLoader $page_loader) {
+        $this->smarty->assign("app", $this);
+
         $this->smarty->assign([
+            "nav" => $page_loader->getNav($this->smarty),
             "lang" => $this->lang,
             "title" => $this->title,
-            "description" => $this->description,
-            "content" => $this->content
+            "description" => $this->description
         ]);
+    }
+
+    function render() {
+        $this->smarty->assign("content", $this->content);
 
         return $this->smarty->fetch("templates/main.tpl", [
             "css_paths" => $this->css_paths
