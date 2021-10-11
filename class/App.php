@@ -47,14 +47,8 @@ class App {
         ]);
     }
 
-    function prettyPrint($i, $r = false) {
-        $str = "<pre>" . print_r($i, true) . "</pre>";
-
-        if ($r) {
-            return $str;
-        }
-
-        echo $str;
+    function prettyPrint($text, $ret = false) {
+        return "<pre>" . print_r($text, $ret) . "</pre>";
     }
 
     function addCSS(string $path) {
