@@ -16,12 +16,24 @@ class Blog {
     private String $table = "post";
     private int $postscount = 7;
 
+    // Default properties for blog post.
+    public $blog_default = [
+        "title" => "",
+        "date" => "",
+        "dateUpdate" => "",
+        "draft" => false,
+        "categories" => [],
+        "image" => "",
+        "attrib" => ""
+    ];
+
     function __construct() {
 
     }
 
     function loadPostMeta(String $file_name): Array {
         $post_meta = json_decode(file_get_contents($file_name), true);
+        $post_meta = array_merge($this->blog_default, $post_meta);
         $post_meta["id"] = $this->getPostID($file_name);
         return $post_meta;
     }
