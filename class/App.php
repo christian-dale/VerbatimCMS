@@ -1,18 +1,16 @@
 <?php
 
 class App {
-    public $smarty = null;
-    public $lang = null;
     public $title = "";
     public $appname = "";
     public $config = [];
     public $description = "";
     public $content = "";
     public $css_paths = [];
+    public $smarty = null;
 
-    function __construct(Smarty $smarty, Lang $lang) {
-        $this->smarty = $smarty;
-        $this->lang = $lang;
+    function __construct() {
+        session_start();
     }
 
     function loadPlugin(&$app, string $plugin) {
@@ -27,11 +25,15 @@ class App {
     }
 
     function loadConfig() {
-        $config_file = file_get_contents("configs/config.json");
-        $this->config = json_decode($config_file, true);
+        $this->config = $this->loadJSON("configs/config.json");
         $this->title = $this->config["title"];
         $this->appname = $this->title;
         $this->description = $this->config["description"];
+    }
+
+    function show404() {
+        $this->content = $this->smarty->fetch("templates/pages/404.tpl");
+        http_response_code(404);
     }
 
     function render() {
