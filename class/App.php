@@ -14,9 +14,13 @@ class App {
     }
 
     function loadPlugin(&$app, string $plugin) {
-        require_once("plugins/${plugin}/index.php");
-        $instance = new $plugin($app);
-        return $instance->init($app);
+        $path = "plugins/${plugin}/index.php";
+
+        if (file_exists($path)) {
+            require_once($path);
+            $instance = new $plugin($app);
+            return $instance->init($app);
+        }
     }
 
     public static function loadJSON(string $path): array {

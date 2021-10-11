@@ -28,7 +28,9 @@
 
             <p>{$post->get("content")}</p>
 
-            {$disqus_comments}
+            {if isset($disqus_comments)}
+                {$disqus_comments}
+            {/if}
 
             {include file="templates/partials/footer.tpl"}
         </div>
