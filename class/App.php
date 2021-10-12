@@ -1,18 +1,25 @@
 <?php
 
+require_once("vendor/autoload.php");
+require_once("class/Lang.php");
 require_once("class/PageLoader.php");
 
 class App {
-    public $title = "";
-    public $appname = "";
-    public $config = [];
-    public $description = "";
-    public $content = "";
-    public $css_paths = [];
+    public string $title = "";
+    public string $appname = "";
+    public string $description = "";
+    public string $content = "";
+    public array $config = [];
+    public array $css_paths = [];
+
     public $smarty = null;
+	public $lang = null;
 
     function __construct() {
         session_start();
+
+		$this->smarty = new Smarty();
+		$this->lang = new Lang($_SESSION["lang"]);
     }
 
     function loadPlugin(&$app, string $plugin) {
