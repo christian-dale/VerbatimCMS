@@ -16,11 +16,11 @@
         <ul class="blogPosts" style="padding: 0;">
         {foreach $posts as $post}
             {if $post->get("draft") == false}
-                {include file="plugins/BlogPosts/post_item.tpl" post=$post}
+                {include file="content/plugins/BlogPosts/post_item.tpl" post=$post}
             {/if}
         {/foreach}
         </ul>
 
-        {include file="templates/partials/footer.tpl"}
+        {include file="lib/templates/partials/footer.tpl"}
     </div>
 </div>

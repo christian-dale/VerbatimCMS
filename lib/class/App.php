@@ -1,8 +1,8 @@
 <?php
 
 require_once("vendor/autoload.php");
-require_once("class/Lang.php");
-require_once("class/PageLoader.php");
+require_once("lib/class/Lang.php");
+require_once("lib/class/PageLoader.php");
 
 class App {
     public string $title = "";
@@ -38,14 +38,14 @@ class App {
     }
 
     function loadConfig() {
-        $this->config = $this->loadJSON("configs/config.json");
+        $this->config = $this->loadJSON("content/configs/config.json");
         $this->title = $this->config["title"];
         $this->appname = $this->title;
         $this->description = $this->config["description"];
     }
 
     function show404() {
-        $this->content = $this->smarty->fetch("templates/pages/404.tpl");
+        $this->content = $this->smarty->fetch("lib/templates/pages/404.tpl");
         http_response_code(404);
     }
 
@@ -63,7 +63,7 @@ class App {
     function render() {
         $this->smarty->assign("content", $this->content);
 
-        return $this->smarty->fetch("templates/main.tpl", [
+        return $this->smarty->fetch("lib/templates/main.tpl", [
             "css_paths" => $this->css_paths
         ]);
     }

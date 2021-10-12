@@ -14,7 +14,7 @@
             <p class="homeText" style="max-width: 50%;">Example</p>
         </div>
         <div class="content">
-            {include file="templates/partials/footer.tpl"}
+            {include file="lib/templates/partials/footer.tpl"}
         </div>
     </main>
 </div>

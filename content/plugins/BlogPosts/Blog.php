@@ -1,6 +1,6 @@
 <?php
 
-require_once("class/Item.php");
+require_once("lib/class/Item.php");
 
 class BlogPost extends Item {
     private string $table = "post";
@@ -50,7 +50,7 @@ class Blog {
     }
 
     function loadPosts() {
-        foreach (glob("posts/*.json") as $file_name) {
+        foreach (glob("content/posts/*.json") as $file_name) {
             $post_meta = $this->loadPostMeta($file_name);
             $post_meta["content"] = $this->loadPostContent($file_name);
             $this->posts[$post_meta["id"]] = Item::simpleLoad(BlogPost::class, $post_meta);

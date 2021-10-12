@@ -1,8 +1,8 @@
 <?php
 
-require_once("class/Router.php");
-require_once("class/PageLoader.php");
-require_once("class/App.php");
+require_once("lib/class/Router.php");
+require_once("lib/class/PageLoader.php");
+require_once("lib/class/App.php");
 
 $app = new App();
 $app->loadConfig();

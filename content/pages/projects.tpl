@@ -18,6 +18,7 @@
     @media (max-width: 1200px) {
         .projectItem {
             width: 100%;
+			max-width: 100%;
         }
     }
 </style>
@@ -60,6 +61,6 @@
             </div>
         </div>
 
-        {include file="templates/partials/footer.tpl"}
+        {include file="lib/templates/partials/footer.tpl"}
     </div>
 </div>

@@ -1,7 +1,7 @@
 <?php
 
-require_once("class/App.php");
-require_once("class/Router.php");
+require_once("lib/class/App.php");
+require_once("lib/class/Router.php");
 
 class PageLoader {
     public $nav_items = [];
@@ -11,7 +11,7 @@ class PageLoader {
         "title" => "",
         "visible" => true,
         "url" => "/",
-        "path" => "templates/pages/404.tpl",
+        "path" => "lib/templates/pages/404.tpl",
         "plugin" => "DefaultHandler",
         "template" => true,
         "bg-color" => "#fff",
@@ -26,7 +26,7 @@ class PageLoader {
         foreach ($this->nav_items as $item) {
             $router->add($item["url"], "get", function($res) use(&$app, $item) {
                 $item_plugin = $item["plugin"];
-                require_once("plugins/${item_plugin}/index.php");
+                require_once("content/plugins/${item_plugin}/index.php");
                 $instance = new $item_plugin();
                 $instance->init($res, $app, $item);
             });
@@ -34,13 +34,13 @@ class PageLoader {
     }
 
     function loadPages() {
-        $json_file = file_get_contents("configs/pages.json");
+        $json_file = file_get_contents("content/configs/pages.json");
         $pages = json_decode($json_file, true);
         $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
     }
 
     function getNav($smarty): string {
-        return $smarty->fetch("templates/partials/nav.tpl", [
+        return $smarty->fetch("lib/templates/partials/nav.tpl", [
             "nav_items" => array_filter($this->nav_items, fn($x) => $x["visible"])
         ]);
     }

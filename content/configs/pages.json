@@ -4,22 +4,22 @@
             "title": "Title",
             "visible": false,
             "url": "/",
-            "path": "templates/pages/home.tpl"
+            "path": "lib/templates/pages/home.tpl"
         },
         {
             "title": "Projects",
             "url": "/projects",
-            "path": "templates/pages/projects.tpl"
+            "path": "content/pages/projects.tpl"
         },
         {
             "title": "About",
             "url": "/about",
-            "path": "templates/pages/about.tpl"
+            "path": "content/pages/about.tpl"
         },
         {
             "title": "Blog",
             "url": "/blog",
-            "path": "plugins/BlogPosts/blog.tpl",
+            "path": "content/plugins/BlogPosts/blog.tpl",
             "plugin": "BlogPosts",
             "template": true,
             "bg-color": "",
@@ -28,7 +28,7 @@
         {
             "visible": false,
             "url": "/blog/{id}",
-            "path": "plugins/BlogPosts/blog.tpl",
+            "path": "content/plugins/BlogPosts/blog.tpl",
             "plugin": "BlogPosts"
         },
         {
