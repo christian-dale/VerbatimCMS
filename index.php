@@ -3,11 +3,10 @@
 require_once("lib/class/Router.php");
 require_once("lib/class/PageLoader.php");
 require_once("lib/class/App.php");
+require_once("lib/class/Updater.php");
 
 $app = new \App\App();
 $app->loadConfig();
-
-$router = new Router();
 
 $router = new \App\Router();
 
