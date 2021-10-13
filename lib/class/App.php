@@ -7,6 +7,7 @@ require_once("lib/class/Lang.php");
 require_once("lib/class/PageLoader.php");
 
 class App {
+    public string $version = "1.0.0";
     public string $title = "";
     public string $appname = "";
     public string $description = "";
