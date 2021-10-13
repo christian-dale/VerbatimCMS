@@ -18,5 +18,5 @@ hr {
 
 <div class="footer">
     <hr>
-    <p class="footerCopyright">&copy; Portfolio </p>
+    <p class="footerCopyright">&copy; {$app->appname} </p>
 </div>
