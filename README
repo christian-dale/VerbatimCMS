@@ -2,5 +2,12 @@
 
 A portfolio about most things tech.
 
+----
+
+This software is still in beta, so do not use it for anything
+with specific security requirements.
+
+----
+
 Homepage is located under:
 templates/pages/home.tpl
