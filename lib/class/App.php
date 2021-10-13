@@ -71,8 +71,8 @@ class App {
         ]);
     }
 
-    function prettyPrint($text, $ret = false) {
-        return "<pre>" . print_r($text, $ret) . "</pre>";
+    public static function prettyPrint($text) {
+        return "<pre>" . print_r($text, true) . "</pre>";
     }
 
     function addCSS(string $path) {
