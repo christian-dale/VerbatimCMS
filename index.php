@@ -8,8 +8,7 @@ require_once("lib/class/Updater.php");
 $app = new \App\App();
 $app->loadConfig();
 
-$updater = new \App\Updater();
-$updater::update();
+\App\Updater::update();
 
 $router = new \App\Router();
 
