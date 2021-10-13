@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 require_once("lib/class/App.php");
 require_once("lib/class/Router.php");
 
@@ -22,7 +24,7 @@ class PageLoader {
             
     }
 
-    function loadRoutes(App $app, Router $router) {
+    function loadRoutes(\App\App $app, \App\Router $router) {
         foreach ($this->nav_items as $item) {
             $router->add($item["url"], "get", function($res) use(&$app, $item) {
                 require_once("content/plugins/" . $item["plugin"] . "/index.php");
@@ -33,7 +35,7 @@ class PageLoader {
     }
 
     function loadPages() {
-        $pages = App::loadJSON("content/configs/pages.json");
+        $pages = \App\App::loadJSON("content/configs/pages.json");
         $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
     }
 

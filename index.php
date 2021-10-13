@@ -4,12 +4,14 @@ require_once("lib/class/Router.php");
 require_once("lib/class/PageLoader.php");
 require_once("lib/class/App.php");
 
-$app = new App();
+$app = new \App\App();
 $app->loadConfig();
 
 $router = new Router();
 
-$page_loader = new PageLoader();
+$router = new \App\Router();
+
+$page_loader = new \App\PageLoader();
 $page_loader->loadPages();
 $page_loader->loadRoutes($app, $router);
 

@@ -53,7 +53,7 @@ class Blog {
         foreach (glob("content/posts/*.json") as $file_name) {
             $post_meta = $this->loadPostMeta($file_name);
             $post_meta["content"] = $this->loadPostContent($file_name);
-            $this->posts[$post_meta["id"]] = Item::simpleLoad(BlogPost::class, $post_meta);
+            $this->posts[$post_meta["id"]] = \App\Item::simpleLoad(BlogPost::class, $post_meta);
         }
 
         uasort($this->posts, fn($a, $b) => strtotime($a->get("date")) < strtotime($b->get("date")));

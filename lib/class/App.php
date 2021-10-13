@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 require_once("vendor/autoload.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/PageLoader.php");
@@ -18,8 +20,8 @@ class App {
     function __construct() {
         session_start();
 
-		$this->smarty = new Smarty();
-		$this->lang = new Lang($_SESSION["lang"]);
+		$this->smarty = new \Smarty();
+		$this->lang = new \App\Lang($_SESSION["lang"]);
     }
 
     function loadPlugin(&$app, string $plugin) {
