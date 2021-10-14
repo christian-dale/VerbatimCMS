@@ -5,6 +5,9 @@ namespace App;
 require_once("vendor/autoload.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/PageLoader.php");
+require_once("lib/class/Router.php");
+require_once("lib/class/PageLoader.php");
+require_once("lib/class/Updater.php");
 
 class App {
     public string $version = "1.0.0";
@@ -23,6 +26,27 @@ class App {
 
 		$this->smarty = new \Smarty();
 		$this->lang = new \App\Lang($_SESSION["lang"]);
+    }
+
+    public static function init() {
+        $app = new \App\App();
+        $app->loadConfig();
+
+        \App\Updater::update();
+
+        $router = new \App\Router();
+
+        $page_loader = new \App\PageLoader();
+        $page_loader->loadPages();
+        $page_loader->loadRoutes($app, $router);
+
+        $app->assign($page_loader);
+
+        if (!$router->begin()) {
+            $app->show404();
+        }
+
+        echo $app->render($page_loader);
     }
 
     function loadPlugin(&$app, string $plugin) {
