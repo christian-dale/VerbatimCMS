@@ -1,6 +1,6 @@
-## Portfolio system
+## portfolio-cms
 
-A portfolio about most things tech.
+A portfolio content management system.
 
 ----
 
