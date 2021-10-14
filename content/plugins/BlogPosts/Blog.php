@@ -2,7 +2,7 @@
 
 require_once("lib/class/Item.php");
 
-class BlogPost extends Item {
+class BlogPost extends \App\Item {
     private string $table = "post";
 
     function __construct($id = null) {
@@ -60,7 +60,7 @@ class Blog {
     }
 
     function renderPosts() {
-        $parsedown = new Parsedown();
+        $parsedown = new \Parsedown();
 
         foreach ($this->posts as $post) {
             $post->set([

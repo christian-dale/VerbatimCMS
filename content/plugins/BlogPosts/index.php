@@ -6,7 +6,7 @@ class BlogPosts {
     function init($res, &$app, $opts) {
         $app->addCSS("/content/plugins/BlogPosts/style.css");
 
-        $blog = new \App\Blog();
+        $blog = new \Plugin\Blog();
 
         $blog->loadPosts();
         $blog->renderPosts();
@@ -23,7 +23,7 @@ class BlogPosts {
      * View a particular blog post.
      */
 
-     function blogPostView($res, \App\App &$app, \App\Blog $blog) {
+     function blogPostView($res, \App\App &$app, \Plugin\Blog $blog) {
         $post = $blog->posts[$res->attr["id"]];
 
         $app->title = $post->get("title");
@@ -38,7 +38,7 @@ class BlogPosts {
      * Show a list of blog posts.
      */
 
-    function blogPosts(\App\App &$app, \App\Blog $blog) {
+    function blogPosts(\App\App &$app, \Plugin\Blog $blog) {
         $app->title = "Title - Blog";
         $app->content = $app->smarty->fetch(__DIR__ . "/blog.tpl", ["posts" => $blog->posts]);
     }
