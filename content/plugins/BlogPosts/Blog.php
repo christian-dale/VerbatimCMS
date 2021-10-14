@@ -1,5 +1,7 @@
 <?php
 
+namespace Plugin;
+
 require_once("lib/class/Item.php");
 
 class BlogPost extends \App\Item {
