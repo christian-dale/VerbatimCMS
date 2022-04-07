@@ -18,7 +18,7 @@
 
         <div class="content">
             <h1>{$post->get("title")}</h1>
-            <h4>Created at: {$post->get("date")}, Latest update: {$post->get("dateUpdate")}.</h4>
+            <h4>{date("M d, Y", strtotime($post->get("dateUpdate")))}</h4>
 
             <div class="section" style="margin-top: 25px;">
                 {foreach $post->get("categories") as $category}
