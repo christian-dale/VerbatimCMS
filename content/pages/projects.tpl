@@ -2,23 +2,30 @@
     .projects {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        background-color: #e8ebf3;
+        border-radius: 5px;
     }
 
     .projectItem {
         min-width: 250px;
         max-width: 400px;
-        background-color: #eee;
         border-radius: 5px;
-        color: #212121;
-        margin: 25px 0;
+        margin: 25px;
         padding: 0 15px 15px 15px;
+        flex-grow: 1;
+    }
+
+    .projectItem a {
+        text-decoration: none;
+    }
+
+    .projectTitle {
+        margin-top: 50px;
     }
 
     @media (max-width: 1200px) {
         .projectItem {
             width: 100%;
-			max-width: 100%;
         }
     }
 </style>
@@ -26,41 +33,35 @@
 <div class="contentProjects">
     <div class="container">
         {$nav}
+
         <h1>Projects</h1>
+        <p>The following is a list of projects I have worked on for customers and personal projects.</p>
 
-        <a href="#" class="badge">Customer Projects</a>
-        <a href="#" class="badge">My Projects</a>
-        <a href="#" class="badge">Small projects / tools</a>
+        <a href="#customer-projects" class="badge">Customer Projects</a>
+        <a href="#my-projects" class="badge">My Projects</a>
+        <a href="#small-projects" class="badge">Small projects / tools</a>
 
-        <h2>Customer Projects</h2>
+        <h2 class="projectTitle" id="customer-projects">Customer Projects</h2>
 
-        <div class="projects" style="">
+        <div class="projects">
             <div class="projectItem">
-                <div class="projectContent">
-                    <h2>Project</h2>
-                    <p>Example text.</p>
-                </div>
-            </div>
-            <div class="projectItem">
-                <div class="projectContent">
-                    <h2>Project</h2>
-                    <p>Example text.</p>
-                </div>
-            </div>
-            <div class="projectItem">
-                <div class="projectContent">
-                    <h2>Project</h2>
-                    <p>Example text.</p>
-                </div>
-            </div>
-            <div class="projectItem">
-                <div class="projectContent">
-                    <h2>Project</h2>
-                    <p>Example text.</p>
-                </div>
+                <h2><a href="https://somaeffects.com" target="_blank">Soma Effects</a></h2>
+                <p>Guitar effects web shop, quality items.</p>
             </div>
         </div>
 
-        {include file="lib/templates/partials/footer.tpl"}
+        <h2 class="projectTitle" id="my-projects">My Projects</h2>
+
+        <div class="projects">
+
+        </div>
+
+        <h2 class="projectTitle" id="small-projects">Small projects / tools</h2>
+
+        <div class="projects">
+
+        </div>
+
+        {include file="templates/partials/footer.tpl"}
     </div>
 </div>

@@ -69,17 +69,17 @@ input[type="text"]:focus {
 }
 
 .content {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 75px auto;
     min-height: 200px;
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .container, .content {
         padding: 0 5px;
     }

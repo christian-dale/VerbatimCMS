@@ -74,6 +74,10 @@ class App {
         $this->description = $this->config["description"];
     }
 
+    function getConfigAttr($attr) {
+        return $this->config[$attr] ?? null;
+    }
+
     function show404() {
         $this->content = $this->smarty->fetch("lib/templates/pages/404.tpl");
         http_response_code(404);
