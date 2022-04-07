@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 class Router {
     public static $routes = [];
     public $res = [];

@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 class Lang {
     public $lang = "en";
 
