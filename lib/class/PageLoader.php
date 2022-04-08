@@ -24,23 +24,6 @@ class PageLoader {
             
     }
 
-    /**
-     * Get the directory of the plugin by name.
-     */
-
-    function getPlugin(string $plugin_name): string {
-        $plugin_path_content = "content/plugins/${plugin_name}/index.php";
-        $plugin_path_lib = "lib/plugins_default/${plugin_name}/index.php";
-
-        if (file_exists($plugin_path_content)) {
-            return $plugin_path_content;
-        } else if (file_exists($plugin_path_lib)) {
-            return $plugin_path_lib;
-        } else {
-            return "lib/plugins_default/DefaultHandler/index.php";
-        }
-    }
-
     function loadRoutes(\App\App $app, \App\Router $router) {
         foreach ($this->nav_items as $item) {
             $plugin = $item["plugin"];
@@ -51,7 +34,7 @@ class PageLoader {
             }
 
             $router->add($item["url"], "get", function($res) use(&$app, $item, $plugin) {
-                require_once($this->getPlugin($plugin));
+                require_once(\App\PluginLoader::getPluginDirectory($plugin));
                 $instance = new $plugin();
                 $instance->init($res, $app, $item);
             });

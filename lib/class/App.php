@@ -2,9 +2,10 @@
 
 namespace App;
 
-require_once("vendor/autoload.php");
+require_once("lib/vendor/autoload.php");
 require_once("lib/class/Lang.php");
-require_once("lib/class/PageLoader.php");
+require_once("lib/class/Item.php");
+require_once("lib/class/PluginLoader.php");
 require_once("lib/class/Router.php");
 require_once("lib/class/PageLoader.php");
 require_once("lib/class/Updater.php");
@@ -26,7 +27,9 @@ class App {
         session_start();
 
 		$this->smarty = new \Smarty();
-		$this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
+        $this->smarty->setCompileDir("lib/templates_cache");
+
+        $this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
 
         $this->addJS("/lib/assets/scripts/lang.js");
     }
@@ -50,16 +53,6 @@ class App {
         }
 
         echo $app->render($page_loader);
-    }
-
-    function loadPlugin(&$app, string $plugin) {
-        $path = "plugins/${plugin}/index.php";
-
-        if (file_exists($path)) {
-            require_once($path);
-            $instance = new $plugin($app);
-            return $instance->init($app);
-        }
     }
 
     public static function loadJSON(string $path): array {
