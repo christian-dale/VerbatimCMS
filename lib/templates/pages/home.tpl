@@ -35,6 +35,10 @@
             <div class="intro">
                 <h1>{$app->getConfigAttr("title")}</h1>
                 <p class="homeText" style="max-width: 50%;">{$app->getConfigAttr("description")}</p>
+
+                {if isset($additional_template)}
+                    {$additional_template}
+                {/if}
             </div>
         </div>
 
