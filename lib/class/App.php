@@ -2,7 +2,7 @@
 
 namespace App;
 
-require_once("lib/vendor/autoload.php");
+require_once("vendor/autoload.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/Item.php");
 require_once("lib/class/PluginLoader.php");
