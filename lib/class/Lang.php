@@ -21,6 +21,6 @@ class Lang {
     }
 
     public function get(string $w) {
-        return json_decode(file_get_contents("./lang/{$this->lang}.json"))->$w;
+        return json_decode(file_get_contents("lib/lang/{$this->lang}.json"), true)[$w] ?? $w;
     }
 }
