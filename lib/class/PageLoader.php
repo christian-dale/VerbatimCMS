@@ -39,16 +39,31 @@ class PageLoader {
         }
     }
 
-    function loadPages() {
+    function loadPages(\App\App &$app) {
         $pages = \App\App::loadJSON("content/configs/pages.json");
+        
+        foreach ($pages["pages_all"]["css"] as $css) {
+            $app->addCSS($css);
+        }
+
+        foreach ($pages["pages_all"]["js"] as $js) {
+            $app->addJS($js);
+        }
 
         // Add default properties to pages which do not have all properties.
         $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
     }
 
-    function getNav($smarty): string {
+    function getNav(\App\Lang &$lang, $smarty): string {
+        $nav_items = array_filter($this->nav_items, fn($x) => $x["visible"]);
+
+        foreach ($nav_items as &$nav_item) {
+            $item_title = strtolower($nav_item['title']);
+            $nav_item["title"] = $lang->get("nav:{$item_title}");
+        }
+
         return $smarty->fetch("lib/templates/partials/nav.tpl", [
-            "nav_items" => array_filter($this->nav_items, fn($x) => $x["visible"])
+            "nav_items" => $nav_items
         ]);
     }
 

@@ -1,0 +1,10 @@
+language: php
+
+php:
+  - 7.4
+
+before-script:
+  - composer install
+
+script:
+  - ./lib/vendor/bin/phpunit --bootstrap lib/tests/bootstrap.php lib/tests

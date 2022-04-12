@@ -1,6 +1,7 @@
 {
-    "title": "Portfolio",
-    "description": "Example",
-    "version": "V1.0.0",
-    "updated": false
+    "title": "My simple page",
+    "header_title": "Title",
+    "description": "Welcome to my simple page.",
+    "version": "1.0.0",
+    "updated": true
 }

@@ -3,7 +3,7 @@
 require_once("Blog.php");
 
 class BlogPosts {
-    function __construct(\App\App &$app, $res, array $opts = []) {
+    function init(\App\App &$app, $res, array $opts = []) {
         $app->addCSS("/content/plugins/BlogPosts/style.css");
 
         $blog = new \Plugin\Blog();
@@ -39,7 +39,7 @@ class BlogPosts {
      */
 
     function blogPosts(\App\App &$app, \Plugin\Blog $blog) {
-        $app->title = "Title - Blog";
+        $app->title = "Blog";
         $app->content = $app->smarty->fetch(__DIR__ . "/blog.tpl", ["posts" => $blog->posts]);
     }
 }

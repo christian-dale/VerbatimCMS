@@ -1,6 +1,8 @@
 {
     "pages_all": {
-        "plugin": ""
+        "plugin": "",
+        "css": [],
+        "js": []
     },
     "pages": [
         {

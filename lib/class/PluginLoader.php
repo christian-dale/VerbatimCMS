@@ -8,7 +8,8 @@ class PluginLoader {
 
         if (file_exists($path)) {
             require_once($path);
-            $instance = new $plugin($app, $res, $opts);
+            $instance = new $plugin();
+            return $instance->init($app, $res, $opts);
         }
     }
 

@@ -63,6 +63,10 @@
     .blogPosts li {
         margin: 25px 0;
     }
+
+    .contentBlog .blogPost .intro {
+        height: 50vh;
+    }
 }
 
 .blogPost .intro h1 {
@@ -87,4 +91,10 @@
 .blogPost h2 {
     margin-top: 50px;
     margin-bottom: 25px;
+}
+
+.blogPost .postContent + p:first-letter {
+    font-size: 40px;
+    font-family: serif;
+    font-weight: bold;
 }

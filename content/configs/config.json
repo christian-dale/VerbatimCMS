@@ -1,6 +1,8 @@
 {
     "title": "My simple page",
+    "header_title": "Title",
     "description": "Welcome to my simple page.",
-    "version": "V1.0.0",
+    "user_id": "",
+    "version": "1.0.0",
     "updated": true
 }

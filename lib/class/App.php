@@ -24,7 +24,9 @@ class App {
 	public $lang = null;
 
     function __construct() {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
 		$this->smarty = new \Smarty();
         $this->smarty->setCompileDir("lib/templates_cache");
@@ -32,31 +34,26 @@ class App {
         $this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
 
         $this->addJS("/lib/assets/scripts/lang.js");
-    }
 
-    public static function init() {
-        $app = new \App\App();
-        $app->loadConfig();
+        $this->loadConfig();
 
-        \App\Updater::update();
+        // \App\Updater::update();
 
         $router = new \App\Router();
 
         $page_loader = new \App\PageLoader();
-        $page_loader->loadPages();
-        $page_loader->loadRoutes($app, $router);
+        $page_loader->loadPages($this);
+        $page_loader->loadRoutes($this, $router);
 
         // Some variables needs to be assigned before template is fetched
         // and some need to be loaded after.
-        $app->assign($page_loader);
+        $this->assign($page_loader);
 
         if (!$router->begin()) {
-            $app->show404();
+            $this->show404();
         }
 
-        $app->assign($page_loader);
-
-        echo $app->render($page_loader);
+        $this->assign($page_loader);
     }
 
     public static function loadJSON(string $path): array {
@@ -84,7 +81,7 @@ class App {
         $this->smarty->assign("app", $this);
 
         $this->smarty->assign([
-            "nav" => $page_loader->getNav($this->smarty),
+            "nav" => $page_loader->getNav($this->lang, $this->smarty),
             "footer" => $page_loader->getFooter($this->smarty),
             "lang" => $this->lang,
             "title" => $this->title,

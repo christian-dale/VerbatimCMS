@@ -1,8 +1,9 @@
 <?php
 
 class SetLang {
-    function __construct(\App\App &$app, $res, array $opts = []) {
+    function init(\App\App &$app, $res, array $opts = []) {
         $app->lang->setLang($_GET["lang"]);
+        echo $app->lang->getLang();
         exit();
     }
 }

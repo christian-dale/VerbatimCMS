@@ -1,7 +1,7 @@
 <style>
     .blogPost .intro {
         position: relative;
-        min-height: 400px;
+        height: 400px;
         background: url('{$post->get("image")}') no-repeat center center;
         background-size: cover;
         border-radius: 4px;
@@ -19,8 +19,8 @@
         </div>
 
         <div class="content">
-            <h1>{$post->get("title")}</h1>
-            <h4>{date("M d, Y", strtotime($post->get("dateUpdate")))}</h4>
+            <h1 style="margin-bottom: 10px;">{$post->get("title")}</h1>
+            <h4 style="margin-top: 0;">{date("M d, Y", strtotime($post->get("dateUpdate")))}</h4>
 
             <div class="section" style="margin-top: 25px;">
                 {foreach $post->get("categories") as $category}
@@ -28,7 +28,7 @@
                 {/foreach}
             </div>
 
-            <p>{$post->get("content")}</p>
+            <p class="postContent">{$post->get("content")}</p>
 
             {if isset($disqus_comments)}
                 {$disqus_comments}
