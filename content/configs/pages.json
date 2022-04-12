@@ -1,0 +1,43 @@
+{
+    "pages_all": {
+        "plugin": ""
+    },
+    "pages": [
+        {
+            "title": "Home",
+            "visible": false,
+            "url": "/",
+            "path": "lib/templates/pages/home.tpl"
+        },
+        {
+            "title": "Projects",
+            "url": "/projects",
+            "path": "content/pages/projects.tpl"
+        },
+        {
+            "title": "About",
+            "url": "/about",
+            "path": "content/pages/about.tpl"
+        },
+        {
+            "title": "Blog",
+            "url": "/blog",
+            "path": "content/plugins/BlogPosts/blog.tpl",
+            "plugin": "BlogPosts",
+            "template": true,
+            "bg-color": "",
+            "color": "#fff"
+        },
+        {
+            "visible": false,
+            "url": "/blog/{id}",
+            "path": "content/plugins/BlogPosts/blog.tpl",
+            "plugin": "BlogPosts"
+        },
+        {
+            "visible": false,
+            "url": "/set-lang",
+            "plugin": "SetLang"
+        }
+    ]
+}

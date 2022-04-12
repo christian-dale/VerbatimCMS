@@ -1,5 +1,5 @@
 <div class="container">
-    {include file="templates/partials/nav.tpl"}
+    {$nav}
 
     <h1>404 Not found</h1>
 

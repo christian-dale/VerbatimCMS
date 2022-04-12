@@ -1,3 +1,10 @@
+{* 
+    INTERNAL PAGE DO NOT EDIT!
+    If you wish to modify this page, please create
+    a copy in content -> pages, and change pages.json to
+    the newly created template.
+*}
+
 <style>
     .header {
         display: flex;
@@ -25,13 +32,3 @@
         </ul>
     </nav>
 </div>
-
-<script>
-    document.querySelectorAll(".btnLang").forEach(el => {
-        el.addEventListener("click", function(event) {
-            fetch("/set-lang?lang=" + event.target.dataset.lang).then(res => {
-                location.reload();
-            });
-        })
-    });
-</script>

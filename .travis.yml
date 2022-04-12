@@ -1,9 +1,0 @@
-language: php
-
-php:
-  - 7.4
-
-before-script:
-  - composer install
-
-script: phpunit --bootstrap vendor/autoload.php tests
