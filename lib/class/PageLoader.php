@@ -46,6 +46,10 @@ class PageLoader {
             $app->addCSS($css);
         }
 
+        foreach ($pages["pages_all"]["js"] as $js) {
+            $app->addJS($js);
+        }
+
         // Add default properties to pages which do not have all properties.
         $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
     }
