@@ -4,7 +4,7 @@
     },
     "pages": [
         {
-            "title": "Title",
+            "title": "Home",
             "visible": false,
             "url": "/",
             "path": "lib/templates/pages/home.tpl"

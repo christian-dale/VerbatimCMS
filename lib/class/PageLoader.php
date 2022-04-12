@@ -33,8 +33,9 @@ class PageLoader {
                 $plugin = "DefaultHandler";
             }
 
-            $router->add($item["url"], "get", fn($res) =>
-                PluginLoader::loadPlugin($app, $plugin, $res, $item));
+            $router->add($item["url"], "get", function($res) use(&$app, $item, $plugin) {
+                PluginLoader::loadPlugin($app, $plugin, $res, $item);
+            });
         }
     }
 

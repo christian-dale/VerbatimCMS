@@ -46,11 +46,15 @@ class App {
         $page_loader->loadPages();
         $page_loader->loadRoutes($app, $router);
 
+        // Some variables needs to be assigned before template is fetched
+        // and some need to be loaded after.
         $app->assign($page_loader);
 
         if (!$router->begin()) {
             $app->show404();
         }
+
+        $app->assign($page_loader);
 
         echo $app->render($page_loader);
     }
@@ -84,13 +88,12 @@ class App {
             "footer" => $page_loader->getFooter($this->smarty),
             "lang" => $this->lang,
             "title" => $this->title,
-            "description" => $this->description
+            "description" => $this->description,
+            "content" => $this->content
         ]);
     }
 
     function render() {
-        $this->smarty->assign("content", $this->content);
-
         return $this->smarty->fetch("lib/templates/main.tpl", [
             "css_paths" => $this->css_paths,
             "js_paths" => $this->js_paths

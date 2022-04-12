@@ -39,7 +39,7 @@
         </div>
 
         <div class="content">
-            {include file="templates/partials/footer.tpl"}
+            {$footer}
         </div>
     </main>
 </div>
