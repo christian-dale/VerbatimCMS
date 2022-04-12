@@ -16,7 +16,7 @@
 
     <title>{$title}</title>
 
-    <link rel="icon" type="image/png" href="/lib/assets/favicon.png">
+    <link rel="icon" type="image/png" href="/lib/assets/media/favicon.png">
     <link rel="stylesheet" href="/lib/assets/styles/normalize.css">
     <link rel="stylesheet" href="/lib/assets/styles/main.css">
 
