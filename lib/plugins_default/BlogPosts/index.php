@@ -39,7 +39,7 @@ class BlogPosts {
      */
 
     function blogPosts(\App\App &$app, \Plugin\Blog $blog) {
-        $app->title = "Title - Blog";
+        $app->title = "Blog";
         $app->content = $app->smarty->fetch(__DIR__ . "/blog.tpl", ["posts" => $blog->posts]);
     }
 }
