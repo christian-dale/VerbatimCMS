@@ -43,7 +43,7 @@ class App {
         $router = new \App\Router();
 
         $page_loader = new \App\PageLoader();
-        $page_loader->loadPages();
+        $page_loader->loadPages($app);
         $page_loader->loadRoutes($app, $router);
 
         // Some variables needs to be assigned before template is fetched

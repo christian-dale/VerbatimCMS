@@ -1,7 +1,7 @@
 <?php
 
 class DefaultHandler {
-    function __construct(\App\App &$app, $res, array $opts = []) {
+    function init(\App\App &$app, $res, array $opts = []) {
         if ($this->templateExists($opts["additional_template"])) {
             $app->smarty->assign("additional_template", $app->smarty->fetch($opts["additional_template"]));
         }

@@ -3,7 +3,7 @@
 require_once("Blog.php");
 
 class BlogPosts {
-    function __construct(\App\App &$app, $res, array $opts = []) {
+    function init(\App\App &$app, $res, array $opts = []) {
         $app->addCSS("/content/plugins/BlogPosts/style.css");
 
         $blog = new \Plugin\Blog();
