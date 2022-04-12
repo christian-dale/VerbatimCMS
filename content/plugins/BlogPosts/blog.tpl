@@ -21,6 +21,6 @@
         {/foreach}
         </ul>
 
-        {include file="lib/templates/partials/footer.tpl"}
+        {$footer}
     </div>
 </div>

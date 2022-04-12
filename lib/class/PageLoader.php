@@ -53,4 +53,8 @@ class PageLoader {
             "nav_items" => array_filter($this->nav_items, fn($x) => $x["visible"])
         ]);
     }
+
+    function getFooter($smarty): string {
+        return $smarty->fetch("lib/templates/partials/footer.tpl");
+    }
 }

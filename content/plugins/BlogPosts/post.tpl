@@ -32,7 +32,7 @@
                 {$disqus_comments}
             {/if}
 
-            {include file="lib/templates/partials/footer.tpl"}
+            {$footer}
         </div>
     </div>
 </div>

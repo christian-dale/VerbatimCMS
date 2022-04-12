@@ -81,6 +81,7 @@ class App {
 
         $this->smarty->assign([
             "nav" => $page_loader->getNav($this->smarty),
+            "footer" => $page_loader->getFooter($this->smarty),
             "lang" => $this->lang,
             "title" => $this->title,
             "description" => $this->description
