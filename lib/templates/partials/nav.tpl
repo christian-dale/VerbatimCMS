@@ -16,7 +16,7 @@
 <div class="header" style="display: flex; justify-content: space-between;">
     <nav class="logo" style="display: inline-block;">
         <ul>
-            <li><a href="/" style="color: #212121;">{$app->getConfigAttr("header_title")}</a></li>
+            <li><a href="/" class="headerTitle" style="color: #212121;">{$app->getConfigAttr("header_title")}</a></li>
         </ul>
     </nav>
 
