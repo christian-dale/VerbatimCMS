@@ -25,5 +25,5 @@
 
 <div class="footer">
     <hr>
-    <p class="footerCopyright">&copy; {$app->appname} </p>
+    <p class="footerCopyright">{$app->getConfigAttr("copyright")} - </p>
 </div>
