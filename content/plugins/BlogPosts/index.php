@@ -3,7 +3,7 @@
 require_once("Blog.php");
 
 class BlogPosts {
-    function init($res, &$app, $opts) {
+    function __construct(\App\App &$app, $res, array $opts = []) {
         $app->addCSS("/content/plugins/BlogPosts/style.css");
 
         $blog = new \Plugin\Blog();
@@ -13,7 +13,7 @@ class BlogPosts {
 
         // Check if response contains query string.
         if (isset($res->attr)) {
-            $this->blogPostView($res, $app, $blog);
+            $this->blogPostView($app, $res, $blog);
         } else {
             $this->blogPosts($app, $blog);
         }
@@ -23,7 +23,7 @@ class BlogPosts {
      * View a particular blog post.
      */
 
-     function blogPostView($res, \App\App &$app, \Plugin\Blog $blog) {
+     function blogPostView(\App\App &$app, $res, \Plugin\Blog $blog) {
         $post = $blog->posts[$res->attr["id"]];
 
         $app->title = $post->get("title");

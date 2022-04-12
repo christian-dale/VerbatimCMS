@@ -24,20 +24,17 @@ class PageLoader {
             
     }
 
-    function loadRoutes(\App\App $app, \App\Router $router) {
+    function loadRoutes(\App\App &$app, \App\Router $router) {
         foreach ($this->nav_items as $item) {
             $plugin = $item["plugin"];
 
             // Use default plugin if specified plugin does not exist.
-            if (!file_exists("content/plugins/" . $item["plugin"] . "/index.php")) {
+            if (!file_exists("content/plugins/{$plugin}/index.php")) {
                 $plugin = "DefaultHandler";
             }
 
-            $router->add($item["url"], "get", function($res) use(&$app, $item, $plugin) {
-                require_once(\App\PluginLoader::getPluginDirectory($plugin));
-                $instance = new $plugin();
-                $instance->init($res, $app, $item);
-            });
+            $router->add($item["url"], "get", fn($res) =>
+                PluginLoader::loadPlugin($app, $plugin, $res, $item));
         }
     }
 

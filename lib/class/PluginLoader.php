@@ -3,13 +3,12 @@
 namespace App;
 
 class PluginLoader {
-    static function loadPlugin(&$app, string $plugin) {
-        $path = "plugins/${plugin}/index.php";
+    static function loadPlugin(\App\App &$app, string $plugin, $res = [], array $opts = []) {
+        $path = "content/plugins/${plugin}/index.php";
 
         if (file_exists($path)) {
             require_once($path);
-            $instance = new $plugin($app);
-            return $instance->init($app);
+            $instance = new $plugin($app, $res, $opts);
         }
     }
 

@@ -2,7 +2,7 @@
     .blogPost .intro {
         position: relative;
         min-height: 400px;
-        background: url('{$post->get("image")}') no-repeat center center fixed;
+        background: url('{$post->get("image")}') no-repeat center center;
         background-size: cover;
         border-radius: 4px;
     }
@@ -14,7 +14,9 @@
 
 <div class="contentBlog">
     <div class="blogPost">
-        <div class="intro">{$post->get("attrib")}</div>
+        <div class="container">
+            <div class="intro">{$post->get("attrib")}</div>
+        </div>
 
         <div class="content">
             <h1>{$post->get("title")}</h1>
