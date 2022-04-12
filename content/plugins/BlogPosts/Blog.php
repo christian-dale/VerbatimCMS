@@ -13,9 +13,9 @@ class BlogPost extends \App\Item {
 }
 
 class Blog {
-    public Array $posts = [];
-    public Array $posts_rendered = [];
-    private String $table = "post";
+    public array $posts = [];
+    public array $posts_rendered = [];
+    private string $table = "post";
     private int $postscount = 7;
 
     // Default properties for blog post.
