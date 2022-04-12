@@ -38,7 +38,7 @@ class App {
         $app = new \App\App();
         $app->loadConfig();
 
-        \App\Updater::update();
+        // \App\Updater::update();
 
         $router = new \App\Router();
 
