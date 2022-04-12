@@ -43,5 +43,9 @@ Plugins are used to add more functionality to a page.
 You can add new plugins to the 'content/plugins' directory.
 All plugins require a 'index.php' file.
 
+The folder in lib called plugin_default is just used as a backup
+incase the plugins in content are not working. Similar to how
+configs_default work.
+
 Homepage is located under:
 content/pages/home.tpl
