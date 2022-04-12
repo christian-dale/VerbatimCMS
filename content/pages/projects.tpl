@@ -62,6 +62,6 @@
 
         </div>
 
-        {$footer}
+        {include file="templates/partials/footer.tpl"}
     </div>
 </div>
