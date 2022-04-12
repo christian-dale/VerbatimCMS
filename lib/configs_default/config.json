@@ -2,6 +2,8 @@
     "title": "My simple page",
     "header_title": "Title",
     "description": "Welcome to my simple page.",
+    "user_id": "",
+    "copyright": "&copy; My page 2020",
     "version": "1.0.0",
     "updated": true
 }
