@@ -4,9 +4,7 @@ php:
   - 7.4
 
 before-script:
-  - cd lib
   - composer install
-  - cd ..
 
 script:
   - ./lib/vendor/bin/phpunit --bootstrap lib/tests/bootstrap.php lib/tests

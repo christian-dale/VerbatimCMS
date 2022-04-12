@@ -1,2 +1,2 @@
-lib/vendor/*
+vendor/*
 lib/templates_cache/*
