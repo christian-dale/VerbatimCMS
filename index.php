@@ -2,4 +2,5 @@
 
 require_once("lib/class/App.php");
 
-\App\App::init();
+$app = new \App\App();
+echo $app->render();

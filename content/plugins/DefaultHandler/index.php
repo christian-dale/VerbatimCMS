@@ -2,7 +2,7 @@
 
 class DefaultHandler {
     function init(\App\App &$app, $res, array $opts = []) {
-        if ($this->templateExists($opts["additional_template"])) {
+        if (isset($opts["additional_template"]) && $this->templateExists($opts["additional_template"])) {
             $app->smarty->assign("additional_template", $app->smarty->fetch($opts["additional_template"]));
         }
 
