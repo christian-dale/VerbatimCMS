@@ -24,8 +24,8 @@
         </div>
 
         <div class="content">
-            <input type="text" value="{$post->get("title")}">
-            <input type="date" value="{date("Y-m-d", strtotime($post->get("dateUpdate")))}">
+            <input type="text" class="ion-input-text" value="{$post->get("title")}" placeholder="Give your post a name">
+            <input type="date" class="ion-input-text" value="{date("Y-m-d", strtotime($post->get("dateUpdate")))}">
 
             <div class="section" style="margin-top: 25px;">
                 {foreach $post->get("categories") as $category}
@@ -33,11 +33,18 @@
                 {/foreach}
             </div>
 
+            <p><i>Articles are written in something called Markdown, read more about it <a class="ion-anchor" target="_blank" href="https://www.markdownguide.org/cheat-sheet">here</a>.</i></p>
+
             <p class="postContent">
-                <textarea class="postText">
+                <textarea class="postText ion-input-text">
                     {$post->get("content")}
                 </textarea>
             </p>
+
+            <div class="content">
+                <input type="submit" class="ion-button ion-btn-default" value="Cancel">
+                <input type="submit" class="ion-button ion-btn-primary" value="Save">
+            </div>
 
             {if isset($disqus_comments)}
                 {$disqus_comments}

@@ -3,6 +3,11 @@
 require_once("Blog.php");
 
 class BlogPosts {
+    public $pluginInfo = [
+        "name" => "Blog",
+        "type" => \App\PluginType::DEFAULT
+    ];
+
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
         $app->addCSS("/plugins/BlogPosts/style.css");
 

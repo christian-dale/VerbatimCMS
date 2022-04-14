@@ -1,6 +1,11 @@
 <?php
 
 class DisqusComments {
+    public $pluginInfo = [
+        "name" => "DisqusComments",
+        "type" => \App\PluginType::DEFAULT
+    ];
+
     public string $user_id = "";
 
     function init(\App\App &$app, \App\Request $req, $opts) {
