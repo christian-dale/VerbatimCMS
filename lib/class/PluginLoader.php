@@ -3,14 +3,11 @@
 namespace App;
 
 class PluginLoader {
-    static function loadPlugin(\App\App &$app, string $plugin, $res = [], array $opts = []) {
-        $path = "public/plugins/${plugin}/index.php";
+    public static $plugin_dir = "public/plugins";
 
-        if (file_exists($path)) {
-            require_once($path);
-            $instance = new $plugin();
-            return $instance->init($app, $res, $opts);
-        }
+    static function loadPlugin(\App\App &$app, string $plugin, $res = [], array $opts = []) {
+        require_once(self::$plugin_dir . "/${plugin}/index.php");
+        return (new $plugin)->init($app, $res, $opts);
     }
 
     /**
@@ -18,16 +15,10 @@ class PluginLoader {
      */
 
     static function getPluginDirectory(string $plugin_name): string {
-        return "public/plugins/${plugin_name}/index.php";
+        return self::$plugin_dir . "/${plugin_name}/index.php";
     }
 
     static function getPluginsList(): array {
-        $plugins = [];
-
-        foreach (glob("public/plugins/*", GLOB_ONLYDIR) as $dir) {
-            $plugins[] = ["name" => basename($dir)];
-        }
-
-        return $plugins;
+        return array_map(fn($x) => ["name" => basename($x)], glob(self::$plugin_dir . "/*"));
     }
 }

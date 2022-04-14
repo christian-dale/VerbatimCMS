@@ -29,7 +29,7 @@ class PageLoader {
             $plugin = $item["plugin"];
 
             // Use default plugin if specified plugin does not exist.
-            if (!file_exists("public/plugins/{$plugin}/index.php")) {
+            if (!file_exists("public/plugins/{$item["plugin"]}/index.php")) {
                 $plugin = "DefaultHandler";
             }
 
@@ -42,7 +42,7 @@ class PageLoader {
     function loadPages(\App\App &$app) {
         $pages = \App\App::loadJSON("content/configs/pages.json");
 
-        $this->loadAssets($pages);
+        $this->loadCustomAssets($pages);
 
         // Add default properties to pages which do not have all properties.
         $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
@@ -50,7 +50,11 @@ class PageLoader {
         return $this->nav_items;
     }
 
-    function loadAssets($pages) {
+    /**
+     * Loads all custom assets from config/pages.json.
+     */
+
+    function loadCustomAssets($pages) {
         foreach ($pages["pages_all"]["css"] as $css) {
             $app->addCSS($css);
         }

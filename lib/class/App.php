@@ -33,7 +33,7 @@ class App {
 
         $this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
 
-        $this->addJS("/lib/assets/scripts/lang.js");
+        $this->addJS("/assets/scripts/lang.js");
 
         $this->loadConfig();
 
