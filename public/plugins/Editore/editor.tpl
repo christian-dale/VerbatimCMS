@@ -42,12 +42,8 @@
                 <div class="plugins">
                     {foreach $plugins as $plugin}
                         <div class="plugin">
-                            <h4><a href="/editore/plugin/" class="ion-anchor">{$plugin["name"]}</a> (
-                            {if $plugin["type"] == \App\PluginType::DEFAULT}
-                                Default
-                            {else if $plugin["type"] == \App\PluginType::THEME}
-                                Theme
-                            {/if})
+                            <h4><a href="/editore/plugin/{$plugin["name"]}" class="ion-anchor">{$plugin["name"]}</a> 
+                            ({$plugin["type"]->value})
                             </h4>
                         </div>
                     {/foreach}

@@ -21,8 +21,10 @@ class Editore {
                 "plugins" => \App\PluginLoader::getPluginsList(),
                 "pages" => $page_loader->loadPages($app)
             ]);
-        } else {
+        } else if ($opts["state"] == "ViewPost"){
             $this->blogPostEdit($app, $req);
+        } else if ($opts["state"] == "ViewPlugin") {
+            $this->editPlugin($app, $req);
         }
     }
 
@@ -44,6 +46,16 @@ class Editore {
         
         $app->content = $app->smarty->fetch(__DIR__ . "/edit_post.tpl", [
             "post" => $post
+        ]);
+    }
+
+    /**
+     * Edit a particular plugin.
+     */
+    function editPlugin(\App\App &$app, \App\Request $req) {
+        $app->title = "Edit plugin";
+        $app->content = $app->smarty->fetch(__DIR__ . "/edit_plugin.tpl", [
+            "plugin" => \App\PluginLoader::getPlugin($app, $req->params["id"])
         ]);
     }
 }

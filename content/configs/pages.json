@@ -49,7 +49,14 @@
         },
         {
             "visible": false,
-            "url": "/editore/(.+)",
+            "url": "/editore/([a-zA-Z-]+)",
+            "state": "ViewPost",
+            "plugin": "Editore"
+        },
+        {
+            "visible": false,
+            "url": "/editore/plugin/(.+)",
+            "state": "ViewPlugin",
             "plugin": "Editore"
         }
     ]
