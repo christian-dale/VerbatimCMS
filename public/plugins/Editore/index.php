@@ -31,7 +31,7 @@ class Editore {
      */
 
     function blogPostEdit(\App\App &$app, \App\Request $req) {
-        require_once("public/plugins/BlogPosts/Blog.php");
+        require_once("public/plugins/BlogLux/Blog.php");
 
         $blog = new \Plugin\Blog();
 

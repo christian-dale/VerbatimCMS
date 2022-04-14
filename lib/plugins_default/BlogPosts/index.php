@@ -4,7 +4,7 @@ require_once("Blog.php");
 
 class BlogPosts {
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        $app->addCSS("/plugins/BlogPosts/style.css");
+        $app->addCSS("/plugins/BlogLux/style.css");
 
         $blog = new \Plugin\Blog();
 
