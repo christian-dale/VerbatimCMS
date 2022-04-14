@@ -2,8 +2,8 @@
 
 class Editore {
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        $app->addCSS("assets/styles/kernel.css");
-        $app->addCSS("plugins/Editor/style.css");
+        $app->addCSS("/assets/styles/kernel.css");
+        $app->addCSS("/plugins/Editor/style.css");
 
         if (empty($req->params)) {
             $app->title = "Editore";
