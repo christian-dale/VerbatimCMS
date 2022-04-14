@@ -2,9 +2,17 @@
 
 namespace App;
 
-enum PluginType {
-    case DEFAULT;
-    case THEME;
+enum PluginType: string {
+    case DEFAULT = "Default";
+    case THEME = "Theme";
+}
+
+abstract class Plugin {
+    public $pluginInfo;
+
+    public function init(\App\App &$app, \App\Request $req, array $opts = []) {
+        
+    }
 }
 
 class PluginLoader {

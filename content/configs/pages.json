@@ -24,7 +24,7 @@
         {
             "title": "Blog",
             "url": "/blog",
-            "plugin": "BlogPosts",
+            "plugin": "BlogLux",
             "template": true,
             "bg-color": "",
             "color": "#fff"
@@ -32,8 +32,8 @@
         {
             "visible": false,
             "url": "/blog/(.+)",
-            "path": "public/plugins/BlogPosts/blog.tpl",
-            "plugin": "BlogPosts"
+            "path": "public/plugins/BlogLux/blog.tpl",
+            "plugin": "BlogLux"
         },
         {
             "visible": false,
@@ -42,15 +42,22 @@
             "set-lang": true
         },
         {
-            "title": "Editore",
+            "title": "Compositor",
             "visible": false,
-            "url": "/editore",
-            "plugin": "Editore"
+            "url": "/compositor",
+            "plugin": "Compositor"
         },
         {
             "visible": false,
-            "url": "/editore/(.+)",
-            "plugin": "Editore"
+            "url": "/compositor/([a-zA-Z-]+)",
+            "state": "ViewPost",
+            "plugin": "Compositor"
+        },
+        {
+            "visible": false,
+            "url": "/compositor/plugin/(.+)",
+            "state": "ViewPlugin",
+            "plugin": "Compositor"
         }
     ]
 }

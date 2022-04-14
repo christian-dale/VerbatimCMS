@@ -1,12 +1,10 @@
-# portfolio-cms
+# Verbatim CMS
 
 A portfolio content management system.
 
-Name ideas: Verbatim (word by word), Vox Verbum (voice word), Tersus (clean, neat).
-
 ## About
 
-PortfolioCMS was developed with security as a main focus and priority.
+Verbatim CMS was developed with security as a main focus and priority.
 It is also customizable and works with all types of websites.
 A true content management system, not only for blogs.
 
@@ -16,22 +14,22 @@ with specific security requirements.
 Do not edit any files in the 'lib' directory, as these
 files will be overwritten when there is an update.
 
-## Why choose PortfolioCMS instead of Wordpress
+## Why choose Verbatim CMS instead of Wordpress
 
 Wordpress is inherently insecure by design. This
 is because of it's directory structure. The webroot of Wordpress
 contains all directories to config files, and system files. This has caused
 the Wordpress developers to develop hacky solutions like index.php files in all
 folders and specialized solutions like htaccess files and custom code to fix these problems.
-PortfolioCMS does not have these problems, as the webroot only exposes what the user wants.
+Verbatim CMS does not have these problems, as the webroot only exposes what the user wants.
 
 Another point to make is that Wordpress needs database access by default, which exposes another
-attack vector. PortfolioCMS does support databases, but these are not needed by default, and
+attack vector. Verbatim CMS does support databases, but these are not needed by default, and
 can be specificly activated by the user with plugins.
 
 ## Philosophy
 
-In portfolio-cms everything is a plugin. Themes and templates are implemented as plugins.
+In Verbatim CMS everything is a plugin. Themes and templates are implemented as plugins.
 
 ## Documentation
 
@@ -39,11 +37,11 @@ In portfolio-cms everything is a plugin. Themes and templates are implemented as
 
 Content: Configs, pages and posts.
 Public: Files with no access protection, public files.
-Lib: Portfolio-cms related files, will be replace on updates.
+Lib: Verbatim CMS related files, will be replace on updates.
 
 ### Creating new pages
 
-Creating new pages in portfolio-cms is very simple and
+Creating new pages in Verbatim CMS is very simple and
 customizable.
 
 In order to create a new page

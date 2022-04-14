@@ -3,7 +3,8 @@
 class DefaultTheme {
     public $pluginInfo = [
         "name" => "DefaultTheme",
-        "type" => \App\PluginType::THEME
+        "type" => \App\PluginType::THEME,
+        "version" => "1.0.0"
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {

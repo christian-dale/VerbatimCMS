@@ -3,7 +3,8 @@
 class DefaultHandler {
     public $pluginInfo = [
         "name" => "DefaultHandler",
-        "type" => \App\PluginType::DEFAULT
+        "type" => \App\PluginType::DEFAULT,
+        "version" => "1.0.0"
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {

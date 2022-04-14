@@ -9,7 +9,7 @@
 <html {if $app->pluginExists("Lang")}lang="{$app->getPlugin('Lang')->getLang($app)}"{/if}>
 
 <head>
-    <!-- Created with Portfolio CMS -->
+    <!-- Created with Verbatim CMS -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{$description}">

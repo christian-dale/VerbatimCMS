@@ -2,14 +2,15 @@
 
 require_once("Blog.php");
 
-class BlogPosts {
+class BlogLux {
     public $pluginInfo = [
-        "name" => "Blog",
-        "type" => \App\PluginType::DEFAULT
+        "name" => "BlogLux",
+        "type" => \App\PluginType::DEFAULT,
+        "version" => "1.0.0"
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        $app->addCSS("/plugins/BlogPosts/style.css");
+        $app->addCSS("/plugins/BlogLux/style.css");
 
         $blog = new \Plugin\Blog();
 

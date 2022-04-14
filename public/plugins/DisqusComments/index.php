@@ -3,7 +3,8 @@
 class DisqusComments {
     public $pluginInfo = [
         "name" => "DisqusComments",
-        "type" => \App\PluginType::DEFAULT
+        "type" => \App\PluginType::DEFAULT,
+        "version" => "1.0.0"
     ];
 
     public string $user_id = "";

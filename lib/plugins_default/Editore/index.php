@@ -11,7 +11,7 @@ class Editore {
             $page_loader = new \App\PageLoader();
 
             $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
-                "posts" => \App\PluginLoader::loadPlugin($app, "BlogPosts", new \App\Request, ["template" => true]),
+                "posts" => \App\PluginLoader::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
                 "plugins" => \App\PluginLoader::getPluginsList(),
                 "pages" => $page_loader->loadPages($app)
             ]);
@@ -25,7 +25,7 @@ class Editore {
      */
 
     function blogPostEdit(\App\App &$app, \App\Request $req) {
-        require_once("public/plugins/BlogPosts/Blog.php");
+        require_once("public/plugins/BlogLux/Blog.php");
 
         $blog = new \Plugin\Blog();
 
