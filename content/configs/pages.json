@@ -1,6 +1,6 @@
 {
     "pages_all": {
-        "plugins": ["DefaultTheme"],
+        "plugins": ["DefaultTheme", "Lang"],
         "css": [],
         "js": []
     },
@@ -38,7 +38,8 @@
         {
             "visible": false,
             "url": "/set-lang",
-            "plugin": "SetLang"
+            "plugin": "Lang",
+            "set-lang": true
         },
         {
             "title": "Editore",

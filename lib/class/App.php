@@ -34,8 +34,6 @@ class App {
 
         $this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
 
-        $this->addJS("/assets/scripts/lang.js");
-
         $this->loadConfig();
 
         // \App\Updater::update();

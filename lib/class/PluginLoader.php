@@ -25,7 +25,7 @@ class PluginLoader {
 
     static function loadGlobalPlugins(\App\App &$app, \App\Request $req = new \App\Request(), array $opts = []) {
         $pages = \App\App::loadJSON("content/configs/pages.json");
-
+        
         foreach ($pages["pages_all"]["plugins"] as $plugin_name) {
             require_once(self::getPluginDirectory($plugin_name));
             (new $plugin_name)->init($app, $req, $opts);
