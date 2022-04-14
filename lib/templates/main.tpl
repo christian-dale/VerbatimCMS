@@ -17,8 +17,6 @@
     <title>{$title}</title>
 
     <link rel="icon" type="image/png" href="/assets/media/favicon.png">
-    <link rel="stylesheet" href="/assets/styles/normalize.css">
-    <link rel="stylesheet" href="/assets/styles/main.css">
 
     {foreach $css_paths as $css_path}
         <link rel="stylesheet" href="{$css_path}">
