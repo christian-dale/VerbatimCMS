@@ -2,8 +2,8 @@
     <div class="container">
         {$nav}
 
-        <h1>Editore Admin Panel</h1>
-        <p>Edit the posts and pages of your site.</p>
+        <h1>Compositor</h1>
+        <p>Edit the posts, pages and plugins of your site.</p>
 
         <div class="ion-grid">
             <div class="ion-col-1">
@@ -13,7 +13,7 @@
                 <div class="posts">
                     {foreach $posts as $post}
                         <div class="post">
-                            <h4><a href="/editore/{$post->get("id")}" class="ion-anchor">{$post->get("title")}</a></h4>
+                            <h4><a href="/compositor/{$post->get("id")}" class="ion-anchor">{$post->get("title")}</a></h4>
                             <h5>Created: {$post->get("date")}, Updated: {$post->get("dateUpdate")}.</h5>
 
                             {foreach $post->get("categories") as $category}
@@ -42,7 +42,7 @@
                 <div class="plugins">
                     {foreach $plugins as $plugin}
                         <div class="plugin">
-                            <h4><a href="/editore/plugin/{$plugin["name"]}" class="ion-anchor">{$plugin["name"]}</a> 
+                            <h4><a href="/compositor/plugin/{$plugin["name"]}" class="ion-anchor">{$plugin["name"]}</a> 
                             ({$plugin["type"]->value})
                             </h4>
                         </div>

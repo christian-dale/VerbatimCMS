@@ -42,22 +42,22 @@
             "set-lang": true
         },
         {
-            "title": "Editore",
+            "title": "Compositor",
             "visible": false,
-            "url": "/editore",
-            "plugin": "Editore"
+            "url": "/compositor",
+            "plugin": "Compositor"
         },
         {
             "visible": false,
-            "url": "/editore/([a-zA-Z-]+)",
+            "url": "/compositor/([a-zA-Z-]+)",
             "state": "ViewPost",
-            "plugin": "Editore"
+            "plugin": "Compositor"
         },
         {
             "visible": false,
-            "url": "/editore/plugin/(.+)",
+            "url": "/compositor/plugin/(.+)",
             "state": "ViewPlugin",
-            "plugin": "Editore"
+            "plugin": "Compositor"
         }
     ]
 }

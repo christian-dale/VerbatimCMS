@@ -1,8 +1,8 @@
 <?php
 
-class Editore {
+class Compositor {
     public $pluginInfo = [
-        "name" => "Editore",
+        "name" => "Compositor",
         "type" => \App\PluginType::DEFAULT,
         "version" => "1.0.0"
     ];
@@ -12,7 +12,7 @@ class Editore {
         $app->addCSS("/plugins/Editor/style.css");
 
         if (empty($req->params)) {
-            $app->title = "Editore";
+            $app->title = "Compositor";
 
             $page_loader = new \App\PageLoader();
 
