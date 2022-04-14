@@ -2,8 +2,8 @@
 
 class Editore {
     function init(\App\App &$app, $res, array $opts = []) {
-        $app->addCSS("content/assets/styles/kernel.css");
-        $app->addCSS("content/plugins/Editor/style.css");
+        $app->addCSS("assets/styles/kernel.css");
+        $app->addCSS("plugins/Editor/style.css");
 
         if (empty($res->params)) {
             $app->title = "Editore";
@@ -25,7 +25,7 @@ class Editore {
      */
 
     function blogPostEdit(\App\App &$app, $res) {
-        require_once("content/plugins/BlogPosts/Blog.php");
+        require_once("plugins/BlogPosts/Blog.php");
 
         $blog = new \Plugin\Blog();
 

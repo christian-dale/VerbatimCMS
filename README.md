@@ -1,8 +1,8 @@
-## portfolio-cms
+# portfolio-cms
 
 A portfolio content management system.
 
-### About
+## About
 
 This software is still in beta, so do not use it for anything
 with specific security requirements.
@@ -11,6 +11,12 @@ Do not edit any files in the 'lib' directory, as these
 files will be overwritten when there is an update.
 
 ## Documentation
+
+### Directory structure
+
+Content: Configs, pages and posts.
+Public: Files with no access protection, public files.
+Lib: Portfolio-cms related files, will be replace on updates.
 
 ### Creating new pages
 
@@ -40,7 +46,7 @@ Read more about smarty [here](https://www.smarty.net/docsv2/en/).
 ### Plugins
 
 Plugins are used to add more functionality to a page.
-You can add new plugins to the 'content/plugins' directory.
+You can add new plugins to the 'public/plugins' directory.
 All plugins require a 'index.php' file.
 
 The folder in lib called plugin_default is just used as a backup

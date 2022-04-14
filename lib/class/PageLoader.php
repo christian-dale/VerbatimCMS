@@ -29,7 +29,7 @@ class PageLoader {
             $plugin = $item["plugin"];
 
             // Use default plugin if specified plugin does not exist.
-            if (!file_exists("content/plugins/{$plugin}/index.php")) {
+            if (!file_exists("public/plugins/{$plugin}/index.php")) {
                 $plugin = "DefaultHandler";
             }
 
