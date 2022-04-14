@@ -104,6 +104,14 @@ class App {
         return $this->plugin_loader->getPlugin($this, $plugin_name);
     }
 
+    public function pluginExists(string $plugin_name) {
+        return \App\PluginLoader::pluginExists($plugin_name);
+    }
+
+    public function getTitle() {
+        return $this->title;
+    }
+
     /**
      * Redirect to url.
      */

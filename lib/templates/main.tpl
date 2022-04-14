@@ -6,15 +6,18 @@
 *}
 
 <!doctype html>
-<html lang="{$app->getPlugin('Lang')->getLang($app)}">
+<html {if $app->pluginExists("Lang")}lang="{$app->getPlugin('Lang')->getLang($app)}"{/if}>
 
 <head>
+    <!-- Created with Portfolio CMS -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{$description}">
-    <meta http-equiv="content-language" content="{$lang->getLang()}">
+    {if $app->pluginExists("Lang")}
+    <meta http-equiv="content-language" content="{$app->getPlugin('Lang')->getLang($app)}">
+    {/if}
 
-    <title>{$title}</title>
+    <title>{$app->getTitle()}</title>
 
     <link rel="icon" type="image/png" href="/assets/media/favicon.png">
 
