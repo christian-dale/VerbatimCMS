@@ -32,7 +32,7 @@
         },
         {
             "visible": false,
-            "url": "/blog/{id}",
+            "url": "/blog/(.+)",
             "path": "content/plugins/BlogPosts/blog.tpl",
             "plugin": "BlogPosts"
         },

@@ -12,10 +12,14 @@ class BlogPosts {
         $blog->renderPosts();
 
         // Check if response contains query string.
-        if (isset($res->attr)) {
-            $this->blogPostView($app, $res, $blog);
-        } else {
+        if (empty($res->params)) {
             $this->blogPosts($app, $blog);
+        } else {
+            $this->blogPostView($app, $res, $blog);
+        }
+
+        if (isset($opts["template"]) && $opts["template"] == true) {
+            return $blog->posts;
         }
     }
 
@@ -24,7 +28,7 @@ class BlogPosts {
      */
 
      function blogPostView(\App\App &$app, $res, \Plugin\Blog $blog) {
-        $post = $blog->posts[$res->attr["id"]];
+        $post = $blog->posts[$res->params["id"]];
 
         $app->title = $post->get("title");
         $app->description = substr(strip_tags($post->get("content")), 0, 150) . " ...";

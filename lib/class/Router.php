@@ -2,39 +2,43 @@
 
 namespace App;
 
+class Response {
+    public $params = [];
+}
+
 class Router {
     public static $routes = [];
-    public $res = [];
+    public $parsed_url = null;
 
     function __construct() {
-        $this->res = (object) [];
+        // The path requested by the client.
+        $this->parsed_url = parse_url($_SERVER["REQUEST_URI"]);
     }
 
     function add($path, $method, $fn) {
-        self::$routes[] = ["path" => $path, "method" => strtoupper($method), "fn" => $fn];
+        self::$routes[] = [
+            "path" => $path,
+            "method" => strtoupper($method),
+            "fn" => $fn
+        ];
     }
 
     function begin(): bool {
-        $parsed = parse_url($_SERVER["REQUEST_URI"]);
-
         foreach (self::$routes as $route) {
-            if (preg_match("@/+[a-z0-9-_]+/+([a-z0-9-_]+)@", $parsed["path"], $val) && preg_match("@{(.*?)}@", $route["path"], $selector)) {
-                preg_match("@/+[a-z0-9-_]+@", $parsed["path"], $match);
+            $res = preg_match("#^{$route["path"]}$#", $this->parsed_url["path"], $match);
 
-                if (strpos($match[0], $route["path"]) != -1) {
-                    if ($route["method"] == $_SERVER["REQUEST_METHOD"]) {
-                        $this->res->attr = [$selector[1] => $val[1]];
-                        call_user_func_array($route["fn"], [$this->res]);  
-                        return true;                      
-                    }
+            if ($res) {
+                $response = new \App\Response();
+
+                // If this is a route parameter.
+                if (count($match) > 1) {
+                    $response->params["id"] = $match[1];
+                    call_user_func_array($route["fn"], [$response]);
+                } else {
+                    call_user_func_array($route["fn"], [$response]);
                 }
-            } else {
-                if ($route["path"] == $parsed["path"]) {
-                    if ($route["method"] == $_SERVER["REQUEST_METHOD"]) {
-                        call_user_func_array($route["fn"], [$this->res]);
-                        return true;
-                    }
-                }
+
+                return true;
             }
         }
 
