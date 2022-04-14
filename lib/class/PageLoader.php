@@ -64,16 +64,20 @@ class PageLoader {
         }
     }
 
+    /**
+     * Get the nav bar for the header.
+     */
     function getNav(\App\Lang &$lang, $smarty): string {
-        $nav_items = array_filter($this->nav_items, fn($x) => $x["visible"]);
+        // Filter nav items which are set to visible.
+        $nav_items_filtered = array_filter($this->nav_items, fn($x) => $x["visible"]);
 
-        foreach ($nav_items as &$nav_item) {
-            $item_title = strtolower($nav_item['title']);
-            $nav_item["title"] = $lang->get("nav:{$item_title}");
-        }
+        // Get the correct lang for nav items.
+        $nav_items_lang = array_map(fn($x) => 
+            array_merge($x, ["title" => $lang->get("nav:" . strtolower($x["title"]))
+        ]), $nav_items_filtered);
 
         return $smarty->fetch("lib/templates/partials/nav.tpl", [
-            "nav_items" => $nav_items
+            "nav_items" => $nav_items_lang
         ]);
     }
 
