@@ -1,0 +1,7 @@
+.contentEditor .posts .post {
+    margin-bottom: 10px;
+}
+
+.contentEditor .posts .post h4, h5, p {
+    margin: 5px 0;
+}

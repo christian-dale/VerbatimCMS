@@ -30,4 +30,14 @@ class PluginLoader {
             return "lib/plugins_default/DefaultHandler/index.php";
         }
     }
+
+    static function getPluginsList(): array {
+        $plugins = [];
+
+        foreach (glob("content/plugins/*", GLOB_ONLYDIR) as $dir) {
+            $plugins[] = ["name" => basename($dir)];
+        }
+
+        return $plugins;
+    }
 }

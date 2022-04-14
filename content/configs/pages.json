@@ -40,6 +40,17 @@
             "visible": false,
             "url": "/set-lang",
             "plugin": "SetLang"
+        },
+        {
+            "title": "Editore",
+            "visible": false,
+            "url": "/editore",
+            "plugin": "Editore"
+        },
+        {
+            "visible": false,
+            "url": "/editore/(.+)",
+            "plugin": "Editore"
         }
     ]
 }

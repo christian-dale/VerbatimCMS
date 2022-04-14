@@ -41,7 +41,16 @@ class PageLoader {
 
     function loadPages(\App\App &$app) {
         $pages = \App\App::loadJSON("content/configs/pages.json");
-        
+
+        $this->loadAssets($pages);
+
+        // Add default properties to pages which do not have all properties.
+        $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
+
+        return $this->nav_items;
+    }
+
+    function loadAssets($pages) {
         foreach ($pages["pages_all"]["css"] as $css) {
             $app->addCSS($css);
         }
@@ -49,9 +58,6 @@ class PageLoader {
         foreach ($pages["pages_all"]["js"] as $js) {
             $app->addJS($js);
         }
-
-        // Add default properties to pages which do not have all properties.
-        $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
     }
 
     function getNav(\App\Lang &$lang, $smarty): string {
