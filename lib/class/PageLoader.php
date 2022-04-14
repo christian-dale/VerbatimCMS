@@ -29,19 +29,33 @@ class PageLoader {
             $plugin = $item["plugin"];
 
             // Use default plugin if specified plugin does not exist.
-            if (!file_exists("content/plugins/{$plugin}/index.php")) {
+            if (!file_exists("public/plugins/{$item["plugin"]}/index.php")) {
                 $plugin = "DefaultHandler";
             }
 
-            $router->add($item["url"], "get", function($res) use(&$app, $item, $plugin) {
-                PluginLoader::loadPlugin($app, $plugin, $res, $item);
+            $router->add($item["url"], "get", function($req) use(&$app, $item, $plugin) {
+                PluginLoader::loadGlobalPlugins($app, $req, $item);
+                PluginLoader::loadPlugin($app, $plugin, $req, $item);
             });
         }
     }
 
     function loadPages(\App\App &$app) {
         $pages = \App\App::loadJSON("content/configs/pages.json");
-        
+
+        $this->loadCustomAssets($pages);
+
+        // Add default properties to pages which do not have all properties.
+        $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
+
+        return $this->nav_items;
+    }
+
+    /**
+     * Loads all custom assets from config/pages.json.
+     */
+
+    function loadCustomAssets($pages) {
         foreach ($pages["pages_all"]["css"] as $css) {
             $app->addCSS($css);
         }
@@ -49,21 +63,22 @@ class PageLoader {
         foreach ($pages["pages_all"]["js"] as $js) {
             $app->addJS($js);
         }
-
-        // Add default properties to pages which do not have all properties.
-        $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
     }
 
+    /**
+     * Get the nav bar for the header.
+     */
     function getNav(\App\Lang &$lang, $smarty): string {
-        $nav_items = array_filter($this->nav_items, fn($x) => $x["visible"]);
+        // Filter nav items which are set to visible.
+        $nav_items_filtered = array_filter($this->nav_items, fn($x) => $x["visible"]);
 
-        foreach ($nav_items as &$nav_item) {
-            $item_title = strtolower($nav_item['title']);
-            $nav_item["title"] = $lang->get("nav:{$item_title}");
-        }
+        // Get the correct lang for nav items.
+        $nav_items_lang = array_map(fn($x) => 
+            array_merge($x, ["title" => $lang->get("nav:" . strtolower($x["title"]))
+        ]), $nav_items_filtered);
 
         return $smarty->fetch("lib/templates/partials/nav.tpl", [
-            "nav_items" => $nav_items
+            "nav_items" => $nav_items_lang
         ]);
     }
 

@@ -1,7 +1,12 @@
 <?php
 
 class DefaultHandler {
-    function init(\App\App &$app, $res, array $opts = []) {
+    public $pluginInfo = [
+        "name" => "DefaultHandler",
+        "type" => \App\PluginType::DEFAULT
+    ];
+
+    function init(\App\App &$app, \App\Request $req, array $opts = []) {
         if (isset($opts["additional_template"]) && $this->templateExists($opts["additional_template"])) {
             $app->smarty->assign("additional_template", $app->smarty->fetch($opts["additional_template"]));
         }

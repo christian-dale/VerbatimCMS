@@ -2,7 +2,8 @@
 
 namespace App;
 
-require_once("lib/vendor/autoload.php");
+require_once("vendor/autoload.php");
+require_once("lib/class/Util.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/Item.php");
 require_once("lib/class/PluginLoader.php");
@@ -22,6 +23,8 @@ class App {
 
     public $smarty = null;
 	public $lang = null;
+    public $page_loader = null;
+    public $plugin_loader = null;
 
     function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
@@ -33,27 +36,27 @@ class App {
 
         $this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
 
-        $this->addJS("/lib/assets/scripts/lang.js");
-
         $this->loadConfig();
 
         // \App\Updater::update();
 
         $router = new \App\Router();
 
-        $page_loader = new \App\PageLoader();
-        $page_loader->loadPages($this);
-        $page_loader->loadRoutes($this, $router);
+        $this->page_loader = new \App\PageLoader();
+        $this->page_loader->loadPages($this);
+        $this->page_loader->loadRoutes($this, $router);
+
+        $this->plugin_loader = new \App\PluginLoader();
 
         // Some variables needs to be assigned before template is fetched
         // and some need to be loaded after.
-        $this->assign($page_loader);
+        $this->assign($this->page_loader);
 
         if (!$router->begin()) {
             $this->show404();
         }
 
-        $this->assign($page_loader);
+        $this->assign($this->page_loader);
     }
 
     public static function loadJSON(string $path): array {
@@ -95,6 +98,25 @@ class App {
             "css_paths" => $this->css_paths,
             "js_paths" => $this->js_paths
         ]);
+    }
+
+    public function getPlugin(string $plugin_name) {
+        return $this->plugin_loader->getPlugin($this, $plugin_name);
+    }
+
+    public function pluginExists(string $plugin_name) {
+        return \App\PluginLoader::pluginExists($plugin_name);
+    }
+
+    public function getTitle() {
+        return $this->title;
+    }
+
+    /**
+     * Redirect to url.
+     */
+    public static function redirect($url) {
+        header("Location: {$url}");
     }
 
     public static function prettyPrint($text) {

@@ -16,7 +16,7 @@
         <ul class="blogPosts" style="padding: 0;">
         {foreach $posts as $post}
             {if $post->get("draft") == false}
-                {include file="content/plugins/BlogPosts/post_item.tpl" post=$post}
+                {include file="public/plugins/BlogPosts/post_item.tpl" post=$post}
             {/if}
         {/foreach}
         </ul>

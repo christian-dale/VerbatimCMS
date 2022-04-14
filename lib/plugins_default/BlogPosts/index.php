@@ -3,19 +3,23 @@
 require_once("Blog.php");
 
 class BlogPosts {
-    function init(\App\App &$app, $res, array $opts = []) {
-        $app->addCSS("/content/plugins/BlogPosts/style.css");
+    function init(\App\App &$app, \App\Request $req, array $opts = []) {
+        $app->addCSS("/plugins/BlogPosts/style.css");
 
         $blog = new \Plugin\Blog();
 
         $blog->loadPosts();
         $blog->renderPosts();
 
-        // Check if response contains query string.
-        if (isset($res->attr)) {
-            $this->blogPostView($app, $res, $blog);
-        } else {
+        // Check if requst contains query string.
+        if (empty($req->params)) {
             $this->blogPosts($app, $blog);
+        } else {
+            $this->blogPostView($app, $req, $blog);
+        }
+
+        if (isset($opts["template"]) && $opts["template"] == true) {
+            return $blog->posts;
         }
     }
 
@@ -23,8 +27,8 @@ class BlogPosts {
      * View a particular blog post.
      */
 
-     function blogPostView(\App\App &$app, $res, \Plugin\Blog $blog) {
-        $post = $blog->posts[$res->attr["id"]];
+     function blogPostView(\App\App &$app, \App\Request $req, \Plugin\Blog $blog) {
+        $post = $blog->posts[$req->params["id"]];
 
         $app->title = $post->get("title");
         $app->description = substr(strip_tags($post->get("content")), 0, 150) . " ...";
