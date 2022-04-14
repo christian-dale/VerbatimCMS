@@ -2,7 +2,7 @@
 
 namespace App;
 
-class Response {
+class Request {
     public $params = [];
 }
 
@@ -28,14 +28,14 @@ class Router {
             $res = preg_match("#^{$route["path"]}$#", $this->parsed_url["path"], $match);
 
             if ($res) {
-                $response = new \App\Response();
+                $req = new \App\Request();
 
                 // If this is a route parameter.
                 if (count($match) > 1) {
-                    $response->params["id"] = $match[1];
-                    call_user_func_array($route["fn"], [$response]);
+                    $req->params["id"] = $match[1];
+                    call_user_func_array($route["fn"], [$req]);
                 } else {
-                    call_user_func_array($route["fn"], [$response]);
+                    call_user_func_array($route["fn"], [$req]);
                 }
 
                 return true;

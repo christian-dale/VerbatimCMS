@@ -5,9 +5,14 @@ namespace App;
 class PluginLoader {
     public static $plugin_dir = "public/plugins";
 
-    static function loadPlugin(\App\App &$app, string $plugin, $res = [], array $opts = []) {
+    /**
+     * App - Reference to the app object.
+     * Plugin - The name of the plugin to be loaded.
+     * res - The request object.
+     */
+    static function loadPlugin(\App\App &$app, string $plugin, \App\Request $req = new \App\Request(), array $opts = []) {
         require_once(self::$plugin_dir . "/${plugin}/index.php");
-        return (new $plugin)->init($app, $res, $opts);
+        return (new $plugin)->init($app, $req, $opts);
     }
 
     /**
