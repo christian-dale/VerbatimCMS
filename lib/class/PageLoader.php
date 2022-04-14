@@ -34,6 +34,7 @@ class PageLoader {
             }
 
             $router->add($item["url"], "get", function($res) use(&$app, $item, $plugin) {
+                PluginLoader::loadGlobalPlugins($app, $res, $item);
                 PluginLoader::loadPlugin($app, $plugin, $res, $item);
             });
         }

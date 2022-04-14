@@ -1,6 +1,6 @@
 {
     "pages_all": {
-        "plugin": "",
+        "plugins": ["DefaultTheme"],
         "css": [],
         "js": []
     },
