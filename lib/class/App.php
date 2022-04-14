@@ -3,6 +3,7 @@
 namespace App;
 
 require_once("vendor/autoload.php");
+require_once("lib/class/Util.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/Item.php");
 require_once("lib/class/PluginLoader.php");
@@ -95,6 +96,13 @@ class App {
             "css_paths" => $this->css_paths,
             "js_paths" => $this->js_paths
         ]);
+    }
+
+    /**
+     * Redirect to url.
+     */
+    public static function redirect($url) {
+        header("Location: {$url}");
     }
 
     public static function prettyPrint($text) {
