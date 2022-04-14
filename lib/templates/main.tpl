@@ -1,4 +1,4 @@
-{* 
+{*
     INTERNAL PAGE DO NOT EDIT!
     If you wish to modify this page, please create
     a copy in content -> pages, and change pages.json to
@@ -6,7 +6,7 @@
 *}
 
 <!doctype html>
-<html lang="{$lang->getLang()}">
+<html lang="{$app->getPlugin('Lang')->getLang($app)}">
 
 <head>
     <meta charset="utf-8">

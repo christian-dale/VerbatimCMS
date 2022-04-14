@@ -12,6 +12,10 @@ class Lang {
         }
     }
 
+    public function getLang(\App\App &$app): string {
+        return $app->lang->getLang();
+    }
+
     private function setLang(\App\App &$app) {
         $app->lang->setLang($_GET["lang"] ?? "en");
         $app->redirect($_GET["prev"] ?? "/");

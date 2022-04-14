@@ -32,12 +32,21 @@ class PluginLoader {
         }
     }
 
+    static function getPlugin(\App\App &$app, string $plugin_name) {
+        require_once(self::getPluginDirectory($plugin_name));
+        return new $plugin_name($app, new \App\Request(), );
+    }
+
     /**
      * Get the directory of the plugin by name.
      */
 
     static function getPluginDirectory(string $plugin_name): string {
         return self::$plugin_dir . "/${plugin_name}/index.php";
+    }
+
+    static function pluginExists(string $plugin_name): bool {
+        return file_exists(self::getPluginDirectory($plugin_name));
     }
 
     /**
