@@ -73,4 +73,8 @@ class PluginLoader {
 
         return $plugins;
     }
+
+    static function loadPluginConfig(string $plugin_name) {
+        return \App\App::loadJSON("content/configs/plugins/{$plugin_name}/config.json");
+    }
 }
