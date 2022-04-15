@@ -7,6 +7,7 @@ require_once("lib/class/Util.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/Item.php");
 require_once("lib/class/PluginLoader.php");
+require_once("lib/class/Authenticator.php");
 require_once("lib/class/Router.php");
 require_once("lib/class/PageLoader.php");
 require_once("lib/class/Updater.php");

@@ -24,7 +24,7 @@ class PageLoader {
             
     }
 
-    function loadRoutes(\App\App &$app, \App\Router $router) {
+    function loadRoutes(\App\App &$app, \App\Router &$router) {
         foreach ($this->nav_items as $item) {
             $plugin = $item["plugin"];
 
@@ -32,6 +32,9 @@ class PageLoader {
             if (!file_exists("public/plugins/{$item["plugin"]}/index.php")) {
                 $plugin = "DefaultHandler";
             }
+
+            // Add authentication routes.
+            \App\Authenticator::registerRoutes($app, $router);
 
             $router->add($item["url"], "get", function($req) use(&$app, $item, $plugin) {
                 PluginLoader::loadGlobalPlugins($app, $req, $item);
