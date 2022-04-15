@@ -20,6 +20,7 @@ class App {
     public array $config = [];
     public array $css_paths = [];
     public array $js_paths = [];
+    public array $custom_meta = [];
 
     public $smarty = null;
 	public $lang = null;
@@ -129,5 +130,9 @@ class App {
 
     function addJS(string $path) {
         $this->js_paths[] = $path;
+    }
+
+    function addMeta(string $name, string $content) {
+        $this->custom_meta[] = ["name" => $name, "content" => $content];
     }
 }
