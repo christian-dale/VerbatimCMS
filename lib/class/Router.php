@@ -3,7 +3,8 @@
 namespace App;
 
 class Request {
-    public $params = [];
+    public array $params = [];
+    public string $method = "get";
 }
 
 class Router {
@@ -27,8 +28,9 @@ class Router {
         foreach (self::$routes as $route) {
             $res = preg_match("#^{$route["path"]}$#", $this->parsed_url["path"], $match);
 
-            if ($res) {
+            if ($res && $_SERVER["REQUEST_METHOD"] == $route["method"]) {
                 $req = new \App\Request();
+                $req->method = $route["method"];
 
                 // If this is a route parameter.
                 if (count($match) > 1) {
