@@ -3,6 +3,7 @@
 class DefaultTheme {
     public $pluginInfo = [
         "name" => "DefaultTheme",
+        "description" => "The default theme for VerbatimCMS",
         "type" => \App\PluginType::THEME,
         "version" => "1.0.0"
     ];

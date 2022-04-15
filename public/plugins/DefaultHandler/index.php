@@ -3,6 +3,7 @@
 class DefaultHandler {
     public $pluginInfo = [
         "name" => "DefaultHandler",
+        "description" => "Default plugin for pages with no other plugin.",
         "type" => \App\PluginType::DEFAULT,
         "version" => "1.0.0"
     ];

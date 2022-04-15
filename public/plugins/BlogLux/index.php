@@ -5,6 +5,7 @@ require_once("Blog.php");
 class BlogLux {
     public $pluginInfo = [
         "name" => "BlogLux",
+        "description" => "A blogging platform.",
         "type" => \App\PluginType::DEFAULT,
         "version" => "1.0.0"
     ];

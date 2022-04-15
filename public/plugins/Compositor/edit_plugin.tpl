@@ -22,6 +22,7 @@
             <h2>{$plugin->pluginInfo["name"]}</h2>
             <hr>
 
+            <p>{$plugin->pluginInfo["description"]}</p>
             <h4>Type: {$plugin->pluginInfo["type"]->value}</h4>
             <h4>Version: {$plugin->pluginInfo["version"]}</h4>
 

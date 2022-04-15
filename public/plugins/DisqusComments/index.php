@@ -3,6 +3,7 @@
 class DisqusComments {
     public $pluginInfo = [
         "name" => "DisqusComments",
+        "description" => "Disqus comments plugin.",
         "type" => \App\PluginType::DEFAULT,
         "version" => "1.0.0"
     ];

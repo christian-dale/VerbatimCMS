@@ -2,7 +2,8 @@
 
 class Lang {
     public $pluginInfo = [
-        "name" => "SetLang",
+        "name" => "Lang",
+        "description" => "Language plugin",
         "type" => \App\PluginType::DEFAULT
     ];
 

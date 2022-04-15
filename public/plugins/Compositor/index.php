@@ -3,6 +3,7 @@
 class Compositor {
     public $pluginInfo = [
         "name" => "Compositor",
+        "description" => "An editing system for VerbatimCMS.",
         "type" => \App\PluginType::DEFAULT,
         "version" => "1.0.0"
     ];
