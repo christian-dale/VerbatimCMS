@@ -23,7 +23,7 @@
     <nav class="nav-items" style="display: inline-block;">
         <ul>
             {foreach $nav_items as $item}
-                <li><a href="{$item["url"]}" class="navItem" style="background-color: {$item["bg-color"]}; color: {$item["color"]};">{$item["title"]}</a></li>
+                <li><a href="{$item["url"]}" class="navItem navItem{$item["title"]}" style="background-color: {$item["bg-color"]}; color: {$item["color"]};">{$item["title"]}</a></li>
             {/foreach}
             <li>
                 <a href="/set-lang?lang=en&prev={$smarty.server.REQUEST_URI}" class="articleLink badge btnLang" data-lang="en">EN</a>
