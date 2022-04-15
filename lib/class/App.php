@@ -77,6 +77,7 @@ class App {
     }
 
     function show404() {
+        $this->addCSS("/plugins/DefaultTheme/theme.css");
         $this->content = $this->smarty->fetch("lib/templates/pages/404.tpl");
         http_response_code(404);
     }
