@@ -119,6 +119,7 @@ class App {
      */
     public static function redirect($url) {
         header("Location: {$url}");
+        exit();
     }
 
     public static function prettyPrint($text) {
