@@ -14,4 +14,8 @@ class Util {
     public static function filterInput($type, $var, $filter) {
         return filter_input($type, $var, $filter);
     }
+
+    public static function storeConfig($path, $config) {
+        file_put_contents($path, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    }
 }

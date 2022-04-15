@@ -36,11 +36,7 @@ class Updater {
         $updated_config = array_merge(self::$config_config, $content_config);
         $updated_config_pages = array_merge(self::$config_pages, $content_pages);
 
-        self::storeConfig(self::$config_config_path, $updated_config);
-        self::storeConfig(self::$config_pages_path, $updated_config_pages);
-    }
-
-    private static function storeConfig($path, $config) {
-        file_put_contents($path, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        \App\Util::storeConfig(self::$config_config_path, $updated_config);
+        \App\Util::storeConfig(self::$config_pages_path, $updated_config_pages);
     }
 }

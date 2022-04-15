@@ -74,6 +74,19 @@ class PluginLoader {
         return $plugins;
     }
 
+    static function initPlugins() {
+        $plugin_names = array_map(fn($x) => basename($x), glob(self::$plugin_dir . "/*"));
+
+        foreach ($plugin_names as $plugin_name) {
+            if (!file_exists("content/configs/{$plugin_name}/config.json")) {
+                $plugin_config = ["enabled" => true];
+
+                mkdir("content/configs/plugins/{$plugin_name}");
+                \App\Util::storeConfig("content/configs/plugins/{$plugin_name}/config.json", $plugin_config);
+            }
+        }
+    }
+
     static function loadPluginConfig(string $plugin_name) {
         return \App\App::loadJSON("content/configs/plugins/{$plugin_name}/config.json");
     }

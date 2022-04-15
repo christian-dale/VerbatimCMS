@@ -49,6 +49,7 @@ class App {
         $this->page_loader->loadRoutes($this, $router);
 
         $this->plugin_loader = new \App\PluginLoader();
+        $this->plugin_loader->initPlugins();
 
         // Some variables needs to be assigned before template is fetched
         // and some need to be loaded after.
