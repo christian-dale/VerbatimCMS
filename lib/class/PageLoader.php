@@ -31,7 +31,7 @@ class PageLoader {
 
             // The routes defined in the plugin.
             foreach ($plugin_obj->routes as $index => $route) {
-                $router->add($route["path"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin,) {
+                $router->add($route["path"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin) {
                     PluginLoader::loadGlobalPlugins($app, $req, $route);
                     PluginLoader::loadPlugin($app, $plugin["name"], $req, $route);
                 });

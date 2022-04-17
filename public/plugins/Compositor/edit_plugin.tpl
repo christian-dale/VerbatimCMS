@@ -28,19 +28,15 @@
             <p>{$plugin->pluginInfo["description"]}</p>
             <h4>Type: {$plugin->pluginInfo["type"]->value}</h4>
             <h4>Version: {$plugin->pluginInfo["version"]}</h4>
-            {if $plugin_config["enabled"]}
-                <h4>Enabled: true</h4>
-            {else}
-                <h4>Enabled: false</h4>
-            {/if}
 
             <div class="content">
                 <form method="post" action="/compositor/plugin/{$plugin->pluginInfo["name"]}">
-                    {if $plugin_config["enabled"]}
-                        <input type="submit" class="ion-button ion-btn-primary" value="Activate">
-                    {else}
-                        <input type="submit" class="ion-button ion-btn-warning" value="Deactivate">
-                    {/if}
+                    <label>Enabled</label>
+                    <input type="checkbox" name="enabled" {if $plugin_config["enabled"]}checked{/if}>
+
+                    <p>Edit config</p>
+                    <textarea name="config" class="postText ion-input-text">{json_encode($plugin_config, JSON_PRETTY_PRINT)}</textarea>
+                    <input type="submit" class="ion-button ion-btn-primary" value="Submit">
                 </form>
             </div>
 

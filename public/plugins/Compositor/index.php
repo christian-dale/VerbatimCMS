@@ -17,7 +17,7 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor/create-post", "method" => "get", "state" => "CreatePost"],
         ["path" => "/compositor/save", "method" => "post"],
         ["path" => "/compositor/plugin/(.+)", "method" => "get", "state" => "ViewPlugin"],
-        ["path" => "/compositor/plugin/(.+)", "method" => "get", "state" => "ViewPlugin"]
+        ["path" => "/compositor/plugin/(.+)", "method" => "post", "state" => "ViewPlugin"]
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
@@ -72,8 +72,10 @@ class Compositor extends \App\Plugin {
             }
         } else if (strpos($req->path, "/compositor/plugin") != -1 && $req->method == "POST") {
             $plugin_name = $req->params["id"];
-            $config = $this->loadConfig($plugin_name);
-            $config["enabled"] = !$config["enabled"];
+            $plugin_config = \App\Util::getReqAttr($_POST, "config");
+            $plugin_enabled = \App\Util::getReqAttr($_POST, "enabled");
+            $config = array_merge(json_decode($plugin_config, true), $this->loadConfig($plugin_name));
+            $config["enabled"] = ($plugin_enabled == "on") ? true : false;
             $this->storeConfig($config);
             \App\App::redirect("/compositor/plugin/{$plugin_name}");
         } else if ($req->path = "/compositor/create-post" && $opts["state"] == "CreatePost") {
