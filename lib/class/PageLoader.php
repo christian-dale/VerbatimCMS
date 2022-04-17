@@ -29,26 +29,30 @@ class PageLoader {
         foreach (\App\PluginLoader::getPluginsList() as $plugin) {
             $plugin_obj = new $plugin["name"];
 
-            // The routes defined in the plugin.
-            foreach ($plugin_obj->routes as $index => $route) {
-                $router->add($route["path"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin) {
-                    PluginLoader::loadGlobalPlugins($app, $req, $route);
-                    PluginLoader::loadPlugin($app, $plugin["name"], $req, $route);
-                });
+            if (\App\PluginLoader::loadPluginConfig($plugin["name"])["enabled"]) {
+                // The routes defined in the plugin.
+                foreach ($plugin_obj->routes as $index => $route) {
+                    $router->add($route["path"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin) {
+                        PluginLoader::loadGlobalPlugins($app, $req, $route);
+                        PluginLoader::loadPlugin($app, $plugin["name"], $req, $route);
+                    });
+                }
             }
         }
+
+        // Add authentication routes.
+        \App\Authenticator::registerRoutes($app, $router);
 
         foreach ($this->routes as $route) {
             $plugin = file_exists("public/plugins/{$route["plugin"]}/index.php") ? 
                 $route["plugin"] : "DefaultHandler";
 
-            // Add authentication routes.
-            \App\Authenticator::registerRoutes($app, $router);
-
-            $router->add($route["url"], $route["method"] ?? "get", function($req) use(&$app, $route, $plugin) {
-                PluginLoader::loadGlobalPlugins($app, $req, $route);
-                PluginLoader::loadPlugin($app, $plugin, $req, $route);
-            });
+            if (\App\PluginLoader::loadPluginConfig($plugin)["enabled"]) {
+                $router->add($route["url"], $route["method"] ?? "get", function($req) use(&$app, $route, $plugin) {
+                    PluginLoader::loadGlobalPlugins($app, $req, $route);
+                    PluginLoader::loadPlugin($app, $plugin, $req, $route);
+                });
+            }
         }
     }
 

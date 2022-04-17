@@ -60,7 +60,7 @@ class PluginLoader {
 
     static function getPlugin(\App\App &$app, string $plugin_name) {
         require_once(self::getPluginDirectory($plugin_name));
-        return new $plugin_name($app, new \App\Request(), );
+        return new $plugin_name($app, new \App\Request());
     }
 
     /**
