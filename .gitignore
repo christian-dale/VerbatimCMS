@@ -1,3 +1,4 @@
 vendor/*
 lib/templates_cache/*
 content/configs/plugins/*
+public/assets/*

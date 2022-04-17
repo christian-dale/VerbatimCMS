@@ -74,12 +74,16 @@ class PluginLoader {
         return $plugins;
     }
 
-    static function initPlugins() {
+    /**
+     * Create inital configs for plugins.
+     */
+    static function initPlugins(\App\App &$app) {
         $plugin_names = array_map(fn($x) => basename($x), glob(self::$plugin_dir . "/*"));
 
         foreach ($plugin_names as $plugin_name) {
-            if (!file_exists("content/configs/{$plugin_name}/config.json")) {
-                $plugin_config = ["enabled" => true];
+            if (!file_exists("content/configs/plugins/{$plugin_name}/config.json")) {
+                $plugin = self::getPlugin($app, $plugin_name);
+                $plugin_config = array_merge(self::$plugin_default, $plugin->createConfig());
 
                 mkdir("content/configs/plugins/{$plugin_name}");
                 \App\Util::storeConfig("content/configs/plugins/{$plugin_name}/config.json", $plugin_config);
