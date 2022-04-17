@@ -10,8 +10,17 @@
             <a href="/login?logout=true" class="ion-anchor">Logout</a>
         {/if}
 
-        <label>Send annonymous error logs</label>
-        <input type="checkbox" name="usage-statistics" checked>
+        <form method="post" action="/compositor/setup">
+            <label>Send annonymous error logs</label>
+            <input type="checkbox" name="usage-statistics" checked>
+
+            <input type="text" placeholder="Title" name="title" class="ion-input-text">
+            <input type="text" placeholder="Header title" name="header_title" class="ion-input-text">
+            <input type="text" placeholder="Description" name="description" class="ion-input-text">
+            <input type="text" placeholder="Copyright" name="copyright" class="ion-input-text">
+
+            <input type="submit" value="Next" class="ion-button ion-btn-primary">
+        </form>
 
         {$footer}
     </div>

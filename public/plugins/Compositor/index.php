@@ -11,6 +11,7 @@ class Compositor extends \App\Plugin {
     public $routes = [
         ["path" => "/compositor", "method" => "get"],
         ["path" => "/compositor/setup", "method" => "get"],
+        ["path" => "/compositor/setup", "method" => "post"],
         ["path" => "/compositor/media", "method" => "get"],
         ["path" => "/compositor/media", "method" => "post"],
         ["path" => "/compositor/view-post/([a-zA-Z-]+)", "method" => "get", "state" => "ViewPost"],
@@ -25,7 +26,7 @@ class Compositor extends \App\Plugin {
         $app->addCSS("/plugins/Compositor/style.css");
 
         if ($this->loadConfig()["setup"] == true && $req->path != "/compositor/setup") {
-            // \App\App::redirect("/compositor/setup");
+            \App\App::redirect("/compositor/setup");
         }
 
         if ($req->path == "/compositor/save" && $req->method == "POST") {
@@ -57,8 +58,22 @@ class Compositor extends \App\Plugin {
             }
 
             \App\App::redirect("/compositor");
-        } else if ($req->path == "/compositor/setup") {
+        } else if ($req->path == "/compositor/setup" && $req->method == "GET") {
             $app->content = $app->smarty->fetch(__DIR__ . "/setup.tpl");  
+        } else if ($req->path = "/compositor/setup" && $req->method == "POST") {
+            \App\Util::storeConfig("content/configs/config.json", array_merge(
+                \App\Util::loadJSON("content/configs/config.json"), [
+                "title" => \App\Util::getReqAttr($_POST, "title"),
+                "header_title" => \App\Util::getReqAttr($_POST, "header_title"),
+                "description" => \App\Util::getReqAttr($_POST, "description"),
+                "copyright" => \App\Util::getReqAttr($_POST, "copyright")
+            ]));
+
+            $config = $this->loadConfig();
+            $config["setup"] = false;
+            $this->storeConfig($config);
+
+            \App\App::redirect("/compositor");
         } else if ($req->path == "/compositor/media" && $req->method == "GET") {
             $app->content = $app->smarty->fetch(__DIR__ . "/media.tpl", [
                 "media" => \App\MediaLoader::getMediaList()
@@ -74,7 +89,7 @@ class Compositor extends \App\Plugin {
             $plugin_name = $req->params["id"];
             $plugin_config = \App\Util::getReqAttr($_POST, "config");
             $plugin_enabled = \App\Util::getReqAttr($_POST, "enabled");
-            $config = array_merge(json_decode($plugin_config, true), $this->loadConfig($plugin_name));
+            $config = array_merge(json_decode($plugin_config, true), $this->loadConfig());
             $config["enabled"] = ($plugin_enabled == "on") ? true : false;
             $this->storeConfig($config);
             \App\App::redirect("/compositor/plugin/{$plugin_name}");

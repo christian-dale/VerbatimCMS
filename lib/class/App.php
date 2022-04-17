@@ -63,6 +63,11 @@ class App {
         }
 
         $this->assign($this->page_loader);
+
+        if (\App\App::pluginExists("Compositor") && \App\App::getPlugin("Compositor")->loadConfig()["setup"] &&
+            parse_url($_SERVER["REQUEST_URI"])["path"] != "/compositor/setup") {
+            \App\App::redirect("/compositor/setup");
+        }
     }
 
     function loadConfig() {
