@@ -39,9 +39,11 @@
                 <div class="pages">
                     {foreach $pages as $page}
                         <div class="page">
-                            <h4><a href="{$page["url"]}" class="ion-anchor">{$page["title"]}</a></h4>
+                            <h4><a href="/compositor/page/{$page["url"]}" class="ion-anchor">{$page["title"]}</a></h4>
                         </div>
                     {/foreach}
+
+                    <a href="/compositor/page" class="ion-button ion-btn-primary" style="margin-top: 25px;">Create Page</a>
                 </div>
             </div>
             <div class="ion-col-1">

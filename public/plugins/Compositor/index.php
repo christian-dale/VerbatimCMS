@@ -12,13 +12,16 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor", "method" => "get"],
         ["path" => "/compositor/setup", "method" => "get"],
         ["path" => "/compositor/setup", "method" => "post"],
-        ["path" => "/compositor/media", "method" => "get"],
-        ["path" => "/compositor/media", "method" => "post"],
+        ["path" => "/compositor/media", "method" => "get", "state"],
+        ["path" => "/compositor/media", "method" => "post", "state"],
         ["path" => "/compositor/view-post/([a-zA-Z-]+)", "method" => "get", "state" => "ViewPost"],
         ["path" => "/compositor/create-post", "method" => "get", "state" => "CreatePost"],
         ["path" => "/compositor/save", "method" => "post"],
         ["path" => "/compositor/plugin/(.+)", "method" => "get", "state" => "ViewPlugin"],
-        ["path" => "/compositor/plugin/(.+)", "method" => "post", "state" => "ViewPlugin"]
+        ["path" => "/compositor/plugin/(.+)", "method" => "post", "state" => "ViewPlugin"],
+        ["path" => "/compositor/page", "method" => "get", "state" => "EditPage"],
+        ["path" => "/compositor/page/(.+)", "method" => "get", "state" => "EditPage"],
+        ["path" => "/compositor/edit-page", "method" => "post"]
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
@@ -58,6 +61,38 @@ class Compositor extends \App\Plugin {
             }
 
             \App\App::redirect("/compositor");
+        } else if (strpos($req->path, "/compositor/page") != -1 && $opts["state"] == "EditPage") {
+            if (empty($req->params)) {
+                $app->content = $app->smarty->fetch(__DIR__ . "/edit_page.tpl", [
+                    "page" => [
+                        "name" => "New page",
+                        "content" => ""
+                    ],
+                    "create_page" => true
+                ]);
+            } else {
+                $app->content = $app->smarty->fetch(__DIR__ . "/edit_page.tpl", [
+                    "page" => \App\PageLoader::getPageInfo($req->params["id"])
+                ]);
+            }
+        } else if ($req->path == "/compositor/edit-page") {
+            $page_name = \App\Util::getReqAttr($_POST, "name");
+            $page_content = \App\Util::getReqAttr($_POST, "content");
+
+            \App\PageLoader::editPage($page_name, $page_content);
+
+            \App\App::redirect("/compositor");
+        } else if ($req->path == "/compositor/media" && $req->method == "GET") {
+            $app->content = $app->smarty->fetch(__DIR__ . "/media.tpl", [
+                "media" => \App\MediaLoader::getMediaList()
+            ]);
+        } else if ($req->path == "/compositor/media" && $req->method == "POST") {
+            $media = \App\Util::getReqAttr($_FILES, "media");
+
+            if (!$media["error"]) {
+                \App\MediaLoader::storeMedia($media);
+                \App\App::redirect("/compositor/media");
+            }
         } else if ($req->path == "/compositor/setup" && $req->method == "GET") {
             $app->content = $app->smarty->fetch(__DIR__ . "/setup.tpl");  
         } else if ($req->path = "/compositor/setup" && $req->method == "POST") {
@@ -74,17 +109,6 @@ class Compositor extends \App\Plugin {
             $this->storeConfig($config);
 
             \App\App::redirect("/compositor");
-        } else if ($req->path == "/compositor/media" && $req->method == "GET") {
-            $app->content = $app->smarty->fetch(__DIR__ . "/media.tpl", [
-                "media" => \App\MediaLoader::getMediaList()
-            ]);
-        } else if ($req->path == "/compositor/media" && $req->method == "POST") {
-            $media = \App\Util::getReqAttr($_FILES, "media");
-
-            if (!$media["error"]) {
-                \App\MediaLoader::storeMedia($media);
-                \App\App::redirect("/compositor/media");
-            }
         } else if (strpos($req->path, "/compositor/plugin") != -1 && $req->method == "POST") {
             $plugin_name = $req->params["id"];
             $plugin_config = \App\Util::getReqAttr($_POST, "config");
@@ -103,7 +127,7 @@ class Compositor extends \App\Plugin {
 
                 $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
                     "posts" => \App\PluginLoader::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
-                    "pages" => $page_loader->loadPages($app),
+                    "pages" => \App\PageLoader::getCustomPages(),
                     "plugins" => \App\PluginLoader::getPluginsList()
                 ]);
             } else if ($opts["state"] == "ViewPost"){

@@ -1,6 +1,6 @@
 # Verbatim CMS
 
-A portfolio content management system.
+A modular and lightweight Content Management System (CMS).
 
 ## About
 

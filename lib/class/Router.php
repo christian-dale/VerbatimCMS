@@ -8,6 +8,10 @@ class Request {
     public string $method = "get";
 }
 
+class Response {
+    
+}
+
 class Router {
     public static $routes = [];
     public $parsed_url = null;

@@ -61,7 +61,41 @@ class PageLoader {
         $this->routes = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
 
         // Filter visible pages.
-        return array_filter($this->routes, fn($x) => $x["visible"]);
+        $pages_visible = array_filter($this->routes, fn($x) => $x["visible"]);
+
+        return $pages_visible;
+    }
+
+    /**
+     * Get a list of user created pages.
+     */
+
+    public static function getCustomPages() {
+        $pages_content = glob("content/pages/*");
+
+        foreach ($pages_content as &$page) {
+            $page = [
+                "title" => pathinfo(basename($page), PATHINFO_FILENAME),
+                "url" => pathinfo(basename($page), PATHINFO_FILENAME)
+            ];
+        }
+        
+        return $pages_content;
+    }
+
+    /**
+     * Get info relating to a page.
+     */
+
+    public static function getPageInfo(string $page_name) {
+        return [
+            "name" => $page_name,
+            "content" => file_get_contents("content/pages/{$page_name}.tpl")
+        ];
+    }
+
+    public static function editPage(string $page_name, string $content) {
+        file_put_contents("content/pages/{$page_name}.tpl", $content);
     }
 
     /**
