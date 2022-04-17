@@ -67,23 +67,6 @@ class PageLoader {
     }
 
     /**
-     * Get a list of user created pages.
-     */
-
-    public static function getCustomPages() {
-        $pages_content = glob("content/pages/*");
-
-        foreach ($pages_content as &$page) {
-            $page = [
-                "title" => pathinfo(basename($page), PATHINFO_FILENAME),
-                "url" => pathinfo(basename($page), PATHINFO_FILENAME)
-            ];
-        }
-        
-        return $pages_content;
-    }
-
-    /**
      * Get info relating to a page.
      */
 
@@ -95,7 +78,32 @@ class PageLoader {
     }
 
     public static function editPage(string $page_name, string $content) {
-        file_put_contents("content/pages/{$page_name}.tpl", $content);
+        $page_name_clean = strtolower(str_replace(" ", "-", $page_name));
+
+        file_put_contents("content/pages/{$page_name_clean}.tpl", $content);
+        $pages = \App\Util::loadJSON("content/configs/pages.json");
+        
+        $pages["pages"][] = [
+            "title" => $page_name,
+            "url" => "/{$page_name_clean}",
+            "path" => "content/pages/{$page_name_clean}.tpl",
+            "visible" => true
+        ];
+
+        \App\Util::storeConfig("content/configs/pages.json", $pages);
+    }
+
+    public static function deletePage($page_name) {
+        $pages = \App\Util::loadJSON("content/configs/pages.json");
+        $page_name_clean = strtolower(str_replace(" ", "-", $page_name));
+
+        foreach ($pages["pages"] as $index => &$page) {
+            if (strtolower(str_replace(" ", "-", $page["title"])) == $page_name) {
+                unset($pages["pages"][$index]);
+            }
+        }
+
+        \App\Util::storeConfig("content/configs/pages.json", $pages);
     }
 
     /**

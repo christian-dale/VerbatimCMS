@@ -39,7 +39,7 @@
                 <div class="pages">
                     {foreach $pages as $page}
                         <div class="page">
-                            <h4><a href="/compositor/page/{$page["url"]}" class="ion-anchor">{$page["title"]}</a></h4>
+                            <h4><a href="/compositor/page{$page["url"]}" class="ion-anchor">{$page["title"]}</a></h4>
                         </div>
                     {/foreach}
 

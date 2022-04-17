@@ -34,6 +34,7 @@
                     <input type="hidden" name="name" value="{$page["name"]}">
                     <input type="hidden" name="create_page" value="true">
                     <input type="submit" class="ion-button ion-btn-primary" value="Submit">
+                    <a href="/compositor/page-delete/{$page["name"]}" class="ion-button ion-btn-default">Delete</a>
                 </form>
             </div>
 

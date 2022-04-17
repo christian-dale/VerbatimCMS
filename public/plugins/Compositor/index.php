@@ -21,7 +21,8 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor/plugin/(.+)", "method" => "post", "state" => "ViewPlugin"],
         ["path" => "/compositor/page", "method" => "get", "state" => "EditPage"],
         ["path" => "/compositor/page/(.+)", "method" => "get", "state" => "EditPage"],
-        ["path" => "/compositor/edit-page", "method" => "post"]
+        ["path" => "/compositor/edit-page", "method" => "post"],
+        ["path" => "/compositor/page-delete/(.+)", "method" => "get", "state" => "PageDelete"]
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
@@ -82,6 +83,10 @@ class Compositor extends \App\Plugin {
             \App\PageLoader::editPage($page_name, $page_content);
 
             \App\App::redirect("/compositor");
+        } else if (strpos($req->path, "/compositor/page-delete") != -1 && $opts["state"] == "PageDelete") {
+            \App\PageLoader::deletePage($req->params["id"]);
+
+            \App\App::redirect("/compositor");
         } else if ($req->path == "/compositor/media" && $req->method == "GET") {
             $app->content = $app->smarty->fetch(__DIR__ . "/media.tpl", [
                 "media" => \App\MediaLoader::getMediaList()
@@ -127,7 +132,7 @@ class Compositor extends \App\Plugin {
 
                 $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
                     "posts" => \App\PluginLoader::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
-                    "pages" => \App\PageLoader::getCustomPages(),
+                    "pages" => $page_loader->loadPages($app),
                     "plugins" => \App\PluginLoader::getPluginsList()
                 ]);
             } else if ($opts["state"] == "ViewPost"){
