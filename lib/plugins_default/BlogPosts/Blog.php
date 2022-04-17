@@ -41,7 +41,7 @@ class Blog {
     }
 
     function loadPostContent(String $file_name): String {
-        return file_get_contents(preg_replace("@.json@", ".txt", $file_name));
+        return file_get_contents(preg_replace("@.json@", ".md", $file_name));
     }
 
     function getPostID(String $file_name): String {

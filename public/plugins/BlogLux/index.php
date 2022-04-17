@@ -55,12 +55,12 @@ class BlogLux extends \App\Plugin {
     }
 
     function createPost($post_name, $content, $opts) {
-        file_put_contents("content/posts/{$post_name}.txt", $content);
+        file_put_contents("content/posts/{$post_name}.md", $content);
         \App\Util::storeConfig("content/posts/{$post_name}.json", $opts);
     }
         
     function editPost($post_name, $content, $opts) {
-        file_put_contents("content/posts/{$post_name}.txt", $content);
+        file_put_contents("content/posts/{$post_name}.md", $content);
 
         $post_meta = \App\Util::loadJSON("content/posts/{$post_name}.json");
         $post_meta["title"] = $opts["title"];
