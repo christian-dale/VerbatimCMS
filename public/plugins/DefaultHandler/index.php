@@ -1,6 +1,6 @@
 <?php
 
-class DefaultHandler {
+class DefaultHandler extends \App\Plugin {
     public $pluginInfo = [
         "name" => "DefaultHandler",
         "description" => "Default plugin for pages with no other plugin.",

@@ -1,6 +1,6 @@
 <?php
 
-class Lang {
+class Lang extends \App\Plugin {
     public $pluginInfo = [
         "name" => "Lang",
         "description" => "Language plugin",

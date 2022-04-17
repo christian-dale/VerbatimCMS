@@ -20,6 +20,7 @@ class Blog {
 
     // Default properties for blog post.
     public $blog_default = [
+        "id" => "",
         "title" => "",
         "date" => "",
         "dateUpdate" => "",
@@ -49,6 +50,21 @@ class Blog {
         preg_match("@/([a-z0-9-_]+).json@", $file_name, $match);
 
         return $match[1];
+    }
+
+    public static function getEmptyPost() {
+        return \App\Item::simpleLoad(BlogPost::class, [
+            "id" => 0,
+            "title" => "",
+            "date" => date("Y-m-d", time()),
+            "dateUpdated" => date("Y-m-d", time()),
+            "draft" => true,
+            "categories" => [],
+            "image" => "",
+            "attrib" => "",
+            "lang" => "en",
+            "content" => ""
+        ]);
     }
 
     function loadPosts() {

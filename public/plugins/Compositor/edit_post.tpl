@@ -15,6 +15,9 @@
 
 <div class="container">
     {$nav}
+
+    <h1><a href="/compositor" class="ion-anchor">Compositor</a></h1>
+    <p>Edit the posts, pages and plugins of your site.</p>
 </div>
 
 <div class="contentBlog">
@@ -24,32 +27,40 @@
         </div>
 
         <div class="content">
-            <input type="text" class="ion-input-text" value="{$post->get("title")}" placeholder="Give your post a name">
-            <input type="date" class="ion-input-text" value="{date("Y-m-d", strtotime($post->get("dateUpdate")))}">
+            <p><a href="/blog/{$post->get("id")}" class="ion-anchor">View post</a></p>
 
-            <div class="section" style="margin-top: 25px;">
-                {foreach $post->get("categories") as $category}
-                    <a href="#" class="postCategory badge">{$category}</a>
-                {/foreach}
-            </div>
+            <form method="post" action="/compositor/save">
+                <input type="text" name="post_title" class="ion-input-text" value="{$post->get("title")}" placeholder="Give your post a name">
+                <input type="date" name="post_date" class="ion-input-text" value="{date("Y-m-d", strtotime($post->get("dateUpdate")))}">
+                <select name="post_media">
+                    {foreach $media as $media_item}
+                        <option value="{$media_item}" {if strpos($post->get("image"), $media_item) != -1}selected{/if}>
+                        {$media_item} ({\App\MediaLoader::getConfigFromID($media_item, "name")})
+                        </option>
+                    {/foreach}
+                </select>
 
-            <p><i>Articles are written in something called Markdown, read more about it <a class="ion-anchor" target="_blank" href="https://www.markdownguide.org/cheat-sheet">here</a>.</i></p>
+                <div class="section" style="margin-top: 25px;">
+                    {foreach $post->get("categories") as $category}
+                        <a href="#" class="postCategory badge">{$category}</a>
+                    {/foreach}
+                </div>
 
-            <p class="postContent">
-                <textarea class="postText ion-input-text">
-                    {$post->get("content")}
-                </textarea>
-            </p>
+                <p><i>Articles are written in something called Markdown, read more about it <a class="ion-anchor" target="_blank" href="https://www.markdownguide.org/cheat-sheet">here</a>.</i></p>
 
-            <div class="content">
-                <input type="submit" class="ion-button ion-btn-default" value="Cancel">
+                <p class="postContent">
+                    <textarea name="content" class="postText ion-input-text" placeholder="## Content">{$post->get("content")}</textarea>
+                </p>
+
+                <input type="hidden" name="post_name" value="{$post->get("id")}">
+                <input type="hidden" name="post_create" value="{$create_post}">
+
+                <a href="/compositor" class="ion-button ion-btn-default">Cancel</a>
                 <input type="submit" class="ion-button ion-btn-primary" value="Save">
-            </div>
+            </form>
+        </div>
 
-            {if isset($disqus_comments)}
-                {$disqus_comments}
-            {/if}
-
+        <div class="container">
             {$footer}
         </div>
     </div>

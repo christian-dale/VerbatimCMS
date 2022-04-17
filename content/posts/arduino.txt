@@ -1,3 +1,5 @@
+## Introduction
+
 In this article you will learn about concurrency on the arduino. Concurrency is a way of doing multiple
 things on the Arduino seemingly at the same time. This is great for making your code more responsive.  
 
@@ -31,3 +33,10 @@ void loop() {
         lastTime = currentTime;
     }
 }</code></pre>
+                        
+                        
+                        
+                    
+                    
+                    
+                    

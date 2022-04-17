@@ -40,24 +40,6 @@
             "url": "/set-lang",
             "plugin": "Lang",
             "set-lang": true
-        },
-        {
-            "title": "Compositor",
-            "visible": false,
-            "url": "/compositor",
-            "plugin": "Compositor"
-        },
-        {
-            "visible": false,
-            "url": "/compositor/([a-zA-Z-]+)",
-            "state": "ViewPost",
-            "plugin": "Compositor"
-        },
-        {
-            "visible": false,
-            "url": "/compositor/plugin/(.+)",
-            "state": "ViewPlugin",
-            "plugin": "Compositor"
         }
     ]
 }

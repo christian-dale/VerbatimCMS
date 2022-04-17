@@ -1,6 +1,6 @@
 <?php
 
-class DefaultTheme {
+class DefaultTheme extends \App\Plugin {
     public $pluginInfo = [
         "name" => "DefaultTheme",
         "description" => "The default theme for VerbatimCMS",
