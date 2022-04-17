@@ -15,7 +15,16 @@ class Util {
         return filter_input($type, $var, $filter);
     }
 
+    public static function loadJSON(string $path): array {
+        $file = file_get_contents($path);
+        return json_decode($file, true);
+    }
+
     public static function storeConfig($path, $config) {
         file_put_contents($path, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    }
+
+    public static function prettyPrint($text) {
+        return "<pre>" . print_r($text, true) . "</pre>";
     }
 }

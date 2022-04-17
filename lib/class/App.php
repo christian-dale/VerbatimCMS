@@ -7,6 +7,7 @@ require_once("lib/class/Util.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/Item.php");
 require_once("lib/class/PluginLoader.php");
+require_once("lib/class/MediaLoader.php");
 require_once("lib/class/Authenticator.php");
 require_once("lib/class/Router.php");
 require_once("lib/class/PageLoader.php");
@@ -27,6 +28,7 @@ class App {
 	public $lang = null;
     public $page_loader = null;
     public $plugin_loader = null;
+    public $router = null;
 
     function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
@@ -42,33 +44,29 @@ class App {
 
         // \App\Updater::update();
 
-        $router = new \App\Router();
+        $this->router = new \App\Router();
+
+        $this->plugin_loader = new \App\PluginLoader();
+        // Create initial configs for plugins.
+        $this->plugin_loader->initPlugins($this);
 
         $this->page_loader = new \App\PageLoader();
         $this->page_loader->loadPages($this);
-        $this->page_loader->loadRoutes($this, $router);
-
-        $this->plugin_loader = new \App\PluginLoader();
-        $this->plugin_loader->initPlugins();
+        $this->page_loader->loadRoutes($this, $this->router);
 
         // Some variables needs to be assigned before template is fetched
         // and some need to be loaded after.
         $this->assign($this->page_loader);
 
-        if (!$router->begin()) {
+        if (!$this->router->begin()) {
             $this->show404();
         }
 
         $this->assign($this->page_loader);
     }
 
-    public static function loadJSON(string $path): array {
-        $file = file_get_contents($path);
-        return json_decode($file, true);
-    }
-
     function loadConfig() {
-        $this->config = $this->loadJSON("content/configs/config.json");
+        $this->config = \App\Util::loadJSON("content/configs/config.json");
         $this->title = $this->config["title"];
         $this->appname = $this->title;
         $this->description = $this->config["description"];
@@ -122,10 +120,6 @@ class App {
     public static function redirect($url) {
         header("Location: {$url}");
         exit();
-    }
-
-    public static function prettyPrint($text) {
-        return "<pre>" . print_r($text, true) . "</pre>";
     }
 
     function addCSS(string $path) {

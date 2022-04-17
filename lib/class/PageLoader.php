@@ -6,7 +6,7 @@ require_once("lib/class/App.php");
 require_once("lib/class/Router.php");
 
 class PageLoader {
-    public $nav_items = [];
+    public $routes = [];
 
     // Default properties for a page.
     public $page_default = [
@@ -21,37 +21,47 @@ class PageLoader {
     ];
 
     function __construct() {
-            
+
     }
 
     function loadRoutes(\App\App &$app, \App\Router &$router) {
-        foreach ($this->nav_items as $item) {
-            $plugin = $item["plugin"];
+        // Add routes from plugins.
+        foreach (\App\PluginLoader::getPluginsList() as $plugin) {
+            $plugin_obj = new $plugin["name"];
 
-            // Use default plugin if specified plugin does not exist.
-            if (!file_exists("public/plugins/{$item["plugin"]}/index.php")) {
-                $plugin = "DefaultHandler";
+            // The routes defined in the plugin.
+            foreach ($plugin_obj->routes as $index => $route) {
+                $router->add($route["path"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin,) {
+                    PluginLoader::loadGlobalPlugins($app, $req, $route);
+                    PluginLoader::loadPlugin($app, $plugin["name"], $req, $route);
+                });
             }
+        }
+
+        foreach ($this->routes as $route) {
+            $plugin = file_exists("public/plugins/{$route["plugin"]}/index.php") ? 
+                $route["plugin"] : "DefaultHandler";
 
             // Add authentication routes.
             \App\Authenticator::registerRoutes($app, $router);
 
-            $router->add($item["url"], "get", function($req) use(&$app, $item, $plugin) {
-                PluginLoader::loadGlobalPlugins($app, $req, $item);
-                PluginLoader::loadPlugin($app, $plugin, $req, $item);
+            $router->add($route["url"], $route["method"] ?? "get", function($req) use(&$app, $route, $plugin) {
+                PluginLoader::loadGlobalPlugins($app, $req, $route);
+                PluginLoader::loadPlugin($app, $plugin, $req, $route);
             });
         }
     }
 
     function loadPages(\App\App &$app) {
-        $pages = \App\App::loadJSON("content/configs/pages.json");
+        $pages = \App\Util::loadJSON("content/configs/pages.json");
 
         $this->loadCustomAssets($pages);
 
         // Add default properties to pages which do not have all properties.
-        $this->nav_items = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
+        $this->routes = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
 
-        return $this->nav_items;
+        // Filter visible pages.
+        return array_filter($this->routes, fn($x) => $x["visible"]);
     }
 
     /**
@@ -73,10 +83,10 @@ class PageLoader {
      */
     function getNav(\App\Lang &$lang, $smarty): string {
         // Filter nav items which are set to visible.
-        $nav_items_filtered = array_filter($this->nav_items, fn($x) => $x["visible"]);
+        $nav_items_filtered = array_filter($this->routes, fn($x) => $x["visible"]);
 
         // Get the correct lang for nav items.
-        $nav_items_lang = array_map(fn($x) => 
+        $nav_items_lang = array_map(fn($x) =>
             array_merge($x, ["title" => $lang->get("nav:" . strtolower($x["title"]))
         ]), $nav_items_filtered);
 

@@ -7,16 +7,34 @@ enum PluginType: string {
     case THEME = "Theme";
 }
 
-abstract class Plugin {
+class Plugin {
     public $pluginInfo;
+    public $routes;
 
     public function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        
+
+    }
+
+    public function createConfig(): array {
+        return [
+            "enabled" => true
+        ];
+    }
+
+    public function loadConfig(): array {
+        return \App\PluginLoader::loadPluginConfig($this->pluginInfo["name"]);
+    }
+
+    public function storeConfig($config) {
+        \App\Util::storeConfig("content/configs/plugins/{$this->pluginInfo["name"]}/config.json", $config);
     }
 }
 
 class PluginLoader {
     public static $plugin_dir = "public/plugins";
+    private static $plugin_default = [
+        "enabled" => true
+    ];
 
     /**
      * App - Reference to the app object.
@@ -32,8 +50,8 @@ class PluginLoader {
     }
 
     static function loadGlobalPlugins(\App\App &$app, \App\Request $req = new \App\Request(), array $opts = []) {
-        $pages = \App\App::loadJSON("content/configs/pages.json");
-        
+        $pages = \App\Util::loadJSON("content/configs/pages.json");
+
         foreach ($pages["pages_all"]["plugins"] as $plugin_name) {
             require_once(self::getPluginDirectory($plugin_name));
             (new $plugin_name)->init($app, $req, $opts);
@@ -92,6 +110,6 @@ class PluginLoader {
     }
 
     static function loadPluginConfig(string $plugin_name) {
-        return \App\App::loadJSON("content/configs/plugins/{$plugin_name}/config.json");
+        return \App\Util::loadJSON("content/configs/plugins/{$plugin_name}/config.json");
     }
 }

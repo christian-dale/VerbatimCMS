@@ -3,6 +3,7 @@
 namespace App;
 
 class Request {
+    public string $path = "/";
     public array $params = [];
     public string $method = "get";
 }
@@ -30,6 +31,7 @@ class Router {
 
             if ($res && $_SERVER["REQUEST_METHOD"] == $route["method"]) {
                 $req = new \App\Request();
+                $req->path = $_SERVER["REQUEST_URI"];
                 $req->method = $route["method"];
 
                 // If this is a route parameter.
