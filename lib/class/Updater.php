@@ -2,41 +2,49 @@
 
 namespace App;
 
-require_once("lib/class/App.php");
-
 class Updater {
-    public static $config_config = [];
-    public static $config_pages = [];
+    private $config_path = "lib/configs/verbatimcms.json";
+    private $config = [];
 
-    public static $config_config_path = "content/configs/config.json";
-    public static $config_pages_path = "content/configs/pages.json";
-    public static $default_config_path = "lib/configs_default/config.json";
-    public static $default_config_pages_path = "lib/configs_default/pages.json";
+    function __construct() {
+        $this->config = \App\Util::loadJSON($this->config_path);
+        $release = $this->releaseAvailable();
 
-    public static function update() {
-        self::loadConfigs();
-
-        // Check if configs have been updated.
-        if (!self::$config_config["updated"]) {
-            self::$config_config["updated"] = true;
-            self::updateConfigs();
+        if ($release) {
+            $this->update($release);
         }
     }
 
+    public function releaseAvailable() {
+        if (time() - $this->config["lastUpdateCheck"] > 86400 || true) {
+            $res = \App\Request::request("https://api.github.com/repos/christian-dale/VerbatimCMS/releases/latest");
+
+            $this->config["lastUpdateCheck"] = time();
+            \App\Util::storeConfig($this->config_path, $this->config);
+
+            $latest_release = json_decode($res, true);
+
+            if ($latest_release->name != $this->config["version"]) {
+                return $latest_release;
+            }
+        }
+
+        return false;
+    }
+
+    public static function update($release) {
+        // file_put_contents("lib/update.zip", file_get_contents($release["assets"][0]["browser_download_url"]));
+        $zip = new \ZipArchive();
+        $zip->open("lib/update.zip");
+        $zip->extractTo("lib/update");
+        $zip->close();
+    }
+
     private static function loadConfigs() {
-        self::$config_config = \App\Util::loadJSON(self::$default_config_path);
-        self::$config_pages = \App\Util::loadJSON(self::$default_config_pages_path);
+
     }
 
     private static function updateConfigs() {
-        $content_config = \App\Util::loadJSON(self::$config_config_path);
-        $content_pages = \App\Util::loadJSON(self::$config_pages_path);
 
-        // Add any new config properties to content configs.
-        $updated_config = array_merge(self::$config_config, $content_config);
-        $updated_config_pages = array_merge(self::$config_pages, $content_pages);
-
-        \App\Util::storeConfig(self::$config_config_path, $updated_config);
-        \App\Util::storeConfig(self::$config_pages_path, $updated_config_pages);
     }
 }

@@ -11,6 +11,7 @@
         {/if}
 
         <p><a href="/compositor/media" class="ion-anchor">Manage media</a></p>
+        <p><a href="/compositor/lang" class="ion-anchor">Manage language</a></p>
 
         <div class="ion-grid">
             <div class="ion-col-1">

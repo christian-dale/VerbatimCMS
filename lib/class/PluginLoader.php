@@ -8,8 +8,8 @@ enum PluginType: string {
 }
 
 class Plugin {
-    public $pluginInfo;
-    public $routes;
+    public $pluginInfo = [];
+    public $routes = [];
 
     public function init(\App\App &$app, \App\Request $req, array $opts = []) {
 

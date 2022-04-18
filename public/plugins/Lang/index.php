@@ -8,7 +8,7 @@ class Lang extends \App\Plugin {
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        if (\App\Util::issetAndTrue($opts["set-lang"])) {
+        if (\App\Util::issetAndTrue($opts["set-lang"] ?? null)) {
             $this->setLang($app);
         }
     }

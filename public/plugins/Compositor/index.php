@@ -12,8 +12,9 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor", "method" => "get"],
         ["path" => "/compositor/setup", "method" => "get"],
         ["path" => "/compositor/setup", "method" => "post"],
-        ["path" => "/compositor/media", "method" => "get", "state"],
-        ["path" => "/compositor/media", "method" => "post", "state"],
+        ["path" => "/compositor/media", "method" => "get"],
+        ["path" => "/compositor/media", "method" => "post"],
+        ["path" => "/compositor/lang", "method" => "get"],
         ["path" => "/compositor/view-post/([a-zA-Z-]+)", "method" => "get", "state" => "ViewPost"],
         ["path" => "/compositor/create-post", "method" => "get", "state" => "CreatePost"],
         ["path" => "/compositor/save", "method" => "post"],
@@ -98,6 +99,13 @@ class Compositor extends \App\Plugin {
                 \App\MediaLoader::storeMedia($media);
                 \App\App::redirect("/compositor/media");
             }
+        } else if ($req->path == "/compositor/lang") {
+            $lang_files = array_map(fn($x) => basename($x), glob("content/lang/*"));
+            $lang = array_map(fn($x) => ["name" => $x, "lang" => \App\Util::loadJSON("content/lang/{$x}")], $lang_files);
+
+            $app->content = $app->smarty->fetch(__DIR__ . "/lang.tpl", [
+                "lang" => $lang
+            ]);
         } else if ($req->path == "/compositor/setup" && $req->method == "GET") {
             $app->content = $app->smarty->fetch(__DIR__ . "/setup.tpl");  
         } else if ($req->path = "/compositor/setup" && $req->method == "POST") {

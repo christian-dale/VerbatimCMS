@@ -7,4 +7,4 @@ before-script:
   - composer install
 
 script:
-  - .vendor/bin/phpunit --bootstrap lib/tests/bootstrap.php lib/tests
+  - ./vendor/bin/phpunit --bootstrap lib/tests/bootstrap.php lib/tests

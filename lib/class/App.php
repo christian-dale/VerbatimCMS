@@ -42,7 +42,7 @@ class App {
 
         $this->loadConfig();
 
-        // \App\Updater::update();
+        $updater = new \App\Updater();
 
         $this->router = new \App\Router();
 
