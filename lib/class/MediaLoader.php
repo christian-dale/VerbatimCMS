@@ -38,6 +38,10 @@ class MediaLoader {
     }
 
     public static function storeMedia($file) {
+        if (!file_exists(self::$media_directory)) {
+            mkdir(self::$media_directory);
+        }
+
         $media_name = uniqid() . "." . pathinfo($file["name"], PATHINFO_EXTENSION);
         move_uploaded_file($file["tmp_name"], self::$media_directory . "/" . $media_name);
         self::storeMediaMeta($file, $media_name);

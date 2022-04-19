@@ -55,6 +55,7 @@ class BlogLux extends \App\Plugin {
     }
 
     function createPost($post_name, $content, $opts) {
+        $post_name = str_replace(" ", "-", strtolower($post_name));
         file_put_contents("content/posts/{$post_name}.md", $content);
         \App\Util::storeConfig("content/posts/{$post_name}.json", $opts);
     }

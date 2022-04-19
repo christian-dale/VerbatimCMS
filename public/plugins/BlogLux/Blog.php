@@ -63,7 +63,8 @@ class Blog {
             "image" => "",
             "attrib" => "",
             "lang" => "en",
-            "content" => ""
+            "content" => "",
+            "empty" => true
         ]);
     }
 

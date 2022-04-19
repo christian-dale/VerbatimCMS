@@ -16,7 +16,7 @@ class Updater {
     }
 
     public function releaseAvailable() {
-        if (time() - $this->config["lastUpdateCheck"] > 86400 || true) {
+        if (time() - $this->config["lastUpdateCheck"] > 86400) {
             $res = \App\Request::request("https://api.github.com/repos/christian-dale/VerbatimCMS/releases/latest");
 
             $this->config["lastUpdateCheck"] = time();

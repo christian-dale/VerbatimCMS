@@ -44,7 +44,7 @@ class Compositor extends \App\Plugin {
             $content = \App\Util::getReqAttr($_POST, "content");
 
             if ($post_create) {
-                $app->getPlugin("BlogLux")->createPost(strtolower($post_title), $content, [
+                $app->getPlugin("BlogLux")->createPost($post_title, $content, [
                     "title" => $post_title,
                     "date" => $post_date,
                     "dateUpdate" => $post_date,

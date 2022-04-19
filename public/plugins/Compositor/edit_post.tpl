@@ -23,11 +23,15 @@
 <div class="contentBlog">
     <div class="blogPost">
         <div class="container">
-            <div class="intro">{$post->get("attrib")}</div>
+            {if $post->get("image") != ""}
+                <div class="intro">{$post->get("attrib")}</div>
+            {/if}
         </div>
 
         <div class="content">
-            <p><a href="/blog/{$post->get("id")}" class="ion-anchor">View post</a></p>
+            {if !isset($post->get("empty"))}
+                <p><a href="/blog/{$post->get("id")}" class="ion-anchor">View post</a></p>
+            {/if}
 
             <form method="post" action="/compositor/save">
                 <input type="text" name="post_title" class="ion-input-text" value="{$post->get("title")}" placeholder="Give your post a name">
