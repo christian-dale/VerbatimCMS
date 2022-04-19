@@ -91,13 +91,23 @@ class App {
         $this->smarty->assign("app", $this);
 
         $this->smarty->assign([
-            "nav" => $page_loader->getNav($this->lang, $this->smarty),
-            "footer" => $page_loader->getFooter($this->smarty),
             "lang" => $this->lang,
             "title" => $this->title,
             "description" => $this->description,
             "content" => $this->content
         ]);
+
+        if ($this->plugin_loader->pluginExists("DefaultHandler")) {
+            $this->smarty->assign([
+                "nav" => $this->pluginDefault()->getNav($this),
+                "footer" => $this->pluginDefault()->getFooter($this)
+            ]);
+        } else {
+            $this->smarty->assign([
+                "nav" => "",
+                "footer" => ""
+            ]);
+        }
     }
 
     function render() {
@@ -105,6 +115,10 @@ class App {
             "css_paths" => $this->css_paths,
             "js_paths" => $this->js_paths
         ]);
+    }
+
+    public function pluginDefault() {
+        return $this->plugin_loader->getPlugin($this, "DefaultHandler");
     }
 
     public function getPlugin(string $plugin_name) {

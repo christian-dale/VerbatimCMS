@@ -35,7 +35,7 @@
 
             <form method="post" action="/compositor/save">
                 <input type="text" name="post_title" class="ion-input-text" value="{$post->get("title")}" placeholder="Give your post a name">
-                <input type="date" name="post_date" class="ion-input-text" value="{date("Y-m-d", strtotime($post->get("dateUpdate")))}">
+                <input type="date" name="post_date" class="ion-input-text" value="{$post->get("dateUpdated")}">
                 <select name="post_media">
                     {foreach $media as $media_item}
                         <option value="{$media_item}" {if strpos($post->get("image"), $media_item) != -1}selected{/if}>

@@ -20,4 +20,25 @@ class DefaultHandler extends \App\Plugin {
     private function templateExists(?string $file): bool {
         return file_exists($file);
     }
+
+    /**
+     * Get the nav bar for the header.
+     */
+    function getNav(\App\App $app): string {
+        // Filter nav items which are set to visible.
+        $nav_items_filtered = array_filter($app->page_loader->routes, fn($x) => $x["visible"]);
+
+        // Get the correct lang for nav items.
+        $nav_items_lang = array_map(fn($x) =>
+            array_merge($x, ["title" => $app->lang->get("nav:" . strtolower($x["title"]))
+        ]), $nav_items_filtered);
+
+        return $app->smarty->fetch("lib/templates/partials/nav.tpl", [
+            "nav_items" => $nav_items_lang
+        ]);
+    }
+
+    function getFooter(\App\App $app): string {
+        return $app->smarty->fetch("lib/templates/partials/footer.tpl");
+    }
 }
