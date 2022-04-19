@@ -22,7 +22,7 @@
 
     <title>{$app->getTitle()}</title>
 
-    <link rel="icon" type="image/png" href="/assets/media/favicon.png">
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
 
     {foreach $css_paths as $css_path}
         <link rel="stylesheet" href="{$css_path}">

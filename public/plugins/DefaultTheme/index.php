@@ -10,7 +10,7 @@ class DefaultTheme extends \App\Plugin {
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
         // TODO: Add built-in method for getting plugin directory.
-        $app->addCSS("/asset/styles/normalize.css");
+        $app->addCSS("/assets/styles/normalize.css");
         $app->addCSS("/plugins/DefaultTheme/theme.css");
     }
 }

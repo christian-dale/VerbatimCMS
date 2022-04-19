@@ -34,10 +34,10 @@ class Updater {
 
     public static function update($release) {
         // file_put_contents("lib/update.zip", file_get_contents($release["assets"][0]["browser_download_url"]));
-        $zip = new \ZipArchive();
-        $zip->open("lib/update.zip");
-        $zip->extractTo("lib/update");
-        $zip->close();
+        // $zip = new \ZipArchive();
+        // $zip->open("lib/update.zip");
+        // $zip->extractTo("lib/update");
+        // $zip->close();
     }
 
     private static function loadConfigs() {
