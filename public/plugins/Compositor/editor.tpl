@@ -60,22 +60,36 @@
                         </div>
                     {/foreach}
                 </div>
-            </div>
-            {* <div class="ion-col-1">
-                <h2>Media</h2>
-                <hr>
-
-                <div class="media">
-                    {foreach $media as $media_item}
-                        <div class="media-item">
-                            <img src="/assets/media/{$media_item}" style="max-width: 100%;">
-                        </div>
-                    {/foreach}
-
-                    <a href="/compositor/media" class="ion-button ion-btn-primary" style="margin-top: 25px;">Upload media</a>
-                </div>
-            </div> *}
+            </div>           
         </div>
+
+        <form method="post" action="/compositor/custom">
+            <div class="ion-grid">
+                <div class="ion-col-1">
+                    <h2>Custom style</h2>
+                    <textarea name="custom_css" placeholder="" class="ion-input-text" style="height: 250px;">{$custom_css}</textarea>
+                </div>
+                <div class="ion-col-1">
+                    <h2>Custom js</h2>
+                    <textarea name="custom_js" placeholder="" class="ion-input-text" style="height: 250px;">{$custom_js}</textarea>
+                </div>                
+            </div>
+
+            <input type="submit" value="Submit" class="ion-button ion-btn-primary">
+        </form>
+
+        {* <h2>Media</h2>
+        <hr>
+
+        <div class="media">
+            {foreach $media as $media_item}
+                <div class="media-item">
+                    <img src="/assets/media/{$media_item}" style="max-width: 100%;">
+                </div>
+            {/foreach}
+
+            <a href="/compositor/media" class="ion-button ion-btn-primary" style="margin-top: 25px;">Upload media</a>
+        </div> *}
 
         {$footer}
     </div>

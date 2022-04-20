@@ -86,15 +86,36 @@ class PageLoader {
 
         file_put_contents("content/pages/{$page_name_clean}.tpl", $content);
         $pages = \App\Util::loadJSON("content/configs/pages.json");
-        
-        $pages["pages"][] = [
-            "title" => $page_name,
-            "url" => "/{$page_name_clean}",
-            "path" => "content/pages/{$page_name_clean}.tpl",
-            "visible" => true
-        ];
+
+        $page_edit = false;
+
+        foreach ($pages["pages"] as $index => $page) {
+            if (strtolower(str_replace(" ", "-", $page["title"])) == $page_name_clean) {
+                $page_edit = true;
+
+                $pages["pages"][$index] = [
+                    "title" => $page_name,
+                    "url" => "/{$page_name_clean}",
+                    "path" => "content/pages/{$page_name_clean}.tpl",
+                    "visible" => true
+                ];
+            }
+        }
+
+        if (!$page_edit) {
+            $pages["pages"][] = [
+                "title" => $page_name,
+                "url" => "/{$page_name_clean}",
+                "path" => "content/pages/{$page_name_clean}.tpl",
+                "visible" => true
+            ];
+        }
 
         \App\Util::storeConfig("content/configs/pages.json", $pages);
+
+        $lang = \App\Util::loadJSON("content/lang/en.json");
+        $lang["nav:{$page_name_clean}"] = $page_name;
+        \App\Util::storeConfig("content/lang/en.json", $lang);
     }
 
     public static function deletePage($page_name) {

@@ -23,12 +23,12 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor/page", "method" => "get", "state" => "EditPage"],
         ["path" => "/compositor/page/(.+)", "method" => "get", "state" => "EditPage"],
         ["path" => "/compositor/edit-page", "method" => "post"],
-        ["path" => "/compositor/page-delete/(.+)", "method" => "get", "state" => "PageDelete"]
+        ["path" => "/compositor/page-delete/(.+)", "method" => "get", "state" => "PageDelete"],
+        ["path" => "/compositor/custom", "method" => "post"]
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
         $app->addCSS("/assets/styles/kernel.css");
-        $app->addCSS("/plugins/Compositor/style.css");
 
         if ($this->loadConfig()["setup"] == true && $req->path != "/compositor/setup") {
             \App\App::redirect("/compositor/setup");
@@ -61,6 +61,14 @@ class Compositor extends \App\Plugin {
                     "media" => $post_media
                 ]);
             }
+
+            \App\App::redirect("/compositor");
+        } else if ($req->path == "/compositor/custom" && $req->method == "POST") {
+            $custom_css = \App\Util::getReqAttr($_POST, "custom_css");
+            $custom_js = \App\Util::getReqAttr($_POST, "custom_js");
+
+            file_put_contents("public/plugins/Compositor/custom.css", $custom_css);
+            file_put_contents("public/plugins/Compositor/custom.js", $custom_js);
 
             \App\App::redirect("/compositor");
         } else if (strpos($req->path, "/compositor/page") != -1 && $opts["state"] == "EditPage") {
@@ -141,7 +149,9 @@ class Compositor extends \App\Plugin {
                 $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
                     "posts" => \App\PluginLoader::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
                     "pages" => $page_loader->loadPages($app),
-                    "plugins" => \App\PluginLoader::getPluginsList()
+                    "plugins" => \App\PluginLoader::getPluginsList(),
+                    "custom_css" => file_get_contents("public/plugins/Compositor/custom.css"),
+                    "custom_js" => file_get_contents("public/plugins/Compositor/custom.jss")
                 ]);
             } else if ($opts["state"] == "ViewPost"){
                 $this->blogPostEdit($app, $req);

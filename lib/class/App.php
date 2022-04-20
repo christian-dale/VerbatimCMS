@@ -30,9 +30,15 @@ class App {
     public $plugin_loader = null;
     public $router = null;
 
+    public static $instance = null;
+
     function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
+        }
+
+        if (self::$instance == null) {
+            self::$instance = $this;
         }
 
 		$this->smarty = new \Smarty();
@@ -99,7 +105,7 @@ class App {
 
         if ($this->plugin_loader->pluginExists("DefaultHandler")) {
             $this->smarty->assign([
-                "nav" => $this->pluginDefault()->getNav($this),
+                "nav" => $this->pluginDefault()->getNav(),
                 "footer" => $this->pluginDefault()->getFooter($this)
             ]);
         } else {
@@ -111,6 +117,9 @@ class App {
     }
 
     function render() {
+        $this->addCSS("/plugins/Compositor/custom.css");
+        $this->addJS("/plugins/Compositor/custom.js");
+
         return $this->smarty->fetch("lib/templates/main.tpl", [
             "css_paths" => $this->css_paths,
             "js_paths" => $this->js_paths
