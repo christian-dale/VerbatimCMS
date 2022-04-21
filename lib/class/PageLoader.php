@@ -65,7 +65,10 @@ class PageLoader {
         $this->routes = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
 
         // Filter visible pages.
-        $pages_visible = array_filter($this->routes, fn($x) => $x["visible"]);
+        $pages_visible = array_filter($this->routes, function($page) {
+            return $page["visible"] || (strtolower($page["title"]) == "home" &&
+                file_exists("content/pages/home.tpl"));
+        });
 
         return $pages_visible;
     }
@@ -94,6 +97,7 @@ class PageLoader {
                 $page_edit = true;
 
                 $pages["pages"][$index] = [
+                    "id" => $page_name_clean,
                     "title" => $page_name,
                     "url" => "/{$page_name_clean}",
                     "path" => "content/pages/{$page_name_clean}.tpl",
@@ -104,6 +108,7 @@ class PageLoader {
 
         if (!$page_edit) {
             $pages["pages"][] = [
+                "id" => $page_name_clean,
                 "title" => $page_name,
                 "url" => "/{$page_name_clean}",
                 "path" => "content/pages/{$page_name_clean}.tpl",

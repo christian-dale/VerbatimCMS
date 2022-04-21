@@ -2,7 +2,9 @@
     <div class="container">
         {$nav}
 
-        <h1><a href="/compositor" class="ion-anchor">Compositor</a></h1>
+        <h1><a href="/compositor" class="ion-anchor">Compositor</a> 
+            <a href="/compositor/settings" class="ion-anchor"><i class="fa-solid fa-gear"></i></a>
+        </h1>
         <p>Edit the posts, pages and plugins of your site.</p>
 
         {if \App\Authenticator::isLoggedIn()}
@@ -11,7 +13,7 @@
         {/if}
 
         <p><a href="/compositor/media" class="ion-anchor">Manage media</a></p>
-        <p><a href="/compositor/lang" class="ion-anchor">Manage language</a></p>
+        <p><a href="/compositor/lang" class="ion-anchor">Manage language</a></p>        
 
         <div class="ion-grid">
             <div class="ion-col-1">
@@ -40,7 +42,7 @@
                 <div class="pages">
                     {foreach $pages as $page}
                         <div class="page">
-                            <h4><a href="/compositor/page{$page["url"]}" class="ion-anchor">{$page["title"]}</a></h4>
+                            <h4><a href="/compositor/page/{$page["id"]}" class="ion-anchor">{$page["title"]}</a></h4>
                         </div>
                     {/foreach}
 

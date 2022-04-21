@@ -12,7 +12,7 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor", "method" => "get"],
         ["path" => "/compositor/setup", "method" => "get"],
         ["path" => "/compositor/setup", "method" => "post"],
-        ["path" => "/compositor/media", "method" => "get"],
+        ["path" => "/compositor/media", "method" => "get", "state" => "PageMedia"],
         ["path" => "/compositor/media", "method" => "post"],
         ["path" => "/compositor/lang", "method" => "get"],
         ["path" => "/compositor/view-post/([a-zA-Z-]+)", "method" => "get", "state" => "ViewPost"],
@@ -24,14 +24,20 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor/page/(.+)", "method" => "get", "state" => "EditPage"],
         ["path" => "/compositor/edit-page", "method" => "post"],
         ["path" => "/compositor/page-delete/(.+)", "method" => "get", "state" => "PageDelete"],
-        ["path" => "/compositor/custom", "method" => "post"]
+        ["path" => "/compositor/custom", "method" => "post"],
+        ["path" => "/compositor/settings", "method" => "get"]
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
         $app->addCSS("/assets/styles/kernel.css");
+        $app->addCSS("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
 
         if ($this->loadConfig()["setup"] == true && $req->path != "/compositor/setup") {
             \App\App::redirect("/compositor/setup");
+        }
+
+        if (!\App\Authenticator::isLoggedIn()) {
+            \App\App::redirect("/login");
         }
 
         if ($req->path == "/compositor/save" && $req->method == "POST") {
@@ -63,6 +69,11 @@ class Compositor extends \App\Plugin {
             }
 
             \App\App::redirect("/compositor");
+        } else if ($req->path == "/compositor/settings") {
+            $app->content = $app->smarty->fetch(__DIR__ . "/setup.tpl", [
+                "config" => \App\Util::loadJSON("content/configs/config.json"),
+                "settings" => true
+            ]);
         } else if ($req->path == "/compositor/custom" && $req->method == "POST") {
             $custom_css = \App\Util::getReqAttr($_POST, "custom_css");
             $custom_js = \App\Util::getReqAttr($_POST, "custom_js");
@@ -96,7 +107,7 @@ class Compositor extends \App\Plugin {
             \App\PageLoader::deletePage($req->params["id"]);
 
             \App\App::redirect("/compositor");
-        } else if ($req->path == "/compositor/media" && $req->method == "GET") {
+        } else if ($req->path == "/compositor/media" && $req->method == "GET" && $opts["state"] == "PageMedia") {
             $app->content = $app->smarty->fetch(__DIR__ . "/media.tpl", [
                 "media" => \App\MediaLoader::getMediaList()
             ]);
