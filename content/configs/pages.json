@@ -25,20 +25,6 @@
             "path": "content/pages/about.tpl"
         },
         {
-            "title": "Blog",
-            "url": "/blog",
-            "plugin": "BlogLux",
-            "template": true,
-            "bg-color": "",
-            "color": "#fff"
-        },
-        {
-            "visible": false,
-            "url": "/blog/(.+)",
-            "path": "public/plugins/BlogLux/blog.tpl",
-            "plugin": "BlogLux"
-        },
-        {
             "visible": false,
             "url": "/set-lang",
             "plugin": "Lang",

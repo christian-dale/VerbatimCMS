@@ -10,6 +10,11 @@ class BlogLux extends \App\Plugin {
         "version" => "1.0.0"
     ];
 
+    public $routes = [
+        ["title" => "Blog", "path" => "/blog", "method" => "get", "nav_item" => true],
+        ["title" => "Blog", "path" => "/blog/(.+)", "method" => "get"]
+    ];
+
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
         $app->addCSS("/plugins/BlogLux/style.css");
 
