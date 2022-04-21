@@ -34,9 +34,9 @@ class Updater {
     }
 
     public static function update($release) {
-        file_put_contents("lib/{$release["assets"][0]["name"]}", file_get_contents($release["assets"][0]["browser_download_url"]));
+        file_put_contents("lib/{$release["tag_name"]}", file_get_contents($release["assets"][0]["browser_download_url"]));
         $zip = new \ZipArchive();
-        $zip->open("lib/{$release["assets"][0]["name"]}");
+        $zip->open("lib/{$release["tag_name"]}");
         $zip->extractTo("lib/update");
         $zip->close();
 
@@ -45,7 +45,7 @@ class Updater {
         \App\Util::copyRecursive("lib/update/vendor", "./vendor");
         self::updateConfigs($release);
 
-        unlink("lib/{$release["assets"][0]["name"]}");
+        unlink("lib/{$release["tag_name"]}");
     }
 
     private static function loadConfigs() {
