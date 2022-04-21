@@ -2,45 +2,70 @@
 
 namespace App;
 
-require_once("lib/class/App.php");
-
 class Updater {
-    public static $config_config = [];
-    public static $config_pages = [];
+    private $config_path = "lib/configs/verbatimcms.json";
+    private $config = [];
 
-    public static $config_config_path = "content/configs/config.json";
-    public static $config_pages_path = "content/configs/pages.json";
-    public static $default_config_path = "lib/configs_default/config.json";
-    public static $default_config_pages_path = "lib/configs_default/pages.json";
+    function __construct() {
+        $this->config = \App\Util::loadJSON($this->config_path);
+        $release = $this->releaseAvailable();
 
-    public static function update() {
-        self::loadConfigs();
-
-        // Check if configs have been updated.
-        if (!self::$config_config["updated"]) {
-            self::$config_config["updated"] = true;
-            self::updateConfigs();
+        if ($release) {
+            $this->update($release);
         }
     }
 
+    public function releaseAvailable() {
+        // Check for updates once a day.
+        if (time() - $this->config["lastUpdateCheck"] > 86400) {
+            $res = \App\Request::request("https://api.github.com/repos/christian-dale/VerbatimCMS/releases/latest");
+
+            $this->config["lastUpdateCheck"] = time();
+            \App\Util::storeConfig($this->config_path, $this->config);
+
+            $latest_release = json_decode($res, true);
+
+            if ($latest_release->name != $this->config["version"]) {
+                return $latest_release;
+            }
+        }
+
+        return false;
+    }
+
+    public static function update($release) {
+        file_put_contents("lib/{$release["assets"][0]["name"]}", file_get_contents($release["assets"][0]["browser_download_url"]));
+        $zip = new \ZipArchive();
+        $zip->open("lib/{$release["assets"][0]["name"]}");
+        $zip->extractTo("lib/update");
+        $zip->close();
+
+        \App\Util::copyRecursive("lib/update/lib", "./lib");
+        \App\Util::copyRecursive("lib/update/public", "./public");
+        \App\Util::copyRecursive("lib/update/vendor", "./vendor");
+        self::updateConfigs($release);
+
+        unlink("lib/{$release["assets"][0]["name"]}");
+    }
+
     private static function loadConfigs() {
-        self::$config_config = \App\App::loadJSON(self::$default_config_path);
-        self::$config_pages = \App\App::loadJSON(self::$default_config_pages_path);
+
     }
 
-    private static function updateConfigs() {
-        $content_config = \App\App::loadJSON(self::$config_config_path);
-        $content_pages = \App\App::loadJSON(self::$config_pages_path);
+    private static function updateConfigs($release) {
+        // $config_old = \App\Util::loadJSON("content/configs/config.json");
+        // $config_new = \App\Util::loadJSON("lib/update/content/configs/config.json");
 
-        // Add any new config properties to content configs.
-        $updated_config = array_merge(self::$config_config, $content_config);
-        $updated_config_pages = array_merge(self::$config_pages, $content_pages);
+        // \App\Util::storeConfig("content/configs/config.json", array_merge($config_old, $config_new));
 
-        self::storeConfig(self::$config_config_path, $updated_config);
-        self::storeConfig(self::$config_pages_path, $updated_config_pages);
-    }
+        // $media_old = \App\Util::loadJSON("content/configs/media.json");
+        // $media_new = \App\Util::loadJSON("lib/update/content/configs/media.json");
 
-    private static function storeConfig($path, $config) {
-        file_put_contents($path, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        // \App\Util::storeConfig("content/configs/media.json", array_merge($media_old, $media_new));
+
+        // $pages_old = \App\Util::loadJSON("content/configs/pages.json");
+        // $pages_new = \App\Util::loadJSON("lib/update/content/configs/pages.json");
+
+        // \App\Util::storeConfig("content/configs/pages.json", array_merge($pages_old, $pages_new));
     }
 }

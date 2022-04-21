@@ -34,9 +34,21 @@
         <div class="content" style="background: #f3e8e8; border-radius: 5px;">
             <div class="intro">
                 <h1>Login</h1>
+
+                {if isset($first_user)}
+                    <h2>Admin login information</h2>
+                    <p>Please store for later</p>
+                    <p>Username: {$first_user["username"]}</p>
+                    <p>Password: {$first_user["password"]}</p>
+                {/if}
+
                 <form method="post">
-                    <label>Email</label>
-                    <input type="email" name="email" class="ion-input-text" value="" placeholder="Enter email">
+                    <label>Username</label>
+                    <input type="username" name="username" class="ion-input-text" value="" placeholder="Enter username">
+
+                    <label>Password</label>
+                    <input type="password" name="password" class="ion-input-text" value="" placeholder="Enter password">
+
                     <input type="submit" class="ion-button ion-btn-primary" value="Login">
                 </form>
             </div>

@@ -16,14 +16,7 @@
     }
 </style>
 
-<script>
-    window.onload = function() {
-        const date = document.createTextNode(new Date().getFullYear());
-        document.querySelector(".footerCopyright").appendChild(date);
-    };
-</script>
-
 <div class="footer">
     <hr>
-    <p class="footerCopyright">{$app->getConfigAttr("copyright")} - </p>
+    <p class="footerCopyright">{$app->getConfigAttr("copyright")}</p>
 </div>

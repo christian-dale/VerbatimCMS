@@ -3,8 +3,27 @@
 namespace App;
 
 class Request {
+    public string $path = "/";
     public array $params = [];
     public string $method = "get";
+
+    public static function request($url) {
+        $c = curl_init();
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($c, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-Type: application/json'));
+        curl_setopt($c, CURLOPT_URL, $url);
+        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($c, CURLOPT_USERAGENT, "VerbatimCMS");
+
+        $content = curl_exec($c);
+        curl_close($c);
+
+        return $content;
+    }
+}
+
+class Response {
+    
 }
 
 class Router {
@@ -30,6 +49,7 @@ class Router {
 
             if ($res && $_SERVER["REQUEST_METHOD"] == $route["method"]) {
                 $req = new \App\Request();
+                $req->path = $_SERVER["REQUEST_URI"];
                 $req->method = $route["method"];
 
                 // If this is a route parameter.

@@ -1,13 +1,14 @@
 <?php
 
-class Lang {
+class Lang extends \App\Plugin {
     public $pluginInfo = [
-        "name" => "SetLang",
+        "name" => "Lang",
+        "description" => "Language plugin",
         "type" => \App\PluginType::DEFAULT
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        if (\App\Util::issetAndTrue($opts["set-lang"])) {
+        if (\App\Util::issetAndTrue($opts["set-lang"] ?? null)) {
             $this->setLang($app);
         }
     }

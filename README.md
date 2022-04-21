@@ -1,6 +1,6 @@
 # Verbatim CMS
 
-A portfolio content management system.
+A modular and lightweight Content Management System (CMS).
 
 ## About
 
@@ -8,8 +8,8 @@ Verbatim CMS was developed with security as a main focus and priority.
 It is also customizable and works with all types of websites.
 A true content management system, not only for blogs.
 
-This software is still in beta, so do not use it for anything
-with specific security requirements.
+NOTICE: This software is still in beta, so do not use it for anything
+with specific security requirements. The project structure and API is subject to change.
 
 Do not edit any files in the 'lib' directory, as these
 files will be overwritten when there is an update.
@@ -63,6 +63,9 @@ called Smarty, which looks very similar to normal HTML pages, but with a few ext
 </pre>
 
 Read more about smarty [here](https://www.smarty.net/docsv2/en/).
+
+In order to make changes to the home or 404 page, you must first create a page in
+content/pages/home.tpl or content/pages/404.tpl respectively.
 
 ### Templates
 

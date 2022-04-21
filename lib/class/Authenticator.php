@@ -12,16 +12,20 @@ class Authenticator {
         
     }
 
-    static function auth(string $email, string $token) {
-        $_SESSION["auth"] = true;
-        $_SESSION["user"] = $email;
+    static function auth(string $username, string $password) {
+        $config = \App\Util::loadJSON("content/configs/plugins/Authenticator/config.json");
 
-        \App\App::redirect("/");
+        foreach ($config["users"] as $user) {
+            if ($user["username"] == $username && password_verify($password, $user["password"])) {
+                $_SESSION["auth"] = true;
+                $_SESSION["username"] = $username;
+            }
+        }
     }
 
     static function logout() {
         unset($_SESSION["auth"]);
-        unset($_SESSION["user"]);
+        unset($_SESSION["username"]);
 
         \App\App::redirect("/");
     }
@@ -33,7 +37,9 @@ class Authenticator {
             return;
         }
 
-        $router->add("/login", "get", function($req) use(&$app) {
+        $first_user = self::registerUser();
+
+        $router->add("/login", "get", function($req) use(&$app, $first_user) {
             $app->addCSS("/assets/styles/kernel.css");
 
             if (\App\Util::getReqAttr($_GET, "logout")) {
@@ -41,28 +47,44 @@ class Authenticator {
             }
 
             $app->title = "Login";
-            $app->content = $app->smarty->fetch("lib/templates/pages/login.tpl");
+            $app->content = $app->smarty->fetch("lib/templates/pages/login.tpl", [
+                "first_user" => $first_user
+            ]);
 
             PluginLoader::loadGlobalPlugins($app, $req);
         });
 
-        $router->add("/login", "post", function($req) use(&$app) {
-            $app->addCSS("/assets/styles/kernel.css");
+        $router->add("/login", "post", function($req) use(&$app, $config) {
+            $username = \App\Util::getReqAttr($_POST, "username");
+            $password = \App\Util::getReqAttr($_POST, "password");
 
-            $id = uniqid();
-            // mail(\App\Util::getReqAttr($_POST, "email"), "VerbatimCMS Login", "Login to VerbatimCMS: " . $id);
+            self::auth($username, $password);
+
+            \App\App::redirect(\App\PluginLoader::pluginExists("Compositor") ? "/compositor" : "/");
         });
+    }
 
-        $router->add("/login/(([a-zA-Z0-9]+))", "get", function($req) use(&$app, $config) {
-            foreach ($config["users"] as $user) {
-                $email = \App\Util::getReqAttr($_GET, "email");
-                $token = $req->params["id"];
+    private static function registerUser(string $username = null, string $password = null) {
+        if ($username == null) {
+            $config = \App\Util::loadJSON("content/configs/plugins/Authenticator/config.json");
 
-                if ($user["email"] == $email && $user["token"] == $token) {
-                    \App\Authenticator::auth($email, $token);
-                }
+            $username = uniqid("user_");
+            $password = uniqid("", true);
+
+            if (empty($config["users"])) {
+                $config["users"][] = [
+                    "username" => $username,
+                    "password" => password_hash($password, PASSWORD_DEFAULT)
+                ];
+
+                \App\Util::storeConfig("content/configs/plugins/Authenticator/config.json", $config);
+
+                return [
+                    "username" => $username,
+                    "password" => $password
+                ];
             }
-        });
+        }
     }
 
     static function isLoggedIn() {
@@ -71,7 +93,7 @@ class Authenticator {
 
     static function getUser() {
         if (self::isLoggedIn()) {
-            return $_SESSION["user"];
+            return $_SESSION["username"];
         }
 
         return false;
