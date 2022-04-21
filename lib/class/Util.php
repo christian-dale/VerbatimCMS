@@ -27,4 +27,19 @@ class Util {
     public static function prettyPrint($text) {
         return "<pre>" . print_r($text, true) . "</pre>";
     }
+
+    static function copyRecursive($src, $dest) {
+        $dir = opendir($src);
+        @mkdir($dest);
+
+        while (($file = readdir($dir))) {
+            if ($file != "." && $file != "..") {
+                if (is_dir("{$src}/{$file}")) {
+                    self::copyRecursive("{$src}/{$file}", "{$dest}/{$file}");
+                } else {
+                    copy("{$src}/{$file}", "{$dest}/{$file}");
+                }
+            }
+        }
+    }
 }

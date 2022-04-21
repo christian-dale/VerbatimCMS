@@ -16,6 +16,7 @@ class Updater {
     }
 
     public function releaseAvailable() {
+        // Check for updates once a day.
         if (time() - $this->config["lastUpdateCheck"] > 86400) {
             $res = \App\Request::request("https://api.github.com/repos/christian-dale/VerbatimCMS/releases/latest");
 
@@ -33,18 +34,38 @@ class Updater {
     }
 
     public static function update($release) {
-        // file_put_contents("lib/update.zip", file_get_contents($release["assets"][0]["browser_download_url"]));
-        // $zip = new \ZipArchive();
-        // $zip->open("lib/update.zip");
-        // $zip->extractTo("lib/update");
-        // $zip->close();
+        file_put_contents("lib/{$release["assets"][0]["name"]}", file_get_contents($release["assets"][0]["browser_download_url"]));
+        $zip = new \ZipArchive();
+        $zip->open("lib/{$release["assets"][0]["name"]}");
+        $zip->extractTo("lib/update");
+        $zip->close();
+
+        \App\Util::copyRecursive("lib/update/lib", "./lib");
+        \App\Util::copyRecursive("lib/update/public", "./public");
+        \App\Util::copyRecursive("lib/update/vendor", "./vendor");
+        self::updateConfigs($release);
+
+        unlink("lib/{$release["assets"][0]["name"]}");
     }
 
     private static function loadConfigs() {
 
     }
 
-    private static function updateConfigs() {
+    private static function updateConfigs($release) {
+        // $config_old = \App\Util::loadJSON("content/configs/config.json");
+        // $config_new = \App\Util::loadJSON("lib/update/content/configs/config.json");
 
+        // \App\Util::storeConfig("content/configs/config.json", array_merge($config_old, $config_new));
+
+        // $media_old = \App\Util::loadJSON("content/configs/media.json");
+        // $media_new = \App\Util::loadJSON("lib/update/content/configs/media.json");
+
+        // \App\Util::storeConfig("content/configs/media.json", array_merge($media_old, $media_new));
+
+        // $pages_old = \App\Util::loadJSON("content/configs/pages.json");
+        // $pages_new = \App\Util::loadJSON("lib/update/content/configs/pages.json");
+
+        // \App\Util::storeConfig("content/configs/pages.json", array_merge($pages_old, $pages_new));
     }
 }
