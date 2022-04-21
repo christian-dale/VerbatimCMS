@@ -32,6 +32,14 @@ class PageLoader {
             if (\App\PluginLoader::loadPluginConfig($plugin["name"])["enabled"]) {
                 // The routes defined in the plugin.
                 foreach ($plugin_obj->routes as $index => $route) {
+                    if (isset($route["nav_item"]) && $route["nav_item"] == true) {
+                        $this->routes[] = [
+                            "title" => $route["title"] ?? "",
+                            "url" => $route["path"],
+                            "visible" => true
+                        ];
+                    }
+
                     $router->add($route["path"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin) {
                         PluginLoader::loadGlobalPlugins($app, $req, $route);
                         PluginLoader::loadPlugin($app, $plugin["name"], $req, $route);
