@@ -36,7 +36,7 @@ class Updater {
     public static function update($release) {
         file_put_contents("lib/{$release["tag_name"]}", file_get_contents($release["assets"][0]["browser_download_url"]));
         $zip = new \ZipArchive();
-        $zip->open("lib/{$release["tag_name"]}");
+        $zip->open("lib/VerbatimCMS-{$release["tag_name"]}");
         $zip->extractTo("lib/update");
         $zip->close();
 
