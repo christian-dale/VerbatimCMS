@@ -1,4 +1,9 @@
 {
     "enabled": true,
-    "users": []
+    "users": [
+        {
+            "username": "user_62633765a75b5",
+            "password": "$2y$10$4lraCWf80sGRtnydL8C5Le1nWrcAK8T83CENnOV7.rNpOIjc2VlFG"
+        }
+    ]
 }

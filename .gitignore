@@ -1,6 +1,4 @@
 vendor/*
 lib/templates_cache/*
-content/configs/plugins/*
-public/assets/media/*
 lib/update.zip
 lib/update/

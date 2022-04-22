@@ -24,7 +24,9 @@
         <ul>
             {foreach $nav_items as $item}
                 <li><a href="{$item["url"]}" 
-                    class="navItem navItem{$item["title"]}" style="background-color: {$item["bg-color"]}; color: {$item["color"]};">
+                    class="navItem navItem{$item["title"]}" 
+                    {if isset($item["bg-color"]) && isset($item["color"])}
+                    style="background-color: {$item["bg-color"]}; color: {$item["color"]};"{/if}>
                     {$item["title"]}
                 </a></li>
             {/foreach}

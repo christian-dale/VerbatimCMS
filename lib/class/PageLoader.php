@@ -52,7 +52,7 @@ class PageLoader {
         \App\Authenticator::registerRoutes($app, $router);
 
         foreach ($this->routes as $route) {
-            $plugin = file_exists("public/plugins/{$route["plugin"]}/index.php") ? 
+            $plugin = (isset($route["plugin"]) && file_exists("public/plugins/{$route["plugin"]}/index.php")) ?
                 $route["plugin"] : "DefaultHandler";
 
             if (\App\PluginLoader::loadPluginConfig($plugin)["enabled"]) {
@@ -67,7 +67,7 @@ class PageLoader {
     function loadPages(\App\App &$app) {
         $pages = \App\Util::loadJSON("content/configs/pages.json");
 
-        $this->loadCustomAssets($pages);
+        $this->loadCustomAssets($app, $pages);
 
         // Add default properties to pages which do not have all properties.
         $this->routes = array_map(fn($x) => array_merge($this->page_default, $x), $pages["pages"]);
@@ -148,7 +148,7 @@ class PageLoader {
      * Loads all custom assets from config/pages.json.
      */
 
-    function loadCustomAssets($pages) {
+    function loadCustomAssets(\App\App &$app, $pages) {
         foreach ($pages["pages_all"]["css"] as $css) {
             $app->addCSS($css);
         }
