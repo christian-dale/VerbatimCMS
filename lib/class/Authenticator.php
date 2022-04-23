@@ -13,7 +13,7 @@ class Authenticator {
     }
 
     static function auth(string $username, string $password) {
-        $config = \App\Util::loadJSON("content/configs/plugins/Authenticator/config.json");
+        $config = \App\Util::loadJSON("content/configs/users.json");
 
         foreach ($config["users"] as $user) {
             if ($user["username"] == $username && password_verify($password, $user["password"])) {
@@ -31,7 +31,7 @@ class Authenticator {
     }
 
     static function registerRoutes(\App\App &$app, \App\Router &$router) {
-        $config = $config = \App\PluginLoader::loadPluginConfig("Authenticator");
+        $config = \App\Util::loadJSON("content/configs/users.json");
 
         if (!$config["enabled"]) {
             return;
@@ -66,7 +66,7 @@ class Authenticator {
 
     private static function registerUser(string $username = null, string $password = null) {
         if ($username == null) {
-            $config = \App\Util::loadJSON("content/configs/plugins/Authenticator/config.json");
+            $config = \App\Util::loadJSON("content/configs/users.json");
 
             $username = uniqid("user_");
             $password = uniqid("", true);
@@ -77,7 +77,7 @@ class Authenticator {
                     "password" => password_hash($password, PASSWORD_DEFAULT)
                 ];
 
-                \App\Util::storeConfig("content/configs/plugins/Authenticator/config.json", $config);
+                \App\Util::storeConfig("content/configs/users.json", $config);
 
                 return [
                     "username" => $username,
