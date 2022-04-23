@@ -96,6 +96,8 @@ class PluginLoader {
      * Create inital configs for plugins.
      */
     static function initPlugins(\App\App &$app) {
+        mkdir("content/configs/plugins");
+
         $plugin_names = array_map(fn($x) => basename($x), glob(self::$plugin_dir . "/*"));
 
         foreach ($plugin_names as $plugin_name) {
