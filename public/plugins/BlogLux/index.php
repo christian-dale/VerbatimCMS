@@ -35,6 +35,13 @@ class BlogLux extends \App\Plugin {
         }
     }
 
+    function createConfig(): array {
+        return [
+            "enabled" => true,
+            "description" => ""
+        ];
+    }
+
     /**
      * View a particular blog post.
      */

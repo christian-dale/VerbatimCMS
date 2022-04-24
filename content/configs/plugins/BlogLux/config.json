@@ -1,3 +1,4 @@
 {
-    "enabled": true
+    "enabled": true,
+    "description": "A blog about technology and philosophy."
 }
