@@ -93,18 +93,18 @@ class Compositor extends \App\Plugin {
                 ]);
             } else {
                 $app->content = $app->smarty->fetch(__DIR__ . "/edit_page.tpl", [
-                    "page" => \App\PageLoader::getPageInfo($req->params["id"])
+                    "page" => \App\PageMan::getPageInfo($req->params["id"])
                 ]);
             }
         } else if ($req->path == "/compositor/edit-page") {
             $page_name = \App\Util::getReqAttr($_POST, "name");
             $page_content = \App\Util::getReqAttr($_POST, "content");
 
-            \App\PageLoader::editPage($page_name, $page_content);
+            \App\PageMan::editPage($page_name, $page_content);
 
             \App\App::redirect("/compositor");
         } else if (strpos($req->path, "/compositor/page-delete") != -1 && $opts["state"] == "PageDelete") {
-            \App\PageLoader::deletePage($req->params["id"]);
+            \App\PageMan::deletePage($req->params["id"]);
 
             \App\App::redirect("/compositor");
         } else if ($req->path == "/compositor/media" && $req->method == "GET" && $opts["state"] == "PageMedia") {
@@ -155,12 +155,12 @@ class Compositor extends \App\Plugin {
             if (empty($req->params)) {
                 $app->title = "Compositor";
 
-                $page_loader = new \App\PageLoader();
+                $page_loader = new \App\PageMan();
 
                 $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
-                    "posts" => \App\PluginLoader::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
+                    "posts" => \App\PluginMan::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
                     "pages" => $page_loader->loadPages($app),
-                    "plugins" => \App\PluginLoader::getPluginsList(),
+                    "plugins" => \App\PluginMan::getPluginsList(),
                     "custom_css" => file_get_contents("public/plugins/Compositor/custom.css"),
                     "custom_js" => file_get_contents("public/plugins/Compositor/custom.jss")
                 ]);
@@ -214,7 +214,7 @@ class Compositor extends \App\Plugin {
     function editPlugin(\App\App &$app, \App\Request $req) {
         $app->title = "Edit plugin";
         $app->content = $app->smarty->fetch(__DIR__ . "/edit_plugin.tpl", [
-            "plugin" => \App\PluginLoader::getPlugin($app, $req->params["id"]),
+            "plugin" => \App\PluginMan::getPlugin($app, $req->params["id"]),
             "plugin_config" => $this->loadConfig()
         ]);
     }

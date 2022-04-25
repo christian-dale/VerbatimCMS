@@ -22,7 +22,7 @@ class Plugin {
     }
 
     public function loadConfig(): array {
-        return \App\PluginLoader::loadPluginConfig($this->pluginInfo["name"]);
+        return \App\PluginMan::loadPluginConfig($this->pluginInfo["name"]);
     }
 
     public function storeConfig($config) {
@@ -30,7 +30,7 @@ class Plugin {
     }
 }
 
-class PluginLoader {
+class PluginMan {
     public static $plugin_dir = "public/plugins";
     private static $plugin_default = [
         "enabled" => true

@@ -8,11 +8,11 @@ class Editore {
         if (empty($req->params)) {
             $app->title = "Editore";
 
-            $page_loader = new \App\PageLoader();
+            $page_loader = new \App\PageMan();
 
             $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
-                "posts" => \App\PluginLoader::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
-                "plugins" => \App\PluginLoader::getPluginsList(),
+                "posts" => \App\PluginMan::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
+                "plugins" => \App\PluginMan::getPluginsList(),
                 "pages" => $page_loader->loadPages($app)
             ]);
         } else {

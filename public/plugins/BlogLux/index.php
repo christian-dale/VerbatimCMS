@@ -53,7 +53,7 @@ class BlogLux extends \App\Plugin {
         $app->description = substr(strip_tags($post->get("content")), 0, 150) . " ...";
 
         $app->content = $app->smarty->fetch(__DIR__ . "/post.tpl", [
-            "post" => $post, "disqus_comments" => \App\PluginLoader::loadPlugin($app, "DisqusComments")
+            "post" => $post, "disqus_comments" => \App\PluginMan::loadPlugin($app, "DisqusComments")
         ]);
     }
 

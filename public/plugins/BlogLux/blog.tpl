@@ -11,7 +11,7 @@
         {$nav}
 
         <h1>Blog</h1>
-        {$blog_config = \App\PluginLoader::loadPluginConfig("BlogLux")}
+        {$blog_config = \App\PluginMan::loadPluginConfig("BlogLux")}
         <p>{$blog_config["description"]}</p>
 
         <ul class="blogPosts" style="padding: 0;">

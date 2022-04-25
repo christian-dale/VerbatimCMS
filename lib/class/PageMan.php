@@ -5,7 +5,7 @@ namespace App;
 require_once("lib/class/App.php");
 require_once("lib/class/Router.php");
 
-class PageLoader {
+class PageMan {
     public $routes = [];
 
     // Default properties for a page.
@@ -24,12 +24,12 @@ class PageLoader {
 
     }
 
-    function loadRoutes(\App\App &$app, \App\Router &$router) {
+    function loadRoutes(App &$app, Router &$router) {
         // Add routes from plugins.
-        foreach (\App\PluginLoader::getPluginsList() as $plugin) {
+        foreach (PluginMan::getPluginsList() as $plugin) {
             $plugin_obj = new $plugin["name"];
 
-            if (\App\PluginLoader::loadPluginConfig($plugin["name"])["enabled"]) {
+            if (PluginMan::loadPluginConfig($plugin["name"])["enabled"]) {
                 // The routes defined in the plugin.
                 foreach ($plugin_obj->routes as $index => $route) {
                     if (isset($route["nav_item"]) && $route["nav_item"] == true) {
@@ -40,32 +40,32 @@ class PageLoader {
                         ];
                     }
 
-                    $router->add($route["path"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin) {
-                        PluginLoader::loadGlobalPlugins($app, $req, $route);
-                        PluginLoader::loadPlugin($app, $plugin["name"], $req, $route);
+                    $router->add($route["path"], $route["method"] ?? "get", function(Request $req) use(&$app, $route, $plugin) {
+                        PluginMan::loadGlobalPlugins($app, $req, $route);
+                        PluginMan::loadPlugin($app, $plugin["name"], $req, $route);
                     });
                 }
             }
         }
 
         // Add authentication routes.
-        \App\Authenticator::registerRoutes($app, $router);
+        Authenticator::registerRoutes($app, $router);
 
         foreach ($this->routes as $route) {
             $plugin = (isset($route["plugin"]) && file_exists("public/plugins/{$route["plugin"]}/index.php")) ?
                 $route["plugin"] : "DefaultHandler";
 
-            if (\App\PluginLoader::loadPluginConfig($plugin)["enabled"]) {
-                $router->add($route["url"], $route["method"] ?? "get", function($req) use(&$app, $route, $plugin) {
-                    PluginLoader::loadGlobalPlugins($app, $req, $route);
-                    PluginLoader::loadPlugin($app, $plugin, $req, $route);
+            if (PluginMan::loadPluginConfig($plugin)["enabled"]) {
+                $router->add($route["url"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin) {
+                    PluginMan::loadGlobalPlugins($app, $req, $route);
+                    PluginMan::loadPlugin($app, $plugin, $req, $route);
                 });
             }
         }
     }
 
     function loadPages(\App\App &$app) {
-        $pages = \App\Util::loadJSON("content/configs/pages.json");
+        $pages = Util::loadJSON("content/configs/pages.json");
 
         $this->loadCustomAssets($app, $pages);
 
@@ -96,43 +96,38 @@ class PageLoader {
         $page_name_clean = strtolower(str_replace(" ", "-", $page_name));
 
         file_put_contents("content/pages/{$page_name_clean}.tpl", $content);
-        $pages = \App\Util::loadJSON("content/configs/pages.json");
+        $pages = Util::loadJSON("content/configs/pages.json");
 
         $page_edit = false;
+        $page_new = [
+            "id" => $page_name_clean,
+            "title" => $page_name,
+            "url" => "/{$page_name_clean}",
+            "path" => "content/pages/{$page_name_clean}.tpl",
+            "visible" => true
+        ];
 
         foreach ($pages["pages"] as $index => $page) {
             if (strtolower(str_replace(" ", "-", $page["title"])) == $page_name_clean) {
                 $page_edit = true;
 
-                $pages["pages"][$index] = [
-                    "id" => $page_name_clean,
-                    "title" => $page_name,
-                    "url" => "/{$page_name_clean}",
-                    "path" => "content/pages/{$page_name_clean}.tpl",
-                    "visible" => true
-                ];
+                $pages["pages"][$index] = $page_new;
             }
         }
 
         if (!$page_edit) {
-            $pages["pages"][] = [
-                "id" => $page_name_clean,
-                "title" => $page_name,
-                "url" => "/{$page_name_clean}",
-                "path" => "content/pages/{$page_name_clean}.tpl",
-                "visible" => true
-            ];
+            $pages["pages"][] = $page_new;
         }
 
-        \App\Util::storeConfig("content/configs/pages.json", $pages);
+        Util::storeConfig("content/configs/pages.json", $pages);
 
-        $lang = \App\Util::loadJSON("content/lang/en.json");
+        $lang = Util::loadJSON("content/lang/en.json");
         $lang["nav:{$page_name_clean}"] = $page_name;
-        \App\Util::storeConfig("content/lang/en.json", $lang);
+        Util::storeConfig("content/lang/en.json", $lang);
     }
 
     public static function deletePage($page_name) {
-        $pages = \App\Util::loadJSON("content/configs/pages.json");
+        $pages = Util::loadJSON("content/configs/pages.json");
         $page_name_clean = strtolower(str_replace(" ", "-", $page_name));
 
         foreach ($pages["pages"] as $index => &$page) {
@@ -141,14 +136,20 @@ class PageLoader {
             }
         }
 
-        \App\Util::storeConfig("content/configs/pages.json", $pages);
+        Util::storeConfig("content/configs/pages.json", $pages);
+    }
+
+    function show404(\App\App &$app) {
+        $app->addCSS("/plugins/DefaultTheme/theme.css");
+        $app->content = $app->smarty->fetch("lib/templates/pages/404.tpl");
+        http_response_code(404);
     }
 
     /**
      * Loads all custom assets from config/pages.json.
      */
 
-    function loadCustomAssets(\App\App &$app, $pages) {
+    function loadCustomAssets(App &$app, $pages) {
         foreach ($pages["pages_all"]["css"] as $css) {
             $app->addCSS($css);
         }

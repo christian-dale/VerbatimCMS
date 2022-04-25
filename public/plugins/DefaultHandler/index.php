@@ -26,7 +26,7 @@ class DefaultHandler extends \App\Plugin {
      */
     function getNav($opts = ["lang" => true]): string {
         // Filter nav items which are set to visible.
-        $nav_items_filtered = array_filter(\App\App::$instance->page_loader->routes, fn($x) => $x["visible"]);
+        $nav_items_filtered = array_filter(\App\App::$instance->pageman->routes, fn($x) => $x["visible"]);
 
         // Get the correct lang for nav items.
         $nav_items_lang = array_map(fn($x) =>

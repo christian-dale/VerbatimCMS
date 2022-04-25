@@ -13,7 +13,7 @@ class Authenticator {
     }
 
     static function auth(string $username, string $password) {
-        $config = \App\Util::loadJSON("content/configs/users.json");
+        $config = Util::loadJSON("content/configs/users.json");
 
         foreach ($config["users"] as $user) {
             if ($user["username"] == $username && password_verify($password, $user["password"])) {
@@ -27,11 +27,11 @@ class Authenticator {
         unset($_SESSION["auth"]);
         unset($_SESSION["username"]);
 
-        \App\App::redirect("/");
+        App::redirect("/");
     }
 
-    static function registerRoutes(\App\App &$app, \App\Router &$router) {
-        $config = \App\Util::loadJSON("content/configs/users.json");
+    static function registerRoutes(App &$app, Router &$router) {
+        $config = Util::loadJSON("content/configs/users.json");
 
         if (!$config["enabled"]) {
             return;
@@ -42,7 +42,7 @@ class Authenticator {
         $router->add("/login", "get", function($req) use(&$app, $first_user) {
             $app->addCSS("/assets/styles/kernel.css");
 
-            if (\App\Util::getReqAttr($_GET, "logout")) {
+            if (Util::getReqAttr($_GET, "logout")) {
                 self::logout();
             }
 
@@ -51,22 +51,22 @@ class Authenticator {
                 "first_user" => $first_user
             ]);
 
-            PluginLoader::loadGlobalPlugins($app, $req);
+            PluginMan::loadGlobalPlugins($app, $req);
         });
 
         $router->add("/login", "post", function($req) use(&$app, $config) {
-            $username = \App\Util::getReqAttr($_POST, "username");
-            $password = \App\Util::getReqAttr($_POST, "password");
+            $username = Util::getReqAttr($_POST, "username");
+            $password = Util::getReqAttr($_POST, "password");
 
             self::auth($username, $password);
 
-            \App\App::redirect(\App\PluginLoader::pluginExists("Compositor") ? "/compositor" : "/");
+            App::redirect(PluginMan::pluginExists("Compositor") ? "/compositor" : "/");
         });
     }
 
     private static function registerUser(string $username = null, string $password = null) {
         if ($username == null) {
-            $config = \App\Util::loadJSON("content/configs/users.json");
+            $config = Util::loadJSON("content/configs/users.json");
 
             $username = uniqid("user_");
             $password = uniqid("", true);
@@ -77,7 +77,7 @@ class Authenticator {
                     "password" => password_hash($password, PASSWORD_DEFAULT)
                 ];
 
-                \App\Util::storeConfig("content/configs/users.json", $config);
+                Util::storeConfig("content/configs/users.json", $config);
 
                 return [
                     "username" => $username,

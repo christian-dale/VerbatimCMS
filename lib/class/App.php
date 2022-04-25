@@ -6,11 +6,11 @@ require_once("vendor/autoload.php");
 require_once("lib/class/Util.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/Item.php");
-require_once("lib/class/PluginLoader.php");
+require_once("lib/class/PluginMan.php");
 require_once("lib/class/MediaLoader.php");
 require_once("lib/class/Authenticator.php");
 require_once("lib/class/Router.php");
-require_once("lib/class/PageLoader.php");
+require_once("lib/class/PageMan.php");
 require_once("lib/class/Updater.php");
 
 class App {
@@ -24,11 +24,12 @@ class App {
     public array $js_paths = [];
     public array $custom_meta = [];
 
-    public $smarty = null;
-	public $lang = null;
-    public $page_loader = null;
-    public $plugin_loader = null;
-    public $router = null;
+    public \Smarty $smarty;
+	public \App\Lang $lang;
+    public \App\PageMan $pageman;
+    public \App\PluginMan $pluginman;
+    public \App\Router $router;
+    public \App\Updater $updater;
 
     public static $instance = null;
 
@@ -41,34 +42,32 @@ class App {
             self::$instance = $this;
         }
 
+        $this->loadConfig();
+
 		$this->smarty = new \Smarty();
         $this->smarty->setCompileDir("lib/templates_cache");
 
         $this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
-
-        $this->loadConfig();
-
-        $updater = new \App\Updater();
-
+        $this->updater = new \App\Updater();
         $this->router = new \App\Router();
 
-        $this->plugin_loader = new \App\PluginLoader();
+        $this->pluginman = new \App\PluginMan();
         // Create initial configs for plugins.
-        $this->plugin_loader->initPlugins($this);
+        $this->pluginman->initPlugins($this);
 
-        $this->page_loader = new \App\PageLoader();
-        $this->page_loader->loadPages($this);
-        $this->page_loader->loadRoutes($this, $this->router);
+        $this->pageman = new \App\PageMan();
+        $this->pageman->loadPages($this);
+        $this->pageman->loadRoutes($this, $this->router);
 
         // Some variables needs to be assigned before template is fetched
         // and some need to be loaded after.
-        $this->assign($this->page_loader);
+        $this->assign($this->pageman);
 
         if (!$this->router->begin()) {
-            $this->show404();
+            $this->pageman->show404($this);
         }
 
-        $this->assign($this->page_loader);
+        $this->assign($this->pageman);
 
         if (\App\App::pluginExists("Compositor") && \App\App::getPlugin("Compositor")->loadConfig()["setup"] &&
             parse_url($_SERVER["REQUEST_URI"])["path"] != "/compositor/setup") {
@@ -83,17 +82,15 @@ class App {
         $this->description = $this->config["description"];
     }
 
-    function getConfigAttr($attr) {
+    /**
+     * Gets config attribute from the config.json file.
+     */
+
+     function getConfigAttr($attr) {
         return $this->config[$attr] ?? null;
     }
 
-    function show404() {
-        $this->addCSS("/plugins/DefaultTheme/theme.css");
-        $this->content = $this->smarty->fetch("lib/templates/pages/404.tpl");
-        http_response_code(404);
-    }
-
-    function assign(PageLoader $page_loader) {
+    function assign(PageMan $pageman) {
         $this->smarty->assign("app", $this);
 
         $this->smarty->assign([
@@ -103,7 +100,7 @@ class App {
             "content" => $this->content
         ]);
 
-        if ($this->plugin_loader->pluginExists("DefaultHandler")) {
+        if ($this->pluginman->pluginExists("DefaultHandler")) {
             $this->smarty->assign([
                 "nav" => $this->pluginDefault()->getNav(),
                 "footer" => $this->pluginDefault()->getFooter($this)
@@ -127,15 +124,15 @@ class App {
     }
 
     public function pluginDefault() {
-        return $this->plugin_loader->getPlugin($this, "DefaultHandler");
+        return $this->pluginman->getPlugin($this, "DefaultHandler");
     }
 
     public function getPlugin(string $plugin_name) {
-        return $this->plugin_loader->getPlugin($this, $plugin_name);
+        return $this->pluginman->getPlugin($this, $plugin_name);
     }
 
     public function pluginExists(string $plugin_name) {
-        return \App\PluginLoader::pluginExists($plugin_name);
+        return PluginMan::pluginExists($plugin_name);
     }
 
     public function getTitle() {
