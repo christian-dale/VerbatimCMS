@@ -41,9 +41,11 @@
 
                 <div class="pages">
                     {foreach $pages as $page}
+                        {if isset($page["id"])}
                         <div class="page">
                             <h4><a href="/compositor/page/{$page["id"]}" class="ion-anchor">{$page["title"]}</a></h4>
                         </div>
+                        {/if}
                     {/foreach}
 
                     <a href="/compositor/page" class="ion-button ion-btn-primary" style="margin-top: 25px;">Create Page</a>

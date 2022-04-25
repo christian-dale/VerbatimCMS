@@ -9,22 +9,26 @@
     },
     "pages": [
         {
+            "id": "home",
             "title": "Home",
             "visible": false,
             "url": "/",
             "path": "lib/templates/pages/home.tpl"
         },
         {
+            "id": "projects",
             "title": "Projects",
             "url": "/projects",
             "path": "content/pages/projects.tpl"
         },
         {
+            "id": "about",
             "title": "About",
             "url": "/about",
             "path": "content/pages/about.tpl"
         },
         {
+            "id": "set-lang",
             "visible": false,
             "url": "/set-lang",
             "plugin": "Lang",
