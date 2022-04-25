@@ -13,6 +13,11 @@ require_once("lib/class/Router.php");
 require_once("lib/class/PageMan.php");
 require_once("lib/class/Updater.php");
 
+enum AssetType: string {
+    case CSS = "CSS";
+    case JS = "JS";
+}
+
 class App {
     public string $version = "1.0.0";
     public string $title = "";
@@ -20,8 +25,7 @@ class App {
     public string $description = "";
     public string $content = "";
     public array $config = [];
-    public array $css_paths = [];
-    public array $js_paths = [];
+    public array $assets = [];
     public array $custom_meta = [];
 
     public \Smarty $smarty;
@@ -114,12 +118,11 @@ class App {
     }
 
     function render() {
-        $this->addCSS("/plugins/Compositor/custom.css");
-        $this->addJS("/plugins/Compositor/custom.js");
+        $this->addAsset("/plugins/Compositor/custom.css", AssetType::CSS);
+        $this->addAsset("/plugins/Compositor/custom.js", AssetType::JS);
 
         return $this->smarty->fetch("lib/templates/main.tpl", [
-            "css_paths" => $this->css_paths,
-            "js_paths" => $this->js_paths
+            "assets" => $this->assets
         ]);
     }
 
@@ -147,12 +150,11 @@ class App {
         exit();
     }
 
-    function addCSS(string $path) {
-        $this->css_paths[] = $path;
-    }
-
-    function addJS(string $path) {
-        $this->js_paths[] = $path;
+    function addAsset(string $path, AssetType $type) {
+        $this->assets[] = [
+            "type" => $type,
+            "path" => $path
+        ];
     }
 
     function addMeta(string $name, string $content) {

@@ -24,16 +24,20 @@
 
     <link rel="icon" type="image/png" href="/assets/favicon.png">
 
-    {foreach $css_paths as $css_path}
-        <link rel="stylesheet" href="{$css_path}">
+    {foreach $assets as $asset}
+        {if $asset["type"] == \App\AssetType::CSS}
+            <link rel="stylesheet" href="{$asset["path"]}">
+        {/if}
     {/foreach}
 </head>
 
 <body>
     {$content}
 
-    {foreach $js_paths as $js_path}
-        <script src="{$js_path}"></script>
+    {foreach $assets as $asset}
+        {if $asset["type"] == \App\AssetType::JS}
+            <script src="{$asset["path"]}"></script>
+        {/if}
     {/foreach}
 </body>
 

@@ -29,8 +29,8 @@ class Compositor extends \App\Plugin {
     ];
 
     function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        $app->addCSS("/assets/styles/kernel.css");
-        $app->addCSS("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+        $app->addAsset("/assets/styles/kernel.css", \App\AssetType::CSS);
+        $app->addAsset("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css", \App\AssetType::CSS);
 
         if ($this->loadConfig()["setup"] == true && $req->path != "/compositor/setup") {
             \App\App::redirect("/compositor/setup");

@@ -140,7 +140,7 @@ class PageMan {
     }
 
     function show404(\App\App &$app) {
-        $app->addCSS("/plugins/DefaultTheme/theme.css");
+        $app->addAsset("/plugins/DefaultTheme/theme.css", \App\AssetType::CSS);
         $app->content = $app->smarty->fetch("lib/templates/pages/404.tpl");
         http_response_code(404);
     }
@@ -151,11 +151,11 @@ class PageMan {
 
     function loadCustomAssets(App &$app, $pages) {
         foreach ($pages["pages_all"]["css"] as $css) {
-            $app->addCSS($css);
+            $app->addAsset($css, \App\AssetType::CSS);
         }
 
         foreach ($pages["pages_all"]["js"] as $js) {
-            $app->addJS($js);
+            $app->addAsset($js, \App\AssetType::JS);
         }
     }
 }

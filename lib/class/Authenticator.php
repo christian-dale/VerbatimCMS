@@ -40,7 +40,7 @@ class Authenticator {
         $first_user = self::registerUser();
 
         $router->add("/login", "get", function($req) use(&$app, $first_user) {
-            $app->addCSS("/assets/styles/kernel.css");
+            $app->addAsset("/assets/styles/kernel.css", \App\Assettype::CSS);
 
             if (Util::getReqAttr($_GET, "logout")) {
                 self::logout();
