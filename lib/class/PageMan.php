@@ -32,8 +32,10 @@ class PageMan {
             if (PluginMan::loadPluginConfig($plugin["name"])["enabled"]) {
                 // The routes defined in the plugin.
                 foreach ($plugin_obj->routes as $index => $route) {
+                    // If route should be shown in the navigation component.
                     if (isset($route["nav_item"]) && $route["nav_item"] == true) {
                         $this->routes[] = [
+                            "id" => $route["id"] ?? Util::normalizeName($route["title"]),
                             "title" => $route["title"] ?? "",
                             "url" => $route["path"],
                             "visible" => true
@@ -93,7 +95,7 @@ class PageMan {
     }
 
     public static function editPage(string $page_name, string $content) {
-        $page_name_clean = strtolower(str_replace(" ", "-", $page_name));
+        $page_name_clean = Util::normalizeName($page_name);
 
         file_put_contents("content/pages/{$page_name_clean}.tpl", $content);
         $pages = Util::loadJSON("content/configs/pages.json");
@@ -128,10 +130,10 @@ class PageMan {
 
     public static function deletePage($page_name) {
         $pages = Util::loadJSON("content/configs/pages.json");
-        $page_name_clean = strtolower(str_replace(" ", "-", $page_name));
+        $page_name_clean = Util::normalizeName($page_name);
 
         foreach ($pages["pages"] as $index => &$page) {
-            if (strtolower(str_replace(" ", "-", $page["title"])) == $page_name) {
+            if (Util::normalizeName($page["title"]) == $page_name) {
                 unset($pages["pages"][$index]);
             }
         }

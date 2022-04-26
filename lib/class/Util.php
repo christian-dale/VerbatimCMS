@@ -42,4 +42,8 @@ class Util {
             }
         }
     }
+
+    static function normalizeName(string $name): string {
+        return strtolower(str_replace(" ", "-", $name));
+    }
 }

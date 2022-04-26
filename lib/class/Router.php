@@ -23,7 +23,21 @@ class Request {
 }
 
 class Response {
-    
+    function code(int $code) {
+        
+    }
+
+    function content(string $content) {
+
+    }
+
+    /**
+     * Redirect to url.
+    */
+    public static function redirect($url) {
+        header("Location: {$url}");
+        exit();
+    }
 }
 
 class Router {

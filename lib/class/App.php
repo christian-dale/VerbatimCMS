@@ -75,7 +75,7 @@ class App {
 
         if (\App\App::pluginExists("Compositor") && \App\App::getPlugin("Compositor")->loadConfig()["setup"] &&
             parse_url($_SERVER["REQUEST_URI"])["path"] != "/compositor/setup") {
-            \App\App::redirect("/compositor/setup");
+            \App\Response::redirect("/compositor/setup");
         }
     }
 
@@ -140,14 +140,6 @@ class App {
 
     public function getTitle() {
         return $this->title;
-    }
-
-    /**
-     * Redirect to url.
-     */
-    public static function redirect($url) {
-        header("Location: {$url}");
-        exit();
     }
 
     function addAsset(string $path, AssetType $type) {

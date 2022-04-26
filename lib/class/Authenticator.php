@@ -27,7 +27,7 @@ class Authenticator {
         unset($_SESSION["auth"]);
         unset($_SESSION["username"]);
 
-        App::redirect("/");
+        Response::redirect("/");
     }
 
     static function registerRoutes(App &$app, Router &$router) {
@@ -60,7 +60,7 @@ class Authenticator {
 
             self::auth($username, $password);
 
-            App::redirect(PluginMan::pluginExists("Compositor") ? "/compositor" : "/");
+            Response::redirect(PluginMan::pluginExists("Compositor") ? "/compositor" : "/");
         });
     }
 

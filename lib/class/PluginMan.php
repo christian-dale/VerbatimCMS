@@ -96,7 +96,9 @@ class PluginMan {
      * Create inital configs for plugins.
      */
     static function initPlugins(\App\App &$app) {
-        mkdir("content/configs/plugins");
+        if (!isdir("content/configs/plugins")) {
+            mkdir("content/configs/plugins");
+        }
 
         $plugin_names = array_map(fn($x) => basename($x), glob(self::$plugin_dir . "/*"));
 
