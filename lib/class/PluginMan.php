@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 enum PluginType: string {
     case DEFAULT = "Default";
@@ -11,7 +11,7 @@ class Plugin {
     public $pluginInfo = [];
     public $routes = [];
 
-    public function init(\App\App &$app, \App\Request $req, array $opts = []) {
+    public function init(App &$app, Request $req, array $opts = []) {
 
     }
 
@@ -22,26 +22,24 @@ class Plugin {
     }
 
     public function loadConfig(): array {
-        return \App\PluginMan::loadPluginConfig($this->pluginInfo["name"]);
+        return PluginMan::loadPluginConfig($this->pluginInfo["name"]);
     }
 
     public function storeConfig($config) {
-        \App\Util::storeConfig("content/configs/plugins/{$this->pluginInfo["name"]}/config.json", $config);
+        Util::storeConfig("content/configs/plugins/{$this->pluginInfo["name"]}/config.json", $config);
     }
 }
 
 class PluginMan {
     public static $plugin_dir = "public/plugins";
-    private static $plugin_default = [
-        "enabled" => true
-    ];
+    private static $plugin_default = ["enabled" => true];
 
     /**
      * App - Reference to the app object.
      * Plugin - The name of the plugin to be loaded.
      * res - The request object.
      */
-    static function loadPlugin(\App\App &$app, string $plugin_name, \App\Request $req = new \App\Request(), array $opts = []) {
+    static function loadPlugin(App &$app, string $plugin_name, Request $req = new Request(), array $opts = []) {
         require_once(self::getPluginDirectory($plugin_name));
 
         $plugin = new $plugin_name();
@@ -49,8 +47,8 @@ class PluginMan {
         return $plugin->init($app, $req, $opts);
     }
 
-    static function loadGlobalPlugins(\App\App &$app, \App\Request $req = new \App\Request(), array $opts = []) {
-        $pages = \App\Util::loadJSON("content/configs/pages.json");
+    static function loadGlobalPlugins(App &$app, Request $req = new Request(), array $opts = []) {
+        $pages = Util::loadJSON("content/configs/pages.json");
 
         foreach ($pages["pages_all"]["plugins"] as $plugin_name) {
             require_once(self::getPluginDirectory($plugin_name));
@@ -58,9 +56,9 @@ class PluginMan {
         }
     }
 
-    static function getPlugin(\App\App &$app, string $plugin_name) {
+    static function getPlugin(App &$app, string $plugin_name) {
         require_once(self::getPluginDirectory($plugin_name));
-        return new $plugin_name($app, new \App\Request());
+        return new $plugin_name($app, new Request());
     }
 
     /**
@@ -95,8 +93,8 @@ class PluginMan {
     /**
      * Create inital configs for plugins.
      */
-    static function initPlugins(\App\App &$app) {
-        if (!isdir("content/configs/plugins")) {
+    static function initPlugins(App &$app) {
+        if (!is_dir("content/configs/plugins")) {
             mkdir("content/configs/plugins");
         }
 
@@ -108,12 +106,12 @@ class PluginMan {
                 $plugin_config = array_merge(self::$plugin_default, $plugin->createConfig());
 
                 mkdir("content/configs/plugins/{$plugin_name}");
-                \App\Util::storeConfig("content/configs/plugins/{$plugin_name}/config.json", $plugin_config);
+                Util::storeConfig("content/configs/plugins/{$plugin_name}/config.json", $plugin_config);
             }
         }
     }
 
     static function loadPluginConfig(string $plugin_name) {
-        return \App\Util::loadJSON("content/configs/plugins/{$plugin_name}/config.json");
+        return Util::loadJSON("content/configs/plugins/{$plugin_name}/config.json");
     }
 }

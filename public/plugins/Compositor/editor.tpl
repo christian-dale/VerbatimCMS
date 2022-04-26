@@ -7,8 +7,8 @@
         </h1>
         <p>Edit the posts, pages and plugins of your site.</p>
 
-        {if \App\Authenticator::isLoggedIn()}
-            <h4>Logged in as {\App\Authenticator::getUser()}.</h4>
+        {if \VerbatimCMS\Authenticator::isLoggedIn()}
+            <h4>Logged in as {\VerbatimCMS\Authenticator::getUser()}.</h4>
             <a href="/login?logout=true" class="ion-anchor">Logout</a>
         {/if}
 

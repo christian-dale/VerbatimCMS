@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 enum UserType: string {
     case GUEST = "User";
@@ -40,7 +40,7 @@ class Authenticator {
         $first_user = self::registerUser();
 
         $router->add("/login", "get", function($req) use(&$app, $first_user) {
-            $app->addAsset("/assets/styles/kernel.css", \App\Assettype::CSS);
+            $app->addAsset("/assets/styles/kernel.css", AssetType::CSS);
 
             if (Util::getReqAttr($_GET, "logout")) {
                 self::logout();

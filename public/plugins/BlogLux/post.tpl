@@ -15,7 +15,9 @@
 <div class="contentBlog">
     <div class="blogPost">
         <div class="container">
-            <div class="intro">{$post->get("attrib")}</div>
+            {if $post->get("image") != ""}
+                <div class="intro">{$post->get("attrib")}</div>
+            {/if}
         </div>
 
         <div class="content">

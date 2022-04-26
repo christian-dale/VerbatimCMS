@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 abstract class ItemState {
     public const CREATE = 0;

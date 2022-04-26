@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 require_once("lib/class/App.php");
 require_once("lib/class/Router.php");
@@ -58,7 +58,7 @@ class PageMan {
                 $route["plugin"] : "DefaultHandler";
 
             if (PluginMan::loadPluginConfig($plugin)["enabled"]) {
-                $router->add($route["url"], $route["method"] ?? "get", function(\App\Request $req) use(&$app, $route, $plugin) {
+                $router->add($route["url"], $route["method"] ?? "get", function(Request $req) use(&$app, $route, $plugin) {
                     PluginMan::loadGlobalPlugins($app, $req, $route);
                     PluginMan::loadPlugin($app, $plugin, $req, $route);
                 });
@@ -66,7 +66,7 @@ class PageMan {
         }
     }
 
-    function loadPages(\App\App &$app) {
+    function loadPages(App &$app) {
         $pages = Util::loadJSON("content/configs/pages.json");
 
         $this->loadCustomAssets($app, $pages);
@@ -141,8 +141,8 @@ class PageMan {
         Util::storeConfig("content/configs/pages.json", $pages);
     }
 
-    function show404(\App\App &$app) {
-        $app->addAsset("/plugins/DefaultTheme/theme.css", \App\AssetType::CSS);
+    function show404(App &$app) {
+        $app->addAsset("/plugins/DefaultTheme/theme.css", AssetType::CSS);
         $app->content = $app->smarty->fetch("lib/templates/pages/404.tpl");
         http_response_code(404);
     }
@@ -153,11 +153,11 @@ class PageMan {
 
     function loadCustomAssets(App &$app, $pages) {
         foreach ($pages["pages_all"]["css"] as $css) {
-            $app->addAsset($css, \App\AssetType::CSS);
+            $app->addAsset($css, AssetType::CSS);
         }
 
         foreach ($pages["pages_all"]["js"] as $js) {
-            $app->addAsset($js, \App\AssetType::JS);
+            $app->addAsset($js, AssetType::JS);
         }
     }
 }

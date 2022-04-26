@@ -39,7 +39,7 @@
                 <select name="post_media">
                     {foreach $media as $media_item}
                         <option value="{$media_item}" {if strpos($post->get("image"), $media_item) != -1}selected{/if}>
-                        {$media_item} ({\App\MediaLoader::getConfigFromID($media_item, "name")})
+                        {$media_item} ({\VerbatimCMS\MediaLoader::getConfigFromID($media_item, "name")})
                         </option>
                     {/foreach}
                 </select>

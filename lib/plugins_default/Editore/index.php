@@ -1,18 +1,18 @@
 <?php
 
 class Editore {
-    function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        $app->addAsset("/assets/styles/kernel.css", \App\AssetType::CSS);
-        $app->addAsset("/plugins/Editor/style.css", \App\AssetType::CSS);
+    function init(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req, array $opts = []) {
+        $app->addAsset("/assets/styles/kernel.css", \VerbatimCMS\AssetType::CSS);
+        $app->addAsset("/plugins/Editor/style.css", \VerbatimCMS\AssetType::CSS);
 
         if (empty($req->params)) {
             $app->title = "Editore";
 
-            $page_loader = new \App\PageMan();
+            $page_loader = new \VerbatimCMS\PageMan();
 
             $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
-                "posts" => \App\PluginMan::loadPlugin($app, "BlogLux", new \App\Request, ["template" => true]),
-                "plugins" => \App\PluginMan::getPluginsList(),
+                "posts" => \VerbatimCMS\PluginMan::loadPlugin($app, "BlogLux", new \VerbatimCMS\Request, ["template" => true]),
+                "plugins" => \VerbatimCMS\PluginMan::getPluginsList(),
                 "pages" => $page_loader->loadPages($app)
             ]);
         } else {
@@ -24,7 +24,7 @@ class Editore {
      * Edit a particular blog post.
      */
 
-    function blogPostEdit(\App\App &$app, \App\Request $req) {
+    function blogPostEdit(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req) {
         require_once("public/plugins/BlogLux/Blog.php");
 
         $blog = new \Plugin\Blog();

@@ -14,8 +14,8 @@
             <p>Lets get you started with setting up your website!</p>
         {/if}
 
-        {if \App\Authenticator::isLoggedIn()}
-            <h4>Logged in as {\App\Authenticator::getUser()}.</h4>
+        {if \VerbatimCMS\Authenticator::isLoggedIn()}
+            <h4>Logged in as {\VerbatimCMS\Authenticator::getUser()}.</h4>
             <a href="/login?logout=true" class="ion-anchor">Logout</a>
         {/if}
 

@@ -13,7 +13,7 @@ class BlogTest extends TestCase {
         $this->blog->loadPosts();
 
         foreach ($this->blog->posts as $post) {
-            $this->assertInstanceOf(\App\Item::class, $post);
+            $this->assertInstanceOf(\VerbatimCMS\Item::class, $post);
         }
     }
 

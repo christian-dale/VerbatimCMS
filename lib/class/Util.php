@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 class Util {
     public static function issetAndTrue($var) {

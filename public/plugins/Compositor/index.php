@@ -1,10 +1,10 @@
 <?php
 
-class Compositor extends \App\Plugin {
+class Compositor extends \VerbatimCMS\Plugin {
     public $pluginInfo = [
         "name" => "Compositor",
         "description" => "An editing system for VerbatimCMS.",
-        "type" => \App\PluginType::DEFAULT,
+        "type" => \VerbatimCMS\PluginType::DEFAULT,
         "version" => "1.0.0"
     ];
 
@@ -28,23 +28,23 @@ class Compositor extends \App\Plugin {
         ["path" => "/compositor/settings", "method" => "get"]
     ];
 
-    function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        $app->addAsset("/assets/styles/kernel.css", \App\AssetType::CSS);
-        $app->addAsset("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css", \App\AssetType::CSS);
+    function init(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req, array $opts = []) {
+        $app->addAsset("/assets/styles/kernel.css", \VerbatimCMS\AssetType::CSS);
+        $app->addAsset("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css", \VerbatimCMS\AssetType::CSS);
 
         if ($this->loadConfig()["setup"] == true && $req->path != "/compositor/setup") {
-            \App\Response::redirect("/compositor/setup");
+            \VerbatimCMS\Response::redirect("/compositor/setup");
         }
 
-        if (!\App\Authenticator::isLoggedIn()) {
-            \App\Response::redirect("/login");
+        if (!\VerbatimCMS\Authenticator::isLoggedIn()) {
+            \VerbatimCMS\Response::redirect("/login");
         }
 
         if ($req->path == "/compositor/save" && $req->method == "POST") {
             $this->savePost($app, $req);
         } else if ($req->path == "/compositor/settings") {
             $app->content = $app->smarty->fetch(__DIR__ . "/setup.tpl", [
-                "config" => \App\Util::loadJSON("content/configs/config.json"),
+                "config" => \VerbatimCMS\Util::loadJSON("content/configs/config.json"),
                 "settings" => true
             ]);
         } else if ($req->path == "/compositor/custom" && $req->method == "POST") {
@@ -52,19 +52,19 @@ class Compositor extends \App\Plugin {
         } else if (strpos($req->path, "/compositor/page") != -1 && $opts["state"] == "EditPage") {
             $this->editPage($app, $req);
         } else if ($req->path == "/compositor/edit-page") {
-            $page_name = \App\Util::getReqAttr($_POST, "name");
-            $page_content = \App\Util::getReqAttr($_POST, "content");
+            $page_name = \VerbatimCMS\Util::getReqAttr($_POST, "name");
+            $page_content = \VerbatimCMS\Util::getReqAttr($_POST, "content");
 
-            \App\PageMan::editPage($page_name, $page_content);
+            \VerbatimCMS\PageMan::editPage($page_name, $page_content);
 
-            \App\Response::redirect("/compositor");
+            \VerbatimCMS\Response::redirect("/compositor");
         } else if (strpos($req->path, "/compositor/page-delete") != -1 && $opts["state"] == "PageDelete") {
-            \App\PageMan::deletePage($req->params["id"]);
+            \VerbatimCMS\PageMan::deletePage($req->params["id"]);
 
-            \App\Response::redirect("/compositor");
+            \VerbatimCMS\Response::redirect("/compositor");
         } else if ($req->path == "/compositor/media" && $req->method == "GET" && $opts["state"] == "PageMedia") {
             $app->content = $app->smarty->fetch(__DIR__ . "/media.tpl", [
-                "media" => \App\MediaLoader::getMediaList()
+                "media" => \VerbatimCMS\MediaLoader::getMediaList()
             ]);
         } else if ($req->path == "/compositor/media" && $req->method == "POST") {
             $this->storeMedia();
@@ -95,7 +95,7 @@ class Compositor extends \App\Plugin {
         ];
     }
 
-    function editPage(\App\App &$app, \App\Request $req) {
+    function editPage(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req) {
         if (empty($req->params)) {
             $app->content = $app->smarty->fetch(__DIR__ . "/edit_page.tpl", [
                 "page" => [
@@ -106,29 +106,29 @@ class Compositor extends \App\Plugin {
             ]);
         } else {
             $app->content = $app->smarty->fetch(__DIR__ . "/edit_page.tpl", [
-                "page" => \App\PageMan::getPageInfo($req->params["id"])
+                "page" => \VerbatimCMS\PageMan::getPageInfo($req->params["id"])
             ]);
         }
     }
 
-    function storeCustom(\App\App &$app) {
-        $custom_css = \App\Util::getReqAttr($_POST, "custom_css");
-        $custom_js = \App\Util::getReqAttr($_POST, "custom_js");
+    function storeCustom(\VerbatimCMS\App &$app) {
+        $custom_css = \VerbatimCMS\Util::getReqAttr($_POST, "custom_css");
+        $custom_js = \VerbatimCMS\Util::getReqAttr($_POST, "custom_js");
 
         file_put_contents("public/plugins/Compositor/custom.css", $custom_css);
         file_put_contents("public/plugins/Compositor/custom.js", $custom_js);
 
-        \App\Response::redirect("/compositor");
+        \VerbatimCMS\Response::redirect("/compositor");
     }
 
-    function savePost(\App\App &$app, \App\Request $req) {
-        $post_name = \App\Util::getReqAttr($_POST, "post_name");
-        $post_title = \App\Util::getReqAttr($_POST, "post_title");
-        $post_date = \App\Util::getReqAttr($_POST, "post_date");
-        $post_media = \App\Util::getReqAttr($_POST, "post_media");
-        $post_create = \App\Util::getReqAttr($_POST, "post_create");
+    function savePost(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req) {
+        $post_name = \VerbatimCMS\Util::getReqAttr($_POST, "post_name");
+        $post_title = \VerbatimCMS\Util::getReqAttr($_POST, "post_title");
+        $post_date = \VerbatimCMS\Util::getReqAttr($_POST, "post_date");
+        $post_media = \VerbatimCMS\Util::getReqAttr($_POST, "post_media");
+        $post_create = \VerbatimCMS\Util::getReqAttr($_POST, "post_create");
 
-        $content = \App\Util::getReqAttr($_POST, "content");
+        $content = \VerbatimCMS\Util::getReqAttr($_POST, "content");
 
         if ($post_create) {
             $app->getPlugin("BlogLux")->createPost($post_title, $content, [
@@ -149,58 +149,58 @@ class Compositor extends \App\Plugin {
             ]);
         }
 
-        \App\Response::redirect("/compositor");
+        \VerbatimCMS\Response::redirect("/compositor");
     }
 
-    function storeMedia(\App\App &$app) {
-        $media = \App\Util::getReqAttr($_FILES, "media");
+    function storeMedia(\VerbatimCMS\App &$app) {
+        $media = \VerbatimCMS\Util::getReqAttr($_FILES, "media");
 
         if (!$media["error"]) {
-            \App\MediaLoader::storeMedia($media);
-            \App\Response::redirect("/compositor/media");
+            \VerbatimCMS\MediaLoader::storeMedia($media);
+            \VerbatimCMS\Response::redirect("/compositor/media");
         }
     }
 
-    function editLang(\App\App &$app) {
+    function editLang(\VerbatimCMS\App &$app) {
         $lang_files = array_map(fn($x) => basename($x), glob("content/lang/*"));
-        $lang = array_map(fn($x) => ["name" => $x, "lang" => \App\Util::loadJSON("content/lang/{$x}")], $lang_files);
+        $lang = array_map(fn($x) => ["name" => $x, "lang" => \VerbatimCMS\Util::loadJSON("content/lang/{$x}")], $lang_files);
 
         $app->content = $app->smarty->fetch(__DIR__ . "/lang.tpl", [
             "lang" => $lang
         ]);
     }
 
-    function updateSetupConf(\App\App &$app) {
-        \App\Util::storeConfig("content/configs/config.json", array_merge(
-            \App\Util::loadJSON("content/configs/config.json"), [
-            "title" => \App\Util::getReqAttr($_POST, "title"),
-            "header_title" => \App\Util::getReqAttr($_POST, "header_title"),
-            "description" => \App\Util::getReqAttr($_POST, "description"),
-            "copyright" => \App\Util::getReqAttr($_POST, "copyright")
+    function updateSetupConf(\VerbatimCMS\App &$app) {
+        \VerbatimCMS\Util::storeConfig("content/configs/config.json", array_merge(
+            \VerbatimCMS\Util::loadJSON("content/configs/config.json"), [
+            "title" => \VerbatimCMS\Util::getReqAttr($_POST, "title"),
+            "header_title" => \VerbatimCMS\Util::getReqAttr($_POST, "header_title"),
+            "description" => \VerbatimCMS\Util::getReqAttr($_POST, "description"),
+            "copyright" => \VerbatimCMS\Util::getReqAttr($_POST, "copyright")
         ]));
 
         $config = $this->loadConfig();
         $config["setup"] = false;
         $this->storeConfig($config);
 
-        \App\Response::redirect("/compositor");
+        \VerbatimCMS\Response::redirect("/compositor");
     }
 
     function editPluginConf() {
         $plugin_name = $req->params["id"];
-        $config = array_merge(json_decode(\App\Util::getReqAttr($_POST, "config"), true), $this->loadConfig());
-        $config["enabled"] = (\App\Util::getReqAttr($_POST, "enabled") == "on") ? true : false;
+        $config = array_merge(json_decode(\VerbatimCMS\Util::getReqAttr($_POST, "config"), true), $this->loadConfig());
+        $config["enabled"] = (\VerbatimCMS\Util::getReqAttr($_POST, "enabled") == "on") ? true : false;
         $this->storeConfig($config);
-        \App\Response::redirect("/compositor/plugin/{$plugin_name}");
+        \VerbatimCMS\Response::redirect("/compositor/plugin/{$plugin_name}");
     }
 
-    function showMainPage(\App\App &$app) {
+    function showMainPage(\VerbatimCMS\App &$app) {
         $app->title = "Compositor";
 
         $app->content = $app->smarty->fetch(__DIR__ . "/editor.tpl", [
-            "posts" => \App\PluginMan::loadPlugin($app, "BlogLux", new \App\Request(), ["template" => true]),
-            "pages" => (new \App\PageMan())->loadPages($app),
-            "plugins" => \App\PluginMan::getPluginsList(),
+            "posts" => \VerbatimCMS\PluginMan::loadPlugin($app, "BlogLux", new \VerbatimCMS\Request(), ["template" => true]),
+            "pages" => (new \VerbatimCMS\PageMan())->loadPages($app),
+            "plugins" => \VerbatimCMS\PluginMan::getPluginsList(),
             "custom_css" => file_get_contents("public/plugins/Compositor/custom.css"),
             "custom_js" => file_get_contents("public/plugins/Compositor/custom.jss")
         ]);
@@ -210,13 +210,13 @@ class Compositor extends \App\Plugin {
      * Edit a particular blog post.
      */
 
-    function blogPostEdit(\App\App &$app, \App\Request $req, bool $create_post = false) {
+    function blogPostEdit(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req, bool $create_post = false) {
         require_once("public/plugins/BlogLux/Blog.php");
 
         if ($create_post) {
             $app->content = $app->smarty->fetch(__DIR__ . "/edit_post.tpl", [
                 "post" => \Plugin\Blog::getEmptyPost(),
-                "media" => \App\MediaLoader::getMediaList(),
+                "media" => \VerbatimCMS\MediaLoader::getMediaList(),
                 "create_post" => $create_post
             ]);
         } else {
@@ -231,7 +231,7 @@ class Compositor extends \App\Plugin {
     
             $app->content = $app->smarty->fetch(__DIR__ . "/edit_post.tpl", [
                 "post" => $post,
-                "media" => \App\MediaLoader::getMediaList()
+                "media" => \VerbatimCMS\MediaLoader::getMediaList()
             ]);
         }
     }
@@ -239,10 +239,10 @@ class Compositor extends \App\Plugin {
     /**
      * Edit a particular plugin.
      */
-    function editPlugin(\App\App &$app, \App\Request $req) {
+    function editPlugin(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req) {
         $app->title = "Edit plugin";
         $app->content = $app->smarty->fetch(__DIR__ . "/edit_plugin.tpl", [
-            "plugin" => \App\PluginMan::getPlugin($app, $req->params["id"]),
+            "plugin" => \VerbatimCMS\PluginMan::getPlugin($app, $req->params["id"]),
             "plugin_config" => $this->loadConfig()
         ]);
     }

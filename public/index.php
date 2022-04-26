@@ -4,5 +4,5 @@ chdir("../");
 
 require_once("lib/class/App.php");
 
-$app = new \App\App();
+$app = new \VerbatimCMS\App();
 echo $app->render();

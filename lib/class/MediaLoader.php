@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 class MediaLoader {
     public static string $media_directory = "public/assets/media";
@@ -16,7 +16,7 @@ class MediaLoader {
     }
 
     public static function getConfigFromID(string $id, string $attr = null) {
-        foreach (\App\Util::loadJSON("content/configs/media.json")["media"] as $media) {
+        foreach (Util::loadJSON("content/configs/media.json")["media"] as $media) {
             if ($media["id"] == $id) {
                 if ($attr) {
                     return $media[$attr];
@@ -28,13 +28,15 @@ class MediaLoader {
     }
 
     public static function storeMediaMeta($file, string $media_name) {
-        $config = \App\Util::loadJSON("content/configs/media.json");
+        $config = Util::loadJSON("content/configs/media.json");
+
         $config["media"][] = [
             "id" => $media_name,
             "name" => $file["name"],
             "date" => time()
         ];
-        \App\Util::storeConfig("content/configs/media.json", $config);
+
+        Util::storeConfig("content/configs/media.json", $config);
     }
 
     public static function storeMedia($file) {

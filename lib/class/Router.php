@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 class Request {
     public string $path = "/";
@@ -62,7 +62,7 @@ class Router {
             $res = preg_match("#^{$route["path"]}$#", $this->parsed_url["path"], $match);
 
             if ($res && $_SERVER["REQUEST_METHOD"] == $route["method"]) {
-                $req = new \App\Request();
+                $req = new Request();
                 $req->path = $_SERVER["REQUEST_URI"];
                 $req->method = $route["method"];
 

@@ -3,8 +3,8 @@
 require_once("Blog.php");
 
 class BlogPosts {
-    function init(\App\App &$app, \App\Request $req, array $opts = []) {
-        $app->addAsset("/plugins/BlogLux/style.css", \App\AssetType::CSS);
+    function init(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req, array $opts = []) {
+        $app->addAsset("/plugins/BlogLux/style.css", \VerbatimCMS\AssetType::CSS);
 
         $blog = new \Plugin\Blog();
 
@@ -27,14 +27,14 @@ class BlogPosts {
      * View a particular blog post.
      */
 
-     function blogPostView(\App\App &$app, \App\Request $req, \Plugin\Blog $blog) {
+     function blogPostView(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req, \Plugin\Blog $blog) {
         $post = $blog->posts[$req->params["id"]];
 
         $app->title = $post->get("title");
         $app->description = substr(strip_tags($post->get("content")), 0, 150) . " ...";
         
         $app->content = $app->smarty->fetch(__DIR__ . "/post.tpl", [
-            "post" => $post, "disqus_comments" => \App\PluginMan::loadPlugin($app, "DisqusComments")
+            "post" => $post, "disqus_comments" => \VerbatimCMS\PluginMan::loadPlugin($app, "DisqusComments")
         ]);
     }
 
@@ -42,7 +42,7 @@ class BlogPosts {
      * Show a list of blog posts.
      */
 
-    function blogPosts(\App\App &$app, \Plugin\Blog $blog) {
+    function blogPosts(\VerbatimCMS\App &$app, \Plugin\Blog $blog) {
         $app->title = "Blog";
         $app->content = $app->smarty->fetch(__DIR__ . "/blog.tpl", ["posts" => $blog->posts]);
     }

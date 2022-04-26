@@ -1,16 +1,16 @@
 <?php
 
-class DefaultTheme extends \App\Plugin {
+class DefaultTheme extends \VerbatimCMS\Plugin {
     public $pluginInfo = [
         "name" => "DefaultTheme",
         "description" => "The default theme for VerbatimCMS",
-        "type" => \App\PluginType::THEME,
+        "type" => \VerbatimCMS\PluginType::THEME,
         "version" => "1.0.0"
     ];
 
-    function init(\App\App &$app, \App\Request $req, array $opts = []) {
+    function init(\VerbatimCMS\App &$app, \VerbatimCMS\Request $req, array $opts = []) {
         // TODO: Add built-in method for getting plugin directory.
-        $app->addAsset("/assets/styles/normalize.css", \App\AssetType::CSS);
-        $app->addAsset("/plugins/DefaultTheme/theme.css", \App\AssetType::CSS);
+        $app->addAsset("/assets/styles/normalize.css", \VerbatimCMS\AssetType::CSS);
+        $app->addAsset("/plugins/DefaultTheme/theme.css", \VerbatimCMS\AssetType::CSS);
     }
 }

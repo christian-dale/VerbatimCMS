@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace VerbatimCMS;
 
 require_once("vendor/autoload.php");
 require_once("lib/class/Util.php");
@@ -29,11 +29,11 @@ class App {
     public array $custom_meta = [];
 
     public \Smarty $smarty;
-	public \App\Lang $lang;
-    public \App\PageMan $pageman;
-    public \App\PluginMan $pluginman;
-    public \App\Router $router;
-    public \App\Updater $updater;
+	public Lang $lang;
+    public PageMan $pageman;
+    public PluginMan $pluginman;
+    public Router $router;
+    public Updater $updater;
 
     public static $instance = null;
 
@@ -51,15 +51,15 @@ class App {
 		$this->smarty = new \Smarty();
         $this->smarty->setCompileDir("lib/templates_cache");
 
-        $this->lang = new \App\Lang($_SESSION["lang"] ?? "en");
-        $this->updater = new \App\Updater();
-        $this->router = new \App\Router();
+        $this->lang = new Lang($_SESSION["lang"] ?? "en");
+        $this->updater = new Updater();
+        $this->router = new Router();
 
-        $this->pluginman = new \App\PluginMan();
+        $this->pluginman = new PluginMan();
         // Create initial configs for plugins.
         $this->pluginman->initPlugins($this);
 
-        $this->pageman = new \App\PageMan();
+        $this->pageman = new PageMan();
         $this->pageman->loadPages($this);
         $this->pageman->loadRoutes($this, $this->router);
 
@@ -73,14 +73,14 @@ class App {
 
         $this->assign($this->pageman);
 
-        if (\App\App::pluginExists("Compositor") && \App\App::getPlugin("Compositor")->loadConfig()["setup"] &&
+        if (App::pluginExists("Compositor") && App::getPlugin("Compositor")->loadConfig()["setup"] &&
             parse_url($_SERVER["REQUEST_URI"])["path"] != "/compositor/setup") {
-            \App\Response::redirect("/compositor/setup");
+            Response::redirect("/compositor/setup");
         }
     }
 
     function loadConfig() {
-        $this->config = \App\Util::loadJSON("content/configs/config.json");
+        $this->config = Util::loadJSON("content/configs/config.json");
         $this->title = $this->config["title"];
         $this->appname = $this->title;
         $this->description = $this->config["description"];

@@ -4,7 +4,7 @@ namespace Plugin;
 
 require_once("lib/class/Item.php");
 
-class BlogPost extends \App\Item {
+class BlogPost extends \VerbatimCMS\Item {
     private string $table = "post";
 
     function __construct($id = null) {
@@ -53,7 +53,7 @@ class Blog {
     }
 
     public static function getEmptyPost() {
-        return \App\Item::simpleLoad(BlogPost::class, [
+        return \VerbatimCMS\Item::simpleLoad(BlogPost::class, [
             "id" => 0,
             "title" => "",
             "date" => date("Y-m-d", time()),
@@ -72,7 +72,7 @@ class Blog {
         foreach (glob("content/posts/*.json") as $file_name) {
             $post_meta = $this->loadPostMeta($file_name);
             $post_meta["content"] = $this->loadPostContent($file_name);
-            $this->posts[$post_meta["id"]] = \App\Item::simpleLoad(BlogPost::class, $post_meta);
+            $this->posts[$post_meta["id"]] = \VerbatimCMS\Item::simpleLoad(BlogPost::class, $post_meta);
         }
 
         uasort($this->posts, fn($a, $b) => strtotime($a->get("date")) < strtotime($b->get("date")));

@@ -25,7 +25,7 @@
     <link rel="icon" type="image/png" href="/assets/favicon.png">
 
     {foreach $assets as $asset}
-        {if $asset["type"] == \App\AssetType::CSS}
+        {if $asset["type"] == \VerbatimCMS\AssetType::CSS}
             <link rel="stylesheet" href="{$asset["path"]}">
         {/if}
     {/foreach}
@@ -35,7 +35,7 @@
     {$content}
 
     {foreach $assets as $asset}
-        {if $asset["type"] == \App\AssetType::JS}
+        {if $asset["type"] == \VerbatimCMS\AssetType::JS}
             <script src="{$asset["path"]}"></script>
         {/if}
     {/foreach}
