@@ -22,11 +22,11 @@ class Plugin {
     }
 
     public function loadConfig(): array {
-        return PluginMan::loadPluginConfig($this->pluginInfo["name"]);
+        return Config::pluginLoad($this->pluginInfo["name"]);
     }
 
     public function storeConfig($config) {
-        Util::storeConfig("content/configs/plugins/{$this->pluginInfo["name"]}/config.json", $config);
+        Config::pluginStore($this->pluginInfo["name"], $config);
     }
 }
 
@@ -40,25 +40,28 @@ class PluginMan {
      * res - The request object.
      */
     static function loadPlugin(App &$app, string $plugin_name, Request $req = new Request(), array $opts = []) {
-        require_once(self::getPluginDirectory($plugin_name));
+        $plugin = self::getPlugin($app, $plugin_name);
 
-        $plugin = new $plugin_name();
-
-        return $plugin->init($app, $req, $opts);
-    }
-
-    static function loadGlobalPlugins(App &$app, Request $req = new Request(), array $opts = []) {
-        $pages = Util::loadJSON("content/configs/pages.json");
-
-        foreach ($pages["pages_all"]["plugins"] as $plugin_name) {
-            require_once(self::getPluginDirectory($plugin_name));
-            (new $plugin_name)->init($app, $req, $opts);
+        if ($plugin) {
+            return $plugin->init($app, $req, $opts);
         }
     }
 
-    static function getPlugin(App &$app, string $plugin_name) {
-        require_once(self::getPluginDirectory($plugin_name));
-        return new $plugin_name($app, new Request());
+    static function loadGlobalPlugins(App &$app, Request $req = new Request(), array $opts = []) {
+        $pages = Config::load("pages.json");
+
+        foreach ($pages["pages_all"]["plugins"] as $plugin_name) {
+            self::loadPlugin($app, $plugin_name, $req, $opts);
+        }
+    }
+
+    static function getPlugin(App &$app, string $plugin_name, bool $check_enabled = false) {
+        if (self::pluginEnabled($plugin_name) && self::pluginExists($plugin_name) || $check_enabled) {
+            require_once(self::getPluginDirectory($plugin_name));
+            return new $plugin_name($app, new Request());
+        }
+
+        return false;
     }
 
     /**
@@ -73,21 +76,19 @@ class PluginMan {
         return file_exists(self::getPluginDirectory($plugin_name));
     }
 
+    static function pluginEnabled(string $plugin_name) {
+        return self::pluginExists($plugin_name) && self::loadPluginConfig($plugin_name)["enabled"];
+    }
+
     /**
      * Get a list of all plugins with related info.
      */
 
      static function getPluginsList(): array {
         $plugin_names = array_map(fn($x) => basename($x), glob(self::$plugin_dir . "/*"));
-        $plugins = [];
 
-        foreach ($plugin_names as $plugin_name) {
-            require_once(self::getPluginDirectory($plugin_name));
-            $plugin = new $plugin_name();
-            $plugins[] = $plugin->pluginInfo;
-        }
-
-        return $plugins;
+        return array_map(fn($plugin_name) =>
+            self::getPlugin(App::$instance, $plugin_name, true)->pluginInfo, $plugin_names);
     }
 
     /**
@@ -102,16 +103,15 @@ class PluginMan {
 
         foreach ($plugin_names as $plugin_name) {
             if (!file_exists("content/configs/plugins/{$plugin_name}/config.json")) {
-                $plugin = self::getPlugin($app, $plugin_name);
-                $plugin_config = array_merge(self::$plugin_default, $plugin->createConfig());
-
                 mkdir("content/configs/plugins/{$plugin_name}");
-                Util::storeConfig("content/configs/plugins/{$plugin_name}/config.json", $plugin_config);
+
+                $plugin = self::getPlugin($app, $plugin_name);
+                Config::pluginStore($plugin_name, array_merge(self::$plugin_default, $plugin->createConfig()));
             }
         }
     }
 
     static function loadPluginConfig(string $plugin_name) {
-        return Util::loadJSON("content/configs/plugins/{$plugin_name}/config.json");
+        return Config::pluginLoad($plugin_name);
     }
 }

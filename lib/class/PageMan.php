@@ -42,10 +42,8 @@ class PageMan {
                         ];
                     }
 
-                    $router->add($route["path"], $route["method"] ?? "get", function(Request $req) use(&$app, $route, $plugin) {
-                        PluginMan::loadGlobalPlugins($app, $req, $route);
-                        PluginMan::loadPlugin($app, $plugin["name"], $req, $route);
-                    });
+                    $router->add($route["path"], $route["method"], fn(Request $req) =>
+                        $this->registerRoutePlugins($app, $req, $route, $plugin["name"]));
                 }
             }
         }
@@ -54,14 +52,11 @@ class PageMan {
         Authenticator::registerRoutes($app, $router);
 
         foreach ($this->routes as $route) {
-            $plugin = (isset($route["plugin"]) && file_exists("public/plugins/{$route["plugin"]}/index.php")) ?
-                $route["plugin"] : "DefaultHandler";
+            $plugin = PluginMan::pluginEnabled($route["plugin"] ?? "") ? $route["plugin"] : "DefaultHandler";
 
             if (PluginMan::loadPluginConfig($plugin)["enabled"]) {
-                $router->add($route["url"], $route["method"] ?? "get", function(Request $req) use(&$app, $route, $plugin) {
-                    PluginMan::loadGlobalPlugins($app, $req, $route);
-                    PluginMan::loadPlugin($app, $plugin, $req, $route);
-                });
+                $router->add($route["url"], $route["method"], fn(Request $req) =>
+                    $this->registerRoutePlugins($app, $req, $route, $plugin));
             }
         }
     }
@@ -159,5 +154,10 @@ class PageMan {
         foreach ($pages["pages_all"]["js"] as $js) {
             $app->addAsset($js, AssetType::JS);
         }
+    }
+
+    private function registerRoutePlugins(App &$app, Request $req, array $route, string $plugin_name) {
+        PluginMan::loadGlobalPlugins($app, $req, $route);
+        PluginMan::loadPlugin($app, $plugin_name, $req, $route);
     }
 }

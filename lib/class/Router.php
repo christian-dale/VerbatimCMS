@@ -5,7 +5,12 @@ namespace VerbatimCMS;
 class Request {
     public string $path = "/";
     public array $params = [];
-    public string $method = "get";
+    public string $method = "GET";
+
+    function __construct(string $path = "/", string $method = "GET") {
+        $this->path = $path;
+        $this->method = $method;
+    }
 
     public static function request($url) {
         $c = curl_init();
@@ -52,7 +57,7 @@ class Router {
     function add($path, $method, $fn) {
         self::$routes[] = [
             "path" => $path,
-            "method" => strtoupper($method),
+            "method" => strtoupper($method ?? "get"),
             "fn" => $fn
         ];
     }
@@ -61,18 +66,15 @@ class Router {
         foreach (self::$routes as $route) {
             $res = preg_match("#^{$route["path"]}$#", $this->parsed_url["path"], $match);
 
-            if ($res && $_SERVER["REQUEST_METHOD"] == $route["method"]) {
-                $req = new Request();
-                $req->path = $_SERVER["REQUEST_URI"];
-                $req->method = $route["method"];
+            if ($res == true && $_SERVER["REQUEST_METHOD"] == $route["method"]) {
+                $req = new Request($_SERVER["REQUEST_URI"], $route["method"]);
 
-                // If this is a route parameter.
+                // If request contains a route parameter.
                 if (count($match) > 1) {
                     $req->params["id"] = $match[1];
-                    call_user_func_array($route["fn"], [$req]);
-                } else {
-                    call_user_func_array($route["fn"], [$req]);
                 }
+
+                call_user_func_array($route["fn"], [$req]);
 
                 return true;
             }

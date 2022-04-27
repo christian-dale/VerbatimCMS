@@ -4,6 +4,7 @@ namespace VerbatimCMS;
 
 require_once("vendor/autoload.php");
 require_once("lib/class/Util.php");
+require_once("lib/class/Config.php");
 require_once("lib/class/Lang.php");
 require_once("lib/class/Item.php");
 require_once("lib/class/PluginMan.php");
