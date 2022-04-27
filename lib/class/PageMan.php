@@ -15,6 +15,7 @@ class PageMan {
         "url" => "/",
         "path" => "lib/templates/pages/404.tpl",
         "plugin" => "DefaultHandler",
+        "method" => "get",
         "template" => true,
         "bg-color" => "#fff",
         "color" => "#000"
@@ -34,12 +35,12 @@ class PageMan {
                 foreach ($plugin_obj->routes as $index => $route) {
                     // If route should be shown in the navigation component.
                     if (isset($route["nav_item"]) && $route["nav_item"] == true) {
-                        $this->routes[] = [
+                        $this->routes[] = array_merge($this->page_default, [
                             "id" => $route["id"] ?? Util::normalizeName($route["title"]),
                             "title" => $route["title"] ?? "",
                             "url" => $route["path"],
                             "visible" => true
-                        ];
+                        ]);
                     }
 
                     $router->add($route["path"], $route["method"], fn(Request $req) =>
