@@ -12,8 +12,8 @@ class PageMan {
     public $page_default = [
         "title" => "",
         "visible" => true,
-        "url" => "/",
-        "path" => "lib/templates/pages/404.tpl",
+        "path" => "/",
+        "template" => "lib/templates/pages/404.tpl",
         "plugin" => "DefaultHandler",
         "method" => "get",
         "template" => true,
@@ -35,11 +35,10 @@ class PageMan {
                 foreach ($plugin_obj->routes as $index => $route) {
                     // If route should be shown in the navigation component.
                     if (isset($route["nav_item"]) && $route["nav_item"] == true) {
-                        $this->routes[] = array_merge($this->page_default, [
+                        $route_merged = array_merge($this->page_default, $route);
+                        $this->routes[] = array_merge($route_merged,                         [
                             "id" => $route["id"] ?? Util::normalizeName($route["title"]),
-                            "title" => $route["title"] ?? "",
-                            "url" => $route["path"],
-                            "visible" => true
+                            "title" => $route["title"] ?? ""
                         ]);
                     }
 
@@ -56,7 +55,7 @@ class PageMan {
             $plugin = PluginMan::pluginEnabled($route["plugin"] ?? "") ? $route["plugin"] : "DefaultHandler";
 
             if (PluginMan::loadPluginConfig($plugin)["enabled"]) {
-                $router->add($route["url"], $route["method"], fn(Request $req) =>
+                $router->add($route["path"], $route["method"], fn(Request $req) =>
                     $this->registerRoutePlugins($app, $req, $route, $plugin));
             }
         }
@@ -100,8 +99,8 @@ class PageMan {
         $page_new = [
             "id" => $page_name_clean,
             "title" => $page_name,
-            "url" => "/{$page_name_clean}",
-            "path" => "content/pages/{$page_name_clean}.tpl",
+            "path" => "/{$page_name_clean}",
+            "template" => "content/pages/{$page_name_clean}.tpl",
             "visible" => true
         ];
 

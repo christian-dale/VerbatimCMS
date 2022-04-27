@@ -23,7 +23,7 @@
     <nav class="nav-items" style="display: inline-block;">
         <ul>
             {foreach $nav_items as $item}
-                <li><a href="{$item["url"]}" 
+                <li><a href="{$item["path"]}" 
                     class="navItem navItem{$item["title"]}" 
                     {if isset($item["bg-color"]) && isset($item["color"])}
                     style="background-color: {$item["bg-color"]}; color: {$item["color"]};"{/if}>

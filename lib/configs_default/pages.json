@@ -12,25 +12,25 @@
             "id": "home",
             "title": "Home",
             "visible": false,
-            "url": "/",
-            "path": "lib/templates/pages/home.tpl"
+            "path": "/",
+            "template": "lib/templates/pages/home.tpl"
         },
         {
             "id": "projects",
             "title": "Projects",
-            "url": "/projects",
-            "path": "content/pages/projects.tpl"
+            "path": "/projects",
+            "template": "content/pages/projects.tpl"
         },
         {
             "id": "about",
             "title": "About",
-            "url": "/about",
-            "path": "content/pages/about.tpl"
+            "path": "/about",
+            "template": "content/pages/about.tpl"
         },
         {
             "id": "set-lang",
             "visible": false,
-            "url": "/set-lang",
+            "path": "/set-lang",
             "plugin": "Lang",
             "set-lang": true
         }

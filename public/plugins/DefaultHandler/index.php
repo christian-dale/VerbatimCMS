@@ -14,7 +14,7 @@ class DefaultHandler extends \VerbatimCMS\Plugin {
         }
 
         $app->title = $opts["title"];
-        $app->content = $app->smarty->fetch($opts["path"]);
+        $app->content = $app->smarty->fetch($opts["template"]);
     }
 
     private function templateExists(?string $file): bool {

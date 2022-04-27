@@ -35,7 +35,7 @@
         {$nav}
 
         <h1>Projects</h1>
-        <p>The following is a list of projects I have worked on for customers and personal projects.</p>
+        <p>The following is an example projects page.</p>
 
         <a href="#customer-projects" class="badge">Customer Projects</a>
         <a href="#my-projects" class="badge">My Projects</a>

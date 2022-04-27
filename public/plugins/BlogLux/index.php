@@ -11,7 +11,7 @@ class BlogLux extends \VerbatimCMS\Plugin {
     ];
 
     public $routes = [
-        ["title" => "Blog", "path" => "/blog", "method" => "get", "nav_item" => true],
+        ["title" => "Blog", "path" => "/blog", "method" => "get", "nav_item" => true, "bg-color" => "#3d5afe", "color" => "#fff"],
         ["title" => "Blog", "path" => "/blog/(.+)", "method" => "get"]
     ];
 
