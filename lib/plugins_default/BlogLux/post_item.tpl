@@ -1,12 +1,11 @@
 <li>
     {if isset($post->get("image")) && $post->get("image") != ""}
         <div class="intro" style="background: url('{$post->get('image')}') no-repeat center center;">
-            <p class="postDate">{$post->get("date")}</p>
+            <p class="postDate">{date("M d, Y", strtotime($post->get("dateUpdate")))}</p>
         </div>
     {/if}
 
     <div class="postInfo">
-        <p class="postDate">{$post->get("date")}</p>
         <h2 class="postHeader"><a href="/blog/{$post->get("id")}" class="articleLink" style="color: #212121;">{$post->get("title")}</a></h2>
 
         {foreach $post->get("categories") as $category}

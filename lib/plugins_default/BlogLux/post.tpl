@@ -6,11 +6,6 @@
         background-size: cover;
         border-radius: 4px;
     }
-
-    .blogPost .postText {
-        width: 100%;
-        height: 500px;
-    }
 </style>
 
 <div class="container">
@@ -20,12 +15,14 @@
 <div class="contentBlog">
     <div class="blogPost">
         <div class="container">
-            <div class="intro">{$post->get("attrib")}</div>
+            {if $post->get("image") != ""}
+                <div class="intro">{$post->get("attrib")}</div>
+            {/if}
         </div>
 
         <div class="content">
-            <input type="text" value="{$post->get("title")}">
-            <input type="date" value="{date("Y-m-d", strtotime($post->get("dateUpdate")))}">
+            <h1 style="margin-bottom: 10px;">{$post->get("title")}</h1>
+            <h4 style="margin-top: 0;">{date("M d, Y", strtotime($post->get("dateUpdate")))}</h4>
 
             <div class="section" style="margin-top: 25px;">
                 {foreach $post->get("categories") as $category}
@@ -33,11 +30,7 @@
                 {/foreach}
             </div>
 
-            <p class="postContent">
-                <textarea class="postText">
-                    {$post->get("content")}
-                </textarea>
-            </p>
+            <p class="postContent">{$post->get("content")}</p>
 
             {if isset($disqus_comments)}
                 {$disqus_comments}

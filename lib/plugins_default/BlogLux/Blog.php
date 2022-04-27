@@ -19,14 +19,16 @@ class Blog {
     private int $postscount = 7;
 
     // Default properties for blog post.
-    public $blog_default = [
+    public static $blog_default = [
+        "id" => "",
         "title" => "",
         "date" => "",
         "dateUpdate" => "",
         "draft" => false,
         "categories" => [],
         "image" => "",
-        "attrib" => ""
+        "attrib" => "",
+        "lang" => "en"
     ];
 
     function __construct() {
@@ -34,21 +36,28 @@ class Blog {
     }
 
     function loadPostMeta(String $file_name): Array {
-        $post_meta = json_decode(file_get_contents($file_name), true);
-        $post_meta = array_merge($this->blog_default, $post_meta);
+        $post_meta = \VerbatimCMS\Util::loadJSON($file_name);
+        $post_meta = array_merge(self::$blog_default, $post_meta);
         $post_meta["id"] = $this->getPostID($file_name);
         return $post_meta;
     }
 
     function loadPostContent(String $file_name): String {
-        return file_get_contents(preg_replace("@.json@", ".md", $file_name));
+        return file_get_contents(preg_replace("#.json#", ".md", $file_name));
     }
 
     function getPostID(String $file_name): String {
         $match = [];
-        preg_match("@/([a-z0-9-_]+).json@", $file_name, $match);
+        preg_match("#/([a-z0-9-_]+).json#", $file_name, $match);
 
         return $match[1];
+    }
+
+    public static function getEmptyPost() {
+        return \VerbatimCMS\Item::simpleLoad(BlogPost::class, array_merge(self::$blog_default, [
+            "date" => date("Y-m-d", time()),
+            "dateUpdated" => date("Y-m-d", time())
+        ]));
     }
 
     function loadPosts() {
@@ -58,18 +67,20 @@ class Blog {
             $this->posts[$post_meta["id"]] = \VerbatimCMS\Item::simpleLoad(BlogPost::class, $post_meta);
         }
 
+        // Sort posts based on date.
         uasort($this->posts, fn($a, $b) => strtotime($a->get("date")) < strtotime($b->get("date")));
     }
 
     function renderPosts() {
-        $parsedown = new Parsedown();
+        $parsedown = new \Parsedown();
 
-        foreach ($this->posts as $post) {
+        $this->posts_rendered = array_map(function($post) use($parsedown) {
             $post->set([
                 "content" => $parsedown->text($post->get("content")),
                 "attrib" => $parsedown->text($post->get("attrib"))
             ]);
-            $this->posts_rendered[] = $post;
-        }
+
+            return $post;
+        }, $this->posts);
     }
 }

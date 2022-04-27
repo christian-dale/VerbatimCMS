@@ -11,7 +11,8 @@
         {$nav}
 
         <h1>Blog</h1>
-        <p>A blog about technology and philosophy.</p>
+        {$blog_config = \VerbatimCMS\PluginMan::loadPluginConfig("BlogLux")}
+        <p>{$blog_config["description"]}</p>
 
         <ul class="blogPosts" style="padding: 0;">
         {foreach $posts as $post}
