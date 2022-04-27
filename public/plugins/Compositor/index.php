@@ -115,8 +115,8 @@ class Compositor extends \VerbatimCMS\Plugin {
         $custom_css = \VerbatimCMS\Util::getReqAttr($_POST, "custom_css");
         $custom_js = \VerbatimCMS\Util::getReqAttr($_POST, "custom_js");
 
-        file_put_contents("public/plugins/Compositor/custom.css", $custom_css);
-        file_put_contents("public/plugins/Compositor/custom.js", $custom_js);
+        file_put_contents("public/assets/styles/custom.css", $custom_css);
+        file_put_contents("public/assets/scripts/custom.js", $custom_js);
 
         \VerbatimCMS\Response::redirect("/compositor");
     }
@@ -201,8 +201,8 @@ class Compositor extends \VerbatimCMS\Plugin {
             "posts" => \VerbatimCMS\PluginMan::loadPlugin($app, "BlogLux", new \VerbatimCMS\Request(), ["template" => true]),
             "pages" => (new \VerbatimCMS\PageMan())->loadPages($app),
             "plugins" => \VerbatimCMS\PluginMan::getPluginsList(),
-            "custom_css" => file_get_contents("public/plugins/Compositor/custom.css"),
-            "custom_js" => file_get_contents("public/plugins/Compositor/custom.jss")
+            "custom_css" => file_get_contents("public/assets/styles/custom.css"),
+            "custom_js" => file_get_contents("public/assets/scripts/custom.js")
         ]);
     }
 

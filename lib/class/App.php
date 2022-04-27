@@ -118,8 +118,8 @@ class App {
     }
 
     function render() {
-        $this->addAsset("/plugins/Compositor/custom.css", AssetType::CSS);
-        $this->addAsset("/plugins/Compositor/custom.js", AssetType::JS);
+        $this->addAsset("/assets/styles/custom.css", AssetType::CSS);
+        $this->addAsset("/assets/scripts/custom.js", AssetType::JS);
 
         return $this->smarty->fetch("lib/templates/main.tpl", [
             "assets" => $this->assets
